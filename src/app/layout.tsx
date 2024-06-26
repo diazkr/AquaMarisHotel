@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { Button, CssBaseline, ThemeProvider } from "@mui/material";
+import { ThemeProvider } from "@mui/material/styles";
+import { CssBaseline } from "@mui/material";
 import theme from "@/theme";
-
+import NavBar from "@/componentes/navbar/Navbar";
+import Footer from "@/componentes/footer/Footer";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -20,9 +22,10 @@ export default function RootLayout({
     <html lang="en">
       <body className={`flex flex-col min-h-screen ${inter.className}`}>
         <ThemeProvider theme={theme}>
-        <CssBaseline />
-          <main className="flex-grow">{children}
-          </main>
+          <CssBaseline />
+          <NavBar />
+          <main className="flex-grow">{children}</main>
+          <Footer/>
         </ThemeProvider>
       </body>
     </html>
