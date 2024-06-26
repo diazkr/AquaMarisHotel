@@ -1,18 +1,21 @@
 "use client";
-import ImageHero from "@/componentes/Home/ImageHero";
+
+import ImageForm from "@/componentes/lista/ImageForm";
+import ListaHabitaciones from "@/componentes/lista/ListaHabitaciones";
 import FetchBookingForm from "@/componentes/reusables/forms/FetchFormReserva";
-import { RoomProvider } from "@/contextos/RoomContext";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
-export default function Home() {
+export default function PageLista() {
   return (
     <div>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <ImageHero>
+        <ImageForm>
           <FetchBookingForm />
-        </ImageHero>
+        </ImageForm>
       </LocalizationProvider>
+
+      <ListaHabitaciones></ListaHabitaciones>
     </div>
   );
 }
