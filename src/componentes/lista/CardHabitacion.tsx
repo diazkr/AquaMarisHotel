@@ -1,5 +1,6 @@
 import { Habitacion } from "@/interfaces/HabitacionInterface";
 import { Button } from "@mui/material";
+import { FaWifi, FaTv, FaWater, FaSnowflake, FaFire, FaLock, FaParking, FaCoffee, FaIceCream, FaHotTub } from 'react-icons/fa';
 
 interface CardHabitacionProps {
   habitacion: Habitacion;
@@ -37,6 +38,50 @@ const CardHabitacion: React.FC<CardHabitacionProps> = ({ habitacion }) => {
     return name;
   };
 
+  const capacidadHabitacion = (tipo_habitacion: string): number => {
+    switch (tipo_habitacion) {
+      case 'estandar':
+        return 2;
+      case 'doble':
+        return 2;
+      case 'deluxe':
+        return 3;
+      case 'suite':
+        return 4;
+      case 'familiar':
+        return 6;
+      default:
+        return 1; // Valor predeterminado en caso de que el tipo de habitación no coincida
+    }
+  };
+
+  const renderIcon = (servicio: string) => {
+    switch (servicio) {
+      case 'Wi-Fi':
+        return <FaWifi key={servicio} />;
+      case 'Television':
+        return <FaTv key={servicio} />;
+      case 'Vista al mar':
+        return <FaWater key={servicio} />;
+      case 'Aire acondicionado':
+        return <FaSnowflake key={servicio} />;
+      case 'Calefaccion':
+        return <FaFire key={servicio} />;
+      case 'Caja fuerte':
+        return <FaLock key={servicio} />;
+      case 'Estacionamiento':
+        return <FaParking key={servicio} />;
+      case 'Desayuno':
+        return <FaCoffee key={servicio} />;
+      case 'Nevera':
+        return <FaIceCream key={servicio} />;
+      case 'Jacuzzi':
+        return <FaHotTub key={servicio} />;
+      default:
+        return null;
+    }
+  };
+
   return (
     <div className="my-2">
       <div className="flex bg-red-300 rounded-sm gap-4">
@@ -45,8 +90,10 @@ const CardHabitacion: React.FC<CardHabitacionProps> = ({ habitacion }) => {
         </div>
         <div className="flex flex-col justify-between p-4">
           <p className="font-bold">{nameHabitacion(tipo_habitacion, servicios)}</p>
-          <p>2 adultos</p>
-          <p className="text-gray-700">{descripcion}</p>
+          <p>{capacidadHabitacion(tipo_habitacion)} adultos</p>
+          <div className="flex space-x-2">
+            {servicios.map(servicio => renderIcon(servicio))}
+          </div>
           <div>Información de la habitación</div>
         </div>
       </div>
