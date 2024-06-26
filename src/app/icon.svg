@@ -1,0 +1,6 @@
+<svg width="200" height="200" viewBox="40 40 120 120" xmlns="http://www.w3.org/2000/svg">
+  <!-- Letra A con bordes curvos -->
+  <path d="M 50 150 Q 75 100, 100 50 Q 125 100, 150 150" stroke="#5ed2c8" stroke-width="6" fill="none" stroke-linecap="round" />
+  <!-- Ola de mar con más forma de ola, sobresaliendo del lado derecho -->
+  <path d="M 75 120 C 90 100, 115 100, 135 120 Q 145 130, 155 120" stroke="#5ed2c8" stroke-width="6" fill="none" stroke-linecap="round" />
+</svg>

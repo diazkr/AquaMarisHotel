@@ -14,7 +14,7 @@ function ImageHero() {
           style={{ objectPosition: "center" }}
         />
         <div className="absolute inset-0 bg-black bg-opacity-30"></div>
-        <div className="absolute inset-0 flex flex-col items-center justify-center" style={{ top: '-25%' }}>
+        <div className="absolute inset-0 flex flex-col items-center justify-center gap-2" style={{ top: '-25%' }}>
           <Image
             src="/logos/iconoAblanco.svg"
             alt="Icono A"
