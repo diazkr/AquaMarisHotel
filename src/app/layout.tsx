@@ -6,6 +6,10 @@ import { CssBaseline } from "@mui/material";
 import theme from "@/theme";
 import NavBar from "@/componentes/navbar/Navbar";
 import Footer from "@/componentes/footer/Footer";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { RoomProvider } from "@/contextos/RoomContext";
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -22,10 +26,13 @@ export default function RootLayout({
     <html lang="en">
       <body className={`flex flex-col min-h-screen ${inter.className}`}>
         <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <NavBar />
-          <main className="flex-grow">{children}</main>
-          <Footer/>
+        <RoomProvider>
+
+            <CssBaseline />
+            <NavBar />
+            <main className="flex-grow">{children}</main>
+            <Footer />
+            </RoomProvider>
         </ThemeProvider>
       </body>
     </html>
