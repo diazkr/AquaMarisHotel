@@ -16,11 +16,11 @@ export default function PageLista() {
         </ImageForm>
       </LocalizationProvider>
 
-      <div className="flex my-4 justify-center">
-        <div className="w-1/6">
+      <div className="flex my-4 justify-center bg px-6">
+        <div className="w-1/4">
           <FilterSidebar />
         </div>
-        <div >
+        <div className="w-2/3">
           <ListaHabitaciones />
         </div>
       </div>
