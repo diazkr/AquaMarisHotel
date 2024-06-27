@@ -182,7 +182,7 @@ export const getMockRooms = (): Habitacion[] => {
     {
       id_habitacion: "e1f1f1f1-1f1f-4f1f-1f1f-1f1f1f1f1f1f",
       tipo_habitacion: "familiar",
-      precio: 300,
+      precio: 305,
       descripcion:
         "Habitacion familiar con area de juegos y cocina completa. Perfecta para familias que buscan comodidad y diversión, con todas las facilidades necesarias.",
       estado: "disponible",
