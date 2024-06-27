@@ -1,8 +1,15 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { Button, CssBaseline, ThemeProvider } from "@mui/material";
+import { ThemeProvider } from "@mui/material/styles";
+import { CssBaseline } from "@mui/material";
 import theme from "@/theme";
+import NavBar from "@/componentes/navbar/Navbar";
+import Footer from "@/componentes/footer/Footer";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { RoomProvider } from "@/contextos/RoomContext";
+import { FilterProvider } from "@/contextos/FilterContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,9 +27,14 @@ export default function RootLayout({
     <html lang="en">
       <body className={`flex flex-col min-h-screen ${inter.className}`}>
         <ThemeProvider theme={theme}>
-        <CssBaseline />
-          <main className="flex-grow">{children}
-          </main>
+          <FilterProvider>
+            <RoomProvider>
+              <CssBaseline />
+              <NavBar />
+              <main className="flex-grow">{children}</main>
+              <Footer />
+            </RoomProvider>
+          </FilterProvider>
         </ThemeProvider>
       </body>
     </html>
