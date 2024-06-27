@@ -1,5 +1,6 @@
 "use client";
 
+import FilterSidebar from "@/componentes/filtros/FilterSideBar";
 import ImageForm from "@/componentes/lista/ImageForm";
 import ListaHabitaciones from "@/componentes/lista/ListaHabitaciones";
 import FetchBookingForm from "@/componentes/reusables/forms/FetchFormReserva";
@@ -15,7 +16,14 @@ export default function PageLista() {
         </ImageForm>
       </LocalizationProvider>
 
-      <ListaHabitaciones></ListaHabitaciones>
+      <div className="flex my-4 justify-center">
+        <div className="w-1/6">
+          <FilterSidebar />
+        </div>
+        <div >
+          <ListaHabitaciones />
+        </div>
+      </div>
     </div>
   );
 }
