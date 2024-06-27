@@ -9,6 +9,7 @@ import Footer from "@/componentes/footer/Footer";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { RoomProvider } from "@/contextos/RoomContext";
+import { FilterProvider } from "@/contextos/FilterContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,13 +27,14 @@ export default function RootLayout({
     <html lang="en">
       <body className={`flex flex-col min-h-screen ${inter.className}`}>
         <ThemeProvider theme={theme}>
-        <RoomProvider>
-
-            <CssBaseline />
-            <NavBar />
-            <main className="flex-grow">{children}</main>
-            <Footer />
+          <FilterProvider>
+            <RoomProvider>
+              <CssBaseline />
+              <NavBar />
+              <main className="flex-grow">{children}</main>
+              <Footer />
             </RoomProvider>
+          </FilterProvider>
         </ThemeProvider>
       </body>
     </html>

@@ -23,14 +23,14 @@ interface CardHabitacionProps {
 
 const CardHabitacion: React.FC<CardHabitacionProps> = ({ habitacion }) => {
   const {
-    id_habitacion,
-    tipo_habitacion,
-    precio,
-    descripcion,
-    estado,
-    imagenes,
-    numero_habitacion,
-    servicios,
+    id,
+    type,
+    price,
+    description,
+    state,
+    images,
+    roomNumber,
+    services,
   } = habitacion;
 
   const nameHabitacion = (
@@ -75,25 +75,25 @@ const CardHabitacion: React.FC<CardHabitacionProps> = ({ habitacion }) => {
 
   const renderIcon = (servicio: string) => {
     switch (servicio) {
-      case "Wi-Fi":
+      case "wifi":
         return <FaWifi key={servicio} />;
-      case "Television":
+      case "television":
         return <FaTv key={servicio} />;
-      case "Vista al mar":
+      case "seaView":
         return <FaWater key={servicio} />;
-      case "Aire acondicionado":
+      case "airConditioning":
         return <FaSnowflake key={servicio} />;
-      case "Calefaccion":
+      case "heating":
         return <FaFire key={servicio} />;
-      case "Caja fuerte":
+      case "safeBox":
         return <FaLock key={servicio} />;
-      case "Estacionamiento":
+      case "parking":
         return <FaParking key={servicio} />;
-      case "Desayuno":
+      case "fridge":
         return <FaCoffee key={servicio} />;
-      case "Nevera":
+      case "breakfast":
         return <FaIceCream key={servicio} />;
-      case "Jacuzzi":
+      case "jacuzzi":
         return <FaHotTub key={servicio} />;
       default:
         return null;
@@ -103,19 +103,19 @@ const CardHabitacion: React.FC<CardHabitacionProps> = ({ habitacion }) => {
   return (
     <div className="my-2 border border-gray-300">
       <div className="flex rounded-sm gap-4">
-        <div className="w-[30%] bg-red-600">
-        <SimpleCarousel images={imagenes} /> 
+        <div className="w-[30%]">
+        <SimpleCarousel images={images} /> 
         </div>
         <div className="flex flex-col p-4 gap-1 text-[#07282C]">
           <p className=" text-lg font-medium">
-            {nameHabitacion(tipo_habitacion, servicios)}
+            {nameHabitacion(type, services)}
           </p>
-          <p>{capacidadHabitacion(tipo_habitacion)} adultos</p>
+          <p>{capacidadHabitacion(type)} adultos</p>
           <div className="flex space-x-2 text-2xl text-[#17858A] my-3">
-            {servicios.map((servicio) => (
+            {services.map((servicio) => (
               <div
                 key={servicio}
-                className="flex items-center justify-center w-12 h-12 rounded-full border border-gray-300"
+                className="flex items-center justify-center w-12 h-12 rounded-full border border-gray-300 hover:bg-[#d9eeec] hover:scale-95 transition-transform duration-200"
               >
                 {renderIcon(servicio)}
               </div>
@@ -141,7 +141,7 @@ const CardHabitacion: React.FC<CardHabitacionProps> = ({ habitacion }) => {
           </div>
         </div>
         <div className="flex items-center gap-4">
-          <p className="font-bold">USD ${precio}</p>
+          <p className="font-bold">USD ${price}</p>
           <Button
             variant="contained"
             color="primary"
