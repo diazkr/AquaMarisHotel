@@ -10,7 +10,7 @@ const ListaHabitaciones: React.FC = () => {
   const { rooms } = useRooms();
 
   return (
-    <Container className='flex justify-center items-center w-[90vw]'>
+    <Container className='flex justify-center items-center'>
       <List>
         {rooms.map((room, index) => (
           <ListItem key={index}>

@@ -2,6 +2,8 @@
 import { Habitacion } from '@/interfaces/HabitacionInterface';
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
+// soy un comentario
+
 interface RoomContextType {
   rooms: Habitacion[];
   setRooms: (rooms: Habitacion[]) => void;
