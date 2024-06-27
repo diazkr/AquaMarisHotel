@@ -1,5 +1,5 @@
 import React from 'react';
-import FilterSidebar from '../filtros/filtro';
+import FilterSidebar from '@/componentes/filtros/FilterSideBar';
 
 const Home = () => {
   return (
