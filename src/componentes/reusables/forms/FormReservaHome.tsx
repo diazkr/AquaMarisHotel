@@ -53,7 +53,7 @@ const FormReservaHotel: React.FC<FormReservaHotelProps> = ({ onBooking }) => {
             <FormControl variant="outlined" className="w-[100%] p-0 m-0" sx={{ backgroundColor: '#F5F5F5' }}>
               <InputLabel shrink>Llegada</InputLabel>
               <Box
-                className="date-picker-input border border-cyan-600 text-gray-700"
+                className="date-picker-input border border-slate-400 text-gray-700"
                 onClick={() => setPopoverOpened((o) => !o)}
               >
                 {arriveDate ? dayjs(arriveDate).format('MMM DD, YYYY') : 'Selecciona la fecha de llegada'}
@@ -62,7 +62,7 @@ const FormReservaHotel: React.FC<FormReservaHotelProps> = ({ onBooking }) => {
             <FormControl variant="outlined" className="w-[100%]" sx={{ backgroundColor: '#F5F5F5' }}>
               <InputLabel shrink>Salida</InputLabel>
               <Box
-                className="date-picker-input border border-cyan-600 text-gray-700"
+                className="date-picker-input border border-slate-400 text-gray-700"
                 onClick={() => setPopoverOpened((o) => !o)}
               >
                 {departureDate ? dayjs(departureDate).format('MMM DD, YYYY') : 'Selecciona la fecha de salida'}

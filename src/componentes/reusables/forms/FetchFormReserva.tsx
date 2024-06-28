@@ -7,6 +7,7 @@ import { useFilters } from '@/contextos/FilterContext';
 import dayjs from 'dayjs';
 import FormReservaHotel from './FormReservaHome';
 import { useRouter } from 'next/navigation';
+import { removeEmptyFields } from '@/helpers/removeEmptyFiles';
 
 const FetchBookingForm: React.FC = () => {
   const { hotel, arriveDate, departureDate, people, setFilters } = useFilters();
@@ -31,7 +32,9 @@ const FetchBookingForm: React.FC = () => {
     };
 
     try {
-      console.log(bookingData);
+      const bookingDataReady = removeEmptyFields(bookingData);
+
+      console.log(bookingDataReady);
       const rooms = getMockRooms();
       setRooms(rooms);
       router.push('/lista');

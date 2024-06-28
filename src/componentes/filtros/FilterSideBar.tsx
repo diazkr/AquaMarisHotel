@@ -17,6 +17,7 @@ import { useRooms } from "@/contextos/RoomContext";
 import { getMockRoomsFilter } from "@/DataBase/MockDataRoomsFilter";
 import dayjs from "dayjs";
 import { getMockRooms } from "@/DataBase/MockDataRooms";
+import { removeEmptyFields } from "@/helpers/removeEmptyFiles";
 
 const FilterSidebar = () => {
   const {
@@ -76,7 +77,9 @@ const FilterSidebar = () => {
         people: people,
       };
 
-      console.log(formattedFilters);
+      
+      const formattedFiltersReady = removeEmptyFields(formattedFilters);
+      console.log(formattedFiltersReady);
       const filteredRooms = getMockRoomsFilter(formattedFilters); // Reemplaza esta línea con tu llamada a la API
       setRooms(filteredRooms);
 

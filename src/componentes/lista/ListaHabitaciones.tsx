@@ -10,8 +10,8 @@ const ListaHabitaciones: React.FC = () => {
   const { rooms } = useRooms();
 
   return (
-    <Container className='flex justify-center items-center'>
-      <List>
+    <Container className='flex justify-center items-center relative'>
+      <List className=' w-[100%] flex flex-col justify-center items-center'>
         {rooms.map((room, index) => (
           <ListItem key={index}>
             <CardHabitacion habitacion={room}></CardHabitacion>
