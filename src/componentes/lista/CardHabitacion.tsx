@@ -135,13 +135,13 @@ const CardHabitacion: React.FC<CardHabitacionProps> = ({ habitacion }) => {
       </div>
       <div className="flex justify-between items-center bg-slate-200 p-4 gap-12 rounded-b-sm ">
         <div className="flex  gap-2 items-center">
-          <p className="text-gray-600">Tarifa Web - Mejor Precio Garantizado</p>
+          <p className="text-gray-600 w-[50%]">Tarifa Web - Mejor Precio Garantizado</p>
           <div className="text-sm bg-orange-100 p-1 px-2 border border-orange-200 text-amber-600">
             -5% de descuento para clientes premium
           </div>
         </div>
         <div className="flex items-center gap-4">
-          <p className="font-bold">USD ${price}</p>
+          <p className="font-bold text-[#72b17c]">USD ${price}</p>
           <Button
             variant="contained"
             color="primary"
