@@ -1,36 +1,33 @@
-import React, { useEffect, useState } from 'react';
+// src/components/FetchBookingForm.tsx
+import React, { useEffect } from 'react';
 import { Container } from '@mui/material';
-import FormReservaHotel from './FormReservaHome';
 import { getMockRooms } from '@/DataBase/MockDataRooms';
 import { useRooms } from '@/contextos/RoomContext';
-import { useRouter } from 'next/navigation';
 import { useFilters } from '@/contextos/FilterContext';
 import dayjs from 'dayjs';
+import FormReservaHotel from './FormReservaHome';
+import { useRouter } from 'next/navigation';
 
 const FetchBookingForm: React.FC = () => {
-  const [hotel, setHotel] = useState<string>('');
-  const [arrive_date, setArrive_date] = useState<Date | null>(new Date());
-  const [departure_date, setDeparture_date] = useState<Date | null>(new Date());
-  const [people, setPeople] = useState<number>(1);
+  const { hotel, arriveDate, departureDate, people, setFilters } = useFilters();
   const router = useRouter();
   const { setRooms } = useRooms();
-  const { filters, setFilters } = useFilters();
 
   useEffect(() => {
     setFilters((prevFilters: any) => ({
       ...prevFilters,
-      arrive_date,
-      departure_date,
-      people
+      arriveDate,
+      departureDate,
+      people,
     }));
-  }, [arrive_date, departure_date, people, setFilters]);
+  }, [arriveDate, departureDate, people, setFilters]);
 
   const handleBooking = async () => {
     const bookingData = {
       hotel,
-      arrive_date: dayjs(arrive_date).format('YYYY-MM-DD'),
-      departure_date: dayjs(departure_date).format('YYYY-MM-DD'),
-      people
+      arrive_date: dayjs(arriveDate).format('YYYY-MM-DD'),
+      departure_date: dayjs(departureDate).format('YYYY-MM-DD'),
+      people,
     };
 
     try {
@@ -60,17 +57,7 @@ const FetchBookingForm: React.FC = () => {
 
   return (
     <Container>
-      <FormReservaHotel
-        hotel={hotel}
-        setHotel={setHotel}
-        arrivalDate={arrive_date}
-        setArrivalDate={setArrive_date}
-        departureDate={departure_date}
-        setDepartureDate={setDeparture_date}
-        people={people}
-        setPeople={setPeople}
-        onBooking={handleBooking}
-      />
+      <FormReservaHotel onBooking={handleBooking} />
     </Container>
   );
 };

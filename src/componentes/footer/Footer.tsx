@@ -1,3 +1,4 @@
+import { Button } from '@mantine/core';
 import React from 'react';
 import { FaWhatsapp, FaFacebook, FaInstagram, FaTwitter, FaSpotify, FaTiktok } from 'react-icons/fa';
 
@@ -23,6 +24,7 @@ const Footer = () => {
             <p>Devoluciones y garantías</p>
             <p>Preguntas frecuentes</p>
           </div>
+
           <div className="flex flex-col items-center sm:items-start">
             <h3 className="font-bold mb-2">SÍGUENOS</h3>
             <div className="flex space-x-4 text-lg">
