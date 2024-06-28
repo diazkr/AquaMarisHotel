@@ -13,6 +13,9 @@ interface FilterContextType {
   people: number;
   setPeople: (people: number) => void;
   resetFilters: () => void;
+  sort:string;
+  setSort: (sort: string) => void;
+
 
 }
 
@@ -46,6 +49,7 @@ export const FilterProvider = ({ children }: { children: ReactNode }) => {
   const [arriveDate, setArriveDate] = useState<Date | null>(new Date());
   const [departureDate, setDepartureDate] = useState<Date | null>(new Date());
   const [people, setPeople] = useState<number>(1);
+  const [sort, setSort] = useState<string>('');
 
   const resetFilters = () => {
     setFilters(initialFilters);
@@ -64,7 +68,9 @@ export const FilterProvider = ({ children }: { children: ReactNode }) => {
         setDepartureDate,
         people,
         setPeople,
-        resetFilters
+        resetFilters,
+        sort,
+        setSort,
       }}
     >
       {children}

@@ -16,6 +16,7 @@ import { CiCircleMore } from "react-icons/ci";
 import { GiPalmTree } from "react-icons/gi";
 import { IoMdSend } from "react-icons/io";
 import SimpleCarousel from "./CarouselComponent";
+import { useRouter } from "next/navigation";
 
 interface CardHabitacionProps {
   habitacion: Habitacion;
@@ -33,17 +34,19 @@ const CardHabitacion: React.FC<CardHabitacionProps> = ({ habitacion }) => {
     services,
   } = habitacion;
 
+  const router = useRouter()
+
   const nameHabitacion = (
     tipo_habitacion: string,
     servicios: string[]
   ): string => {
     let name = `Habitación tipo ${tipo_habitacion}`;
 
-    if (servicios.includes("Vista al mar")) {
+    if (servicios.includes("seaView")) {
       name += " con vista al mar";
     }
 
-    if (tipo_habitacion === "suite" && servicios.includes("Jacuzzi")) {
+    if (tipo_habitacion === "suite" && servicios.includes("jacuzzi")) {
       name = "Suite de lujo con jacuzzi";
     } else if (tipo_habitacion === "deluxe") {
       name = "Habitación Deluxe con todas las comodidades";
@@ -100,8 +103,12 @@ const CardHabitacion: React.FC<CardHabitacionProps> = ({ habitacion }) => {
     }
   };
 
+  const handleNavigation=()=>{
+    router.push(`room/${id}`)
+  }
+
   return (
-    <div className="my-2 border border-gray-300">
+    <div className="my-2 border border-gray-300 w-[100%]">
       <div className="flex rounded-sm gap-4">
         <div className="w-[30%]">
         <SimpleCarousel images={images} /> 
@@ -127,25 +134,27 @@ const CardHabitacion: React.FC<CardHabitacionProps> = ({ habitacion }) => {
               size="small"
               startIcon={<CiCircleMore />}
               sx={{ width: "auto" }}
+              onClick={handleNavigation}
             >
               Información de la habitación
             </Button>
           </div>
         </div>
       </div>
-      <div className="flex justify-between items-center bg-slate-200 p-4 gap-12 rounded-b-sm ">
+      <div className="flex justify-between items-center bg-slate-200 p-4 gap-6 rounded-b-sm ">
         <div className="flex  gap-2 items-center">
           <p className="text-gray-600 w-[50%]">Tarifa Web - Mejor Precio Garantizado</p>
           <div className="text-sm bg-orange-100 p-1 px-2 border border-orange-200 text-amber-600">
             -5% de descuento para clientes premium
           </div>
         </div>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2">
           <p className="font-bold text-[#72b17c]">USD ${price}</p>
           <Button
             variant="contained"
             color="primary"
             endIcon={<IoMdSend style={{ marginLeft: "1em" }} />}
+            onClick={handleNavigation}
           >
             Elegir
           </Button>
