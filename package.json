@@ -9,16 +9,28 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@cloudinary/react": "^1.13.0",
+    "@cloudinary/url-gen": "^1.19.0",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@fontsource/poppins": "^5.0.14",
     "@mui/material": "^5.15.20",
     "@mui/x-date-pickers": "^7.7.1",
+    "axios": "^1.7.2",
+    "bootstrap": "^5.3.3",
+    "cloudinary": "^2.2.0",
+    "cloudinary-core": "^2.13.1",
+    "cloudinary-react": "^1.8.1",
     "dayjs": "^1.11.11",
     "next": "14.2.4",
-    "react": "^18",
-    "react-dom": "^18",
-    "react-icons": "^5.2.1"
+    "next-cloudinary": "^6.6.2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-dropzone": "^14.2.3",
+    "react-icons": "^5.2.1",
+    "react-router-dom": "^6.24.0",
+    "react-select": "^5.8.0",
+    "reactstrap": "^9.2.2"
   },
   "devDependencies": {
     "@types/node": "^20",
