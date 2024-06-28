@@ -104,7 +104,7 @@ const CardHabitacion: React.FC<CardHabitacionProps> = ({ habitacion }) => {
   };
 
   const handleNavigation=()=>{
-    router.push(`room/${id}`)
+    router.push(`rooms/${id}`)
   }
 
   return (
