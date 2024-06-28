@@ -45,12 +45,12 @@ const MenuGeneral = () => {
         </MenuItem>
         <MenuItem
           className="px-8 mx-4 my-2 "
-          onClick={() => handleMenuItemClick('/registro')}
+          onClick={() => handleMenuItemClick('/createrooms')}
           sx={{
             border: '1px solid #9ca3af',
           }}
         >
-          Registrarme
+          Registrar habitación
         </MenuItem>
       </Menu>
 

@@ -6,9 +6,14 @@ import { CssBaseline } from "@mui/material";
 import theme from "@/theme";
 import NavBar from "@/componentes/navbar/Navbar";
 import Footer from "@/componentes/footer/Footer";
-import { LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { RoomProvider } from "@/contextos/RoomContext";
+import { FilterProvider } from "@/contextos/FilterContext";
+import '@mantine/core/styles.css';
+import '@mantine/dates/styles.css';
+import { MantineProvider } from "@mantine/core";
+import { mantineTheme } from "@/mantineTheme";
+
+
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,14 +30,21 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`flex flex-col min-h-screen ${inter.className}`}>
-        <ThemeProvider theme={theme}>
-        <RoomProvider>
 
-            <CssBaseline />
-            <NavBar />
-            <main className="flex-grow">{children}</main>
-            <Footer />
+        <ThemeProvider theme={theme}>
+        <MantineProvider theme={mantineTheme}>
+
+          <FilterProvider>
+            <RoomProvider>
+              <CssBaseline />
+              <NavBar />
+              
+              <main className="flex-grow">{children}</main>
+              <Footer />
             </RoomProvider>
+          </FilterProvider>
+          </MantineProvider>
+
         </ThemeProvider>
       </body>
     </html>

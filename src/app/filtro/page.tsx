@@ -1,5 +1,5 @@
 import React from 'react';
-import FilterSidebar from '../filtros/filtro';
+import FilterSidebar from '@/componentes/filtros/FilterSideBar';
 
 const Home = () => {
   return (
@@ -7,7 +7,7 @@ const Home = () => {
       <FilterSidebar />
       <div className="flex-1 p-4">
         <h1 className="text-3xl font-bold mb-4">Resto de la pagina</h1>
-        {/* Add your main content here */}
+       {/* agregar aqui la lista de hoteles */}
       </div>
     </div>
   );
