@@ -16,9 +16,18 @@ import { useFilters } from "@/contextos/FilterContext";
 import { useRooms } from "@/contextos/RoomContext";
 import { getMockRoomsFilter } from "@/DataBase/MockDataRoomsFilter";
 import dayjs from "dayjs";
+import { getMockRooms } from "@/DataBase/MockDataRooms";
 
 const FilterSidebar = () => {
-  const { filters, setFilters } = useFilters();
+  const {
+    filters,
+    setFilters,
+    resetFilters,
+    hotel,
+    arriveDate,
+    departureDate,
+    people,
+  } = useFilters();
   const { setRooms } = useRooms();
   const [expanded, setExpanded] = useState<string | false>("panel1");
 
@@ -27,7 +36,7 @@ const FilterSidebar = () => {
       setExpanded(isExpanded ? panel : false);
     };
 
-  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleTypesChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, checked } = event.target;
     setFilters((prevFilters: any) => ({
       ...prevFilters,
@@ -52,20 +61,20 @@ const FilterSidebar = () => {
   const handleFilterButtonClick = async () => {
     try {
       const formattedServices = Object.keys(filters.services)
-        .filter(service => filters.services[service])
-        .join(',');
+        .filter((service) => filters.services[service])
+        .join(",");
 
-        const formattedTypes = Object.keys(filters.types)
-        .filter(type => filters.types[type])
-        .join(',');
+      const formattedTypes = Object.keys(filters.types)
+        .filter((type) => filters.types[type])
+        .join(",");
 
-        const formattedFilters = {
-          ...filters,
-          arrive_date: dayjs(filters.arrive_date).format('YYYY-MM-DD'),
-          departure_date: dayjs(filters.departure_date).format('YYYY-MM-DD'),
-          services: formattedServices,
-          types: formattedTypes
-        };
+      const formattedFilters = {
+        arrive_date: dayjs(arriveDate).format("YYYY-MM-DD"),
+        departure_date: dayjs(departureDate).format("YYYY-MM-DD"),
+        services: formattedServices,
+        types: formattedTypes,
+        people: people,
+      };
 
       console.log(formattedFilters);
       const filteredRooms = getMockRoomsFilter(formattedFilters); // Reemplaza esta línea con tu llamada a la API
@@ -89,6 +98,38 @@ const FilterSidebar = () => {
     }
   };
 
+  const handleResetFilter = async () => {
+    const bookingData = {
+      hotel,
+      arrive_date: dayjs(arriveDate).format("YYYY-MM-DD"),
+      departure_date: dayjs(departureDate).format("YYYY-MM-DD"),
+      people,
+    };
+
+    try {
+      resetFilters();
+      console.log(bookingData);
+      const rooms = getMockRooms();
+      setRooms(rooms);
+
+      // Descomenta esto para hacer la llamada al backend
+      // const response = await fetch('/api/booking', {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json'
+      //   },
+      //   body: JSON.stringify({ ...bookingData, filters })
+      // });
+      // if (!response.ok) {
+      //   throw new Error('Network response was not ok');
+      // }
+      // const result = await response.json();
+      // setRooms(result.rooms);
+
+    } catch (error) {
+      console.error("Booking failed:", error);
+    }
+  };
   return (
     <div className="p-4 bg-white rounded-lg shadow-md border text-gray-600">
       <div className="flex items-center gap-2">
@@ -117,13 +158,13 @@ const FilterSidebar = () => {
         >
           <Typography>Tipos de habitación</Typography>
         </AccordionSummary>
-        <AccordionDetails sx={{ padding: 0 }}>
+        <AccordionDetails sx={{ padding: 0 }} className="flex flex-col">
           <FormControlLabel
             control={
               <Checkbox
                 name="standard"
-                checked={filters.standard}
-                onChange={handleCheckboxChange}
+                checked={filters.types.standard}
+                onChange={handleTypesChange}
               />
             }
             label="Estándar - 2 personas"
@@ -132,8 +173,8 @@ const FilterSidebar = () => {
             control={
               <Checkbox
                 name="double"
-                checked={filters.double}
-                onChange={handleCheckboxChange}
+                checked={filters.types.double}
+                onChange={handleTypesChange}
               />
             }
             label="Doble - 2 personas"
@@ -142,8 +183,8 @@ const FilterSidebar = () => {
             control={
               <Checkbox
                 name="deluxe"
-                checked={filters.deluxe}
-                onChange={handleCheckboxChange}
+                checked={filters.types.deluxe}
+                onChange={handleTypesChange}
               />
             }
             label="Deluxe - 3 personas"
@@ -152,8 +193,8 @@ const FilterSidebar = () => {
             control={
               <Checkbox
                 name="suite"
-                checked={filters.suite}
-                onChange={handleCheckboxChange}
+                checked={filters.types.suite}
+                onChange={handleTypesChange}
               />
             }
             label="Suite - 4 personas"
@@ -162,8 +203,8 @@ const FilterSidebar = () => {
             control={
               <Checkbox
                 name="family"
-                checked={filters.family}
-                onChange={handleCheckboxChange}
+                checked={filters.types.family}
+                onChange={handleTypesChange}
               />
             }
             label="Familiar - 6 personas"
@@ -299,7 +340,11 @@ const FilterSidebar = () => {
         >
           Filtrar
         </Button>
-        <Button variant="outlined" color="secondary">
+        <Button
+          variant="outlined"
+          color="secondary"
+          onClick={handleResetFilter}
+        >
           Limpiar filtros
         </Button>
       </div>
