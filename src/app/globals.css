@@ -66,3 +66,44 @@ body {
   height: 100%;
   text-align: center;
 }
+
+
+html{
+  background-color: #F5F5F5;
+}
+.modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  right: auto;
+  bottom: auto;
+  margin-Right: '-50%';
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  max-width: 90%;
+  width: 600px;
+}
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-Color: 'rgba(0, 0, 0, 0.75)';
+}
+.text-primary {
+  color: #07282C;
+}
+
+body {
+  background-color: #F5F5F5;
+}
+.middle-screen {
+  height: 70vh !important;
+}
+.twenty-screen {
+  height: 40vh !important;
+}

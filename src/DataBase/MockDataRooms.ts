@@ -13,6 +13,8 @@ export const getMockRooms = (): Habitacion[] => {
         "https://i.pinimg.com/564x/14/40/87/144087b48437019a1330a5c919faf582.jpg",
         "https://i.pinimg.com/564x/c4/2c/1a/c42c1a943fbde7703cdac240b9b19681.jpg",
         "https://i.pinimg.com/564x/54/13/4b/54134b8ca1bf13cdb8eb35008621d250.jpg",
+        "https://i.pinimg.com/564x/c4/2c/1a/c42c1a943fbde7703cdac240b9b19681.jpg",
+        "https://i.pinimg.com/564x/54/13/4b/54134b8ca1bf13cdb8eb35008621d250.jpg",
       ],
       roomNumber: 101,
       services: ["wifi", "television", "seaView", "airConditioning"],
@@ -26,6 +28,9 @@ export const getMockRooms = (): Habitacion[] => {
       state: "available",
       images: [
         "https://i.pinimg.com/564x/14/40/87/144087b48437019a1330a5c919faf582.jpg",
+        "https://i.pinimg.com/564x/c4/2c/1a/c42c1a943fbde7703cdac240b9b19681.jpg",
+        "https://i.pinimg.com/564x/54/13/4b/54134b8ca1bf13cdb8eb35008621d250.jpg",
+
         "https://i.pinimg.com/564x/c4/2c/1a/c42c1a943fbde7703cdac240b9b19681.jpg",
         "https://i.pinimg.com/564x/54/13/4b/54134b8ca1bf13cdb8eb35008621d250.jpg",
       ],
@@ -43,6 +48,9 @@ export const getMockRooms = (): Habitacion[] => {
         "https://i.pinimg.com/564x/14/40/87/144087b48437019a1330a5c919faf582.jpg",
         "https://i.pinimg.com/564x/c4/2c/1a/c42c1a943fbde7703cdac240b9b19681.jpg",
         "https://i.pinimg.com/564x/54/13/4b/54134b8ca1bf13cdb8eb35008621d250.jpg",
+
+        "https://i.pinimg.com/564x/c4/2c/1a/c42c1a943fbde7703cdac240b9b19681.jpg",
+        "https://i.pinimg.com/564x/54/13/4b/54134b8ca1bf13cdb8eb35008621d250.jpg",
       ],
       roomNumber: 103,
       services: ["wifi", "television", "airConditioning", "heating"],
@@ -56,6 +64,9 @@ export const getMockRooms = (): Habitacion[] => {
       state: "available",
       images: [
         "https://i.pinimg.com/564x/14/40/87/144087b48437019a1330a5c919faf582.jpg",
+        "https://i.pinimg.com/564x/c4/2c/1a/c42c1a943fbde7703cdac240b9b19681.jpg",
+        "https://i.pinimg.com/564x/54/13/4b/54134b8ca1bf13cdb8eb35008621d250.jpg",
+
         "https://i.pinimg.com/564x/c4/2c/1a/c42c1a943fbde7703cdac240b9b19681.jpg",
         "https://i.pinimg.com/564x/54/13/4b/54134b8ca1bf13cdb8eb35008621d250.jpg",
       ],
@@ -73,6 +84,9 @@ export const getMockRooms = (): Habitacion[] => {
         "https://i.pinimg.com/564x/14/40/87/144087b48437019a1330a5c919faf582.jpg",
         "https://i.pinimg.com/564x/c4/2c/1a/c42c1a943fbde7703cdac240b9b19681.jpg",
         "https://i.pinimg.com/564x/54/13/4b/54134b8ca1bf13cdb8eb35008621d250.jpg",
+
+        "https://i.pinimg.com/564x/c4/2c/1a/c42c1a943fbde7703cdac240b9b19681.jpg",
+        "https://i.pinimg.com/564x/54/13/4b/54134b8ca1bf13cdb8eb35008621d250.jpg",
       ],
       roomNumber: 105,
       services: ["wifi", "television", "airConditioning", "heating", "breakfast", "fridge", "parking"],
@@ -86,6 +100,9 @@ export const getMockRooms = (): Habitacion[] => {
       state: "available",
       images: [
         "https://i.pinimg.com/564x/14/40/87/144087b48437019a1330a5c919faf582.jpg",
+        "https://i.pinimg.com/564x/c4/2c/1a/c42c1a943fbde7703cdac240b9b19681.jpg",
+        "https://i.pinimg.com/564x/54/13/4b/54134b8ca1bf13cdb8eb35008621d250.jpg",
+
         "https://i.pinimg.com/564x/c4/2c/1a/c42c1a943fbde7703cdac240b9b19681.jpg",
         "https://i.pinimg.com/564x/54/13/4b/54134b8ca1bf13cdb8eb35008621d250.jpg",
       ],
@@ -103,6 +120,9 @@ export const getMockRooms = (): Habitacion[] => {
         "https://i.pinimg.com/564x/14/40/87/144087b48437019a1330a5c919faf582.jpg",
         "https://i.pinimg.com/564x/c4/2c/1a/c42c1a943fbde7703cdac240b9b19681.jpg",
         "https://i.pinimg.com/564x/54/13/4b/54134b8ca1bf13cdb8eb35008621d250.jpg",
+
+        "https://i.pinimg.com/564x/c4/2c/1a/c42c1a943fbde7703cdac240b9b19681.jpg",
+        "https://i.pinimg.com/564x/54/13/4b/54134b8ca1bf13cdb8eb35008621d250.jpg",
       ],
       roomNumber: 107,
       services: ["wifi", "television", "airConditioning", "heating", "safeBox"],
@@ -117,6 +137,10 @@ export const getMockRooms = (): Habitacion[] => {
       images: [
         "https://i.pinimg.com/564x/14/40/87/144087b48437019a1330a5c919faf582.jpg",
         "https://i.pinimg.com/564x/c4/2c/1a/c42c1a943fbde7703cdac240b9b19681.jpg",
+        "https://i.pinimg.com/564x/54/13/4b/54134b8ca1bf13cdb8eb35008621d250.jpg",
+
+        "https://i.pinimg.com/564x/c4/2c/1a/c42c1a943fbde7703cdac240b9b19681.jpg",
+        "https://i.pinimg.com/564x/54/13/4b/54134b8ca1bf13cdb8eb35008621d250.jpg",
         "https://i.pinimg.com/564x/54/13/4b/54134b8ca1bf13cdb8eb35008621d250.jpg",
       ],
       roomNumber: 108,
@@ -133,6 +157,9 @@ export const getMockRooms = (): Habitacion[] => {
         "https://i.pinimg.com/564x/14/40/87/144087b48437019a1330a5c919faf582.jpg",
         "https://i.pinimg.com/564x/c4/2c/1a/c42c1a943fbde7703cdac240b9b19681.jpg",
         "https://i.pinimg.com/564x/54/13/4b/54134b8ca1bf13cdb8eb35008621d250.jpg",
+
+        "https://i.pinimg.com/564x/c4/2c/1a/c42c1a943fbde7703cdac240b9b19681.jpg",
+        "https://i.pinimg.com/564x/54/13/4b/54134b8ca1bf13cdb8eb35008621d250.jpg",
       ],
       roomNumber: 109,
       services: ["wifi", "television", "seaView", "airConditioning", "jacuzzi", "safeBox", "parking"],
@@ -146,6 +173,9 @@ export const getMockRooms = (): Habitacion[] => {
       state: "available",
       images: [
         "https://i.pinimg.com/564x/14/40/87/144087b48437019a1330a5c919faf582.jpg",
+        "https://i.pinimg.com/564x/c4/2c/1a/c42c1a943fbde7703cdac240b9b19681.jpg",
+        "https://i.pinimg.com/564x/54/13/4b/54134b8ca1bf13cdb8eb35008621d250.jpg",
+
         "https://i.pinimg.com/564x/c4/2c/1a/c42c1a943fbde7703cdac240b9b19681.jpg",
         "https://i.pinimg.com/564x/54/13/4b/54134b8ca1bf13cdb8eb35008621d250.jpg",
       ],

@@ -90,9 +90,11 @@ function NavBar() {
             }}
             className="items-center"
           >
+            <Link href="/">
             <Box sx={{ marginLeft: 2, marginRight: 2, marginTop: 1 }}>
               <Image src="/logos/logo.svg" alt="Logo" width={140} height={20} />
             </Box>
+            </Link>
             <div className="flex items-center gap-4">
               {navLinks.map((item) => (
                 <Link href={item.path} passHref key={item.title}>
