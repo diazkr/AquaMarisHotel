@@ -9,3 +9,14 @@ export interface Habitacion {
   services: string[];          // Array of services
   hotel?: string;
 }
+
+export interface HabitacionError {
+  id?: string;
+  type?: string;
+  price?: string;
+  description?: string;
+  state?: string;
+  images?: string,
+  roomNumber?: string;
+  services?: string,
+}
