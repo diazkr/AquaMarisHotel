@@ -1,9 +1,11 @@
 'use client';
 import { CldUploadWidget } from 'next-cloudinary';
-import { useState } from 'react';
+import { useState, useEffect} from 'react';
 import { useRouter } from 'next/navigation';
-import { Habitacion } from '@/interfaces/HabitacionInterface';
+import { Habitacion, HabitacionError } from '@/interfaces/HabitacionInterface';
 import Select, { MultiValue } from 'react-select';
+import { validateRegister } from '@/helpers/validate';
+import Link from "next/link";
 
 
 const CreateRoom = () => {
@@ -19,6 +21,17 @@ const CreateRoom = () => {
         roomNumber: 0,
         services: [],
     });
+
+    const [errorsForm, setErrorsForm] = useState<HabitacionError>({
+        id: '',
+        type: '',
+        price: '',
+        description: '',
+        state: '',
+        images: '',
+        roomNumber: '',
+        services: '',
+    })
      
 
     const [filters, setFilters] = useState({
@@ -58,7 +71,7 @@ const CreateRoom = () => {
         e.preventDefault();
         console.log(habitacion);
         try {
-            const response = await fetch('rooms', {
+            const response = await fetch('http://localhost/3001/rooms', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -66,7 +79,8 @@ const CreateRoom = () => {
                 body: JSON.stringify(habitacion),
             });
             if (response.ok) {
-                router.push('/success');
+                alert("Habitacion creada correctamente")
+                router.push('/rooms/id');
             } else {
                 console.error('Error al enviar la habitación al servidor');
             }
@@ -112,11 +126,16 @@ const CreateRoom = () => {
         //console.log(habitacion);
     //};
 
+    useEffect(() => {
+        const errors = validateRegister(habitacion)
+        setErrorsForm(errors)
+    }, [habitacion])
+
 
     return (
         <form onSubmit={handleSubmit} className="max-w-lg mx-auto mt-10 p-6 bg-[#d9eeec] rounded-lg shadow-lg">
             <div className="mb-4">
-                <label htmlFor="type" className="block text-gray-700 font-bold mb-2">Tipo de habitación:</label>
+                <label htmlFor="type" className="block text-gray-700 font-bold mb-2" style={{ color: 'rgb(81,161,168)', marginBottom: '1rem' }}>Tipo de habitación:</label>
                 <select name="type" value={habitacion.type} onChange={handleChange} className="p-2 border border-gray-300 rounded-md w-full">
                     <option value="standard">Estandar</option>
                     <option value="double">Doble</option>
@@ -124,41 +143,46 @@ const CreateRoom = () => {
                     <option value="suite">Suite</option>
                     <option value="family">Familiar</option>
                 </select>
+                {errorsForm.type && <p>{errorsForm.type}</p>}
             </div>
 
             <div className="mb-4">
-                <label htmlFor="price" className="block text-gray-700 font-bold mb-2">Precio:</label>
+                <label htmlFor="price" className="block text-gray-700 font-bold mb-2" style={{ color: 'rgb(81,161,168)', marginBottom: '1rem' }}>Precio:</label>
                 <input type="number" name="price" value={habitacion.price} onChange={handleChange} className="p-2 border border-gray-300 rounded-md w-full" />
+                {errorsForm.price && <p>{errorsForm.price}</p>}
             </div>
 
             <div className="mb-4">
-                <label htmlFor="description" className="block text-gray-700 font-bold mb-2">Descripción:</label>
+                <label htmlFor="description" className="block text-gray-700 font-bold mb-2" style={{ color: 'rgb(81,161,168)', marginBottom: '1rem' }}>Descripción:</label>
                 <textarea name="description" value={habitacion.description} onChange={handleChange} className="p-2 border border-gray-300 rounded-md w-full"/>
+                {errorsForm.description && <p>{errorsForm.description}</p>}
             </div>
 
 
             <div className="mb-4">
-                <label htmlFor="state" className="block text-gray-700 font-bold mb-2">Estado:</label>
+                <label htmlFor="state" className="block text-gray-700 font-bold mb-2" style={{ color: 'rgb(81,161,168)', marginBottom: '1rem' }}>Estado:</label>
                 <select id='state' name="state" onChange={handleChange} value={habitacion.state} className="p-2 border border-gray-300 rounded-md w-full" >
                     <option value=''>Selecciona</option>
                     <option value='Available'>Disponible</option>
                     <option value='InMaintenance'>No disponible</option>
                     <option value='Occupied'>Ocupado</option>
                 </select>
+                {errorsForm.state && <p>{errorsForm.state}</p>}
             </div>
 
             <div className="mb-4">
-                <label htmlFor="roomNumber" className="block text-gray-700 font-bold mb-2">Número de habitación:</label>
+                <label htmlFor="roomNumber" className="block text-gray-700 font-bold mb-2" style={{ color: 'rgb(81,161,168)', marginBottom: '1rem' }}>Número de habitación:</label>
                 <select id="roomNumber" name="roomNumber" onChange={handleChange} value={habitacion.roomNumber} className="p-2 border border-gray-300 rounded-md w-full">
                     <option value="">Selecciona un número</option>
                     <option value="101">101</option>
                     <option value="102">102</option>
                     <option value="103">103</option>
                 </select>
+                {errorsForm.roomNumber && <p>{errorsForm.roomNumber}</p>}
             </div>
 
             <div className="mb-4">
-            <label htmlFor="services" className="block text-gray-700 font-bold mb-2">Servicios:</label>
+            <label htmlFor="services" className="block text-gray-700 font-bold mb-2" style={{ color: 'rgb(81,161,168)', marginBottom: '1rem' }}>Servicios:</label>
                 <Select
                     isMulti
                     value={options.filter(option => habitacion.services.includes(option.value))}
@@ -168,10 +192,11 @@ const CreateRoom = () => {
                     classNamePrefix="select"
                     placeholder="Selecciona servicios..."
                 />
+                {errorsForm.services && <p>{errorsForm.services}</p>}
             </div>
 
             <main className="mb-4">
-                <h1>Subir imágenes</h1>
+                <h1 className="block text-gray-700 font-bold mb-2" style={{ color: 'rgb(81,161,168)', marginBottom: '1rem' }}>Subir imágenes</h1>
                 <section>
                     <CldUploadWidget 
                         uploadPreset="upload_default" 
@@ -181,7 +206,7 @@ const CreateRoom = () => {
                                 ...prevState,
                                 images: [...prevState.images, cldResponse.info?.secure_url],
                             }));
-                            setUrls([...urls, cldResponse.info?.secure_url]);
+                            setUrls(prevUrls => [...prevUrls, cldResponse.info?.secure_url]);
                         }}>
                         {({ open }) => { 
                             return (
@@ -195,6 +220,7 @@ const CreateRoom = () => {
                                     <p className="text-lg font-bold mb-2">Subir una imagen</p>
                                     <p className="text-sm mb-1">Upload a File</p>
                                     <p className="text-xs text-gray-600">Drag and drop files here</p>
+                                {errorsForm.images && <p>{errorsForm.images}</p>}
                                 </div>
                             );
                         }}
@@ -215,8 +241,14 @@ const CreateRoom = () => {
                     </div>
                 </section>
             </main>
+            <Link href='/rooms/id'>
+                <button type="submit" 
+                className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded transition duration-300" style={{ color: 'rgb(81,161,168)', marginBottom: '1rem' }}>
+                    
 
-                <button type="submit">Crear Habitación</button>
+                    Crear Habitación
+                    </button>
+            </Link>
         </form>
         
     )
