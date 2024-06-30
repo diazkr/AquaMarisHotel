@@ -50,10 +50,10 @@ const CardHabitacion: React.FC<CardHabitacionProps> = ({ habitacion }) => {
       name = "Suite de lujo con jacuzzi";
     } else if (tipo_habitacion === "deluxe") {
       name = "Habitación Deluxe con todas las comodidades";
-    } else if (tipo_habitacion === "doble") {
+    } else if (tipo_habitacion === "double") {
       name = "Habitación Doble perfecta para parejas";
-    } else if (tipo_habitacion === "familiar") {
-      name = "Habitación Familiar ideal para familias grandes";
+    } else if (tipo_habitacion === "family") {
+      name = "Habitación Familiar ideal para grupos grandes";
     }
 
     return name;
@@ -61,15 +61,15 @@ const CardHabitacion: React.FC<CardHabitacionProps> = ({ habitacion }) => {
 
   const capacidadHabitacion = (tipo_habitacion: string): number => {
     switch (tipo_habitacion) {
-      case "estandar":
+      case "standar":
         return 2;
-      case "doble":
+      case "double":
         return 2;
       case "deluxe":
         return 3;
       case "suite":
         return 4;
-      case "familiar":
+      case "family":
         return 6;
       default:
         return 1; // Valor predeterminado en caso de que el tipo de habitación no coincida
@@ -86,7 +86,7 @@ const CardHabitacion: React.FC<CardHabitacionProps> = ({ habitacion }) => {
         return <FaWater key={servicio} />;
       case "airConditioning":
         return <FaSnowflake key={servicio} />;
-      case "heating":
+      case "heater":
         return <FaFire key={servicio} />;
       case "safeBox":
         return <FaLock key={servicio} />;
@@ -141,9 +141,9 @@ const CardHabitacion: React.FC<CardHabitacionProps> = ({ habitacion }) => {
           </div>
         </div>
       </div>
-      <div className="flex justify-between items-center bg-slate-200 p-4 gap-6 rounded-b-sm ">
+      <div className="flex justify-between items-center bg-slate-200 p-4 gap-2 rounded-b-sm ">
         <div className="flex  gap-2 items-center">
-          <p className="text-gray-600 w-[50%]">Tarifa Web - Mejor Precio Garantizado</p>
+          <p className="text-gray-600">Tarifa Web - Mejor Precio Garantizado</p>
           <div className="text-sm bg-orange-100 p-1 px-2 border border-orange-200 text-amber-600">
             -5% de descuento para clientes premium
           </div>

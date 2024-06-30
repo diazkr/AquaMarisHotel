@@ -20,8 +20,7 @@ const Footer = () => {
           </div>
           <div className="flex flex-col items-center sm:items-start">
             <h3 className="font-bold mb-2">AYUDA</h3>
-            <p>Envíos</p>
-            <p>Devoluciones y garantías</p>
+            <p>Reservaciones</p>
             <p>Preguntas frecuentes</p>
           </div>
 

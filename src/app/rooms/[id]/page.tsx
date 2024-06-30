@@ -1,15 +1,14 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
-import { getMockRooms } from '@/DataBase/MockDataRooms';
-import { Habitacion } from '@/interfaces/HabitacionInterface';
 import Modal from 'react-modal';
+import { Habitacion } from '@/interfaces/HabitacionInterface';
 
 const Page = ({ params }: { params: { id: string } }) => {
   const { id } = params;
-
+  const [room, setRoom] = useState<Habitacion | null>(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
   const openModal = () => {
@@ -20,25 +19,36 @@ const Page = ({ params }: { params: { id: string } }) => {
     setModalIsOpen(false);
   };
 
-  // habitación respecto a su id
-  const room = getMockRooms().find((room) => room.id === id) as Habitacion;
+  useEffect(() => {
+    const fetchRoom = async () => {
+      try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/rooms/${id}`);
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        setRoom(data);
+      } catch (error) {
+        console.error('Fetching room failed:', error);
+      }
+    };
+
+    fetchRoom();
+  }, [id]);
 
   if (!room) {
     return <div>Habitación no encontrada</div>;
   }
 
-  
-
   return (
     <div className="container mx-auto p-4 bg-neutral-100 mt-14">
-      {/* <h1 className="text-3xl font-bold mb-4 text-primary text-center">{room.type} Room</h1> */}
       <div className="space-y-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <Image src={room.images[0]} alt="Main view" width={800} height={600} className="rounded-lg w-full h-full" />
           </div>
           <div className="grid grid-cols-2 gap-2">
-            {room.images.slice(1,4).map((image, index) => (
+            {room.images.slice(1, 4).map((image, index) => (
               <Image key={index} src={image} alt={"view"} width={400} height={300} className="rounded-lg w-full h-full" />
             ))}
             <div className="relative">
@@ -82,35 +92,23 @@ const Page = ({ params }: { params: { id: string } }) => {
         </div>
       </div>
       <Modal
-                isOpen={modalIsOpen}
-                onRequestClose={closeModal}
-                contentLabel="Ver más fotos"
-                className="modal"
-                overlayClassName="overlay"
-            >
-                {room.images.length >= 6 ? (
-                    <Image src={room.images[5]} alt="View 6" width={400} height={300} className="rounded-lg w-full h-auto" />
-                ) : (
-                    <div className="flex justify-center items-center h-full">
-                        <p className="text-gray-600 text-xl">No hay más fotos</p>
-                    </div>
-                )}
-                <button onClick={closeModal} className="mt-4 bg-teal-600 text-white py-2 px-4 rounded-lg hover:bg-teal-500">
-                    Cerrar
-                </button>
-            </Modal>
-      {/* <Modal
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
         contentLabel="Ver más fotos"
         className="modal"
         overlayClassName="overlay"
       >
-        <Image src={room.images[2]} alt="View 6" width={400} height={300} className="rounded-lg w-full h-auto" />
+        {room.images.length >= 6 ? (
+          <Image src={room.images[5]} alt="View 6" width={400} height={300} className="rounded-lg w-full h-auto" />
+        ) : (
+          <div className="flex justify-center items-center h-full">
+            <p className="text-gray-600 text-xl">No hay más fotos</p>
+          </div>
+        )}
         <button onClick={closeModal} className="mt-4 bg-teal-600 text-white py-2 px-4 rounded-lg hover:bg-teal-500">
           Cerrar
         </button>
-      </Modal> */}
+      </Modal>
     </div>
   );
 };

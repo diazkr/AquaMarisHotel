@@ -9,7 +9,6 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import MenuGeneral from "./MenuGeneral";
-import { HiOutlinePhoneIncoming } from "react-icons/hi";
 
 function NavBar() {
   const [scrolled, setScrolled] = useState<boolean>(false);
@@ -50,8 +49,8 @@ function NavBar() {
         sx={{
           height: "auto",
           backgroundColor: scrolled
-            ? "rgba(245, 245, 245, 0.9)"
-            : "rgba(245, 245, 245, 0.7)",
+            ? "rgba(245, 245, 245,1)"
+            : "rgba(245, 245, 245, 0.9)",
           boxShadow: "none",
           transition: "background-color 0.3s ease-in-out",
           paddingX: 2,
@@ -101,6 +100,7 @@ function NavBar() {
                   <Button
                     color="primary"
                     className="text-md hover:bg-transparent hover:text-[#184549]"
+                    disabled={true}
                   >
                     {item.title}
                   </Button>
@@ -110,21 +110,6 @@ function NavBar() {
 
             <div className="flex items-center">
               <MenuGeneral />
-              <IconButton color="primary" size="large">
-                <IoSearch />
-              </IconButton>
-              <Button
-                variant="outlined"
-                onClick={() => router.push("/carrito")}
-                endIcon={<HiOutlinePhoneIncoming />}
-                className="px-3"
-                sx={{
-                  height: '3em',     
-                  minWidth: 'auto',  
-                }}
-              >
-                Contacto
-              </Button>
             </div>
           </Box>
 

@@ -1,6 +1,6 @@
 // src/components/FormReservaHotel.tsx
 import React, { useState } from 'react';
-import { MenuItem, FormControl, InputLabel, Select, Box, Button } from '@mui/material';
+import { MenuItem, FormControl, InputLabel, Select, Box, Button, TextField } from '@mui/material';
 import { DatePicker } from '@mantine/dates';
 import { Popover } from '@mantine/core';
 import dayjs from 'dayjs';
@@ -35,17 +35,16 @@ const FormReservaHotel: React.FC<FormReservaHotelProps> = ({ onBooking }) => {
       className="bg-white bg-opacity-80 backdrop-blur-lg hover:bg-opacity-90 transition duration-300 ease-in-out p-4 rounded-lg shadow-xl"
       sx={{ display: "flex", flexDirection: "row", gap: 2, padding: 2, borderRadius: 2 }}
     >
-      <FormControl variant="outlined" className="w-[20%]" sx={{ backgroundColor: '#F5F5F5' }}>
-        <InputLabel id="hotel-label">Hotel</InputLabel>
-        <Select
-          labelId="hotel-label"
-          value={hotel}
-          onChange={(e) => setHotel(e.target.value as string)}
-          label="Hotel"
-        >
-          <MenuItem value="hotel1">Aqua Maris - Cartagena</MenuItem>
-        </Select>
-      </FormControl>
+      <FormControl variant="outlined" className="w-[30%]" sx={{ backgroundColor: '#F5F5F5' }}>
+      <TextField
+        label="Hotel"
+        variant="outlined"
+        value="San Andrés"
+        InputProps={{
+          readOnly: true,
+        }}
+      />
+    </FormControl>
 
       <Popover opened={popoverOpened} onChange={setPopoverOpened} position="bottom" withArrow>
         <Popover.Target>

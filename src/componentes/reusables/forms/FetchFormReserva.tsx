@@ -23,35 +23,38 @@ const FetchBookingForm: React.FC = () => {
     }));
   }, [arriveDate, departureDate, people, setFilters]);
 
-  const handleBooking = async () => {
-    const bookingData = {
-      hotel,
-      arrive_date: dayjs(arriveDate).format('YYYY-MM-DD'),
-      departure_date: dayjs(departureDate).format('YYYY-MM-DD'),
-      people,
-    };
+  
 
+  const handleBooking = async () => {
     try {
+      const bookingData = {
+        hotel,
+        arrive_date: dayjs(arriveDate).format('YYYY-MM-DD'),
+        departure_date: dayjs(departureDate).format('YYYY-MM-DD'),
+        people,
+      };
+
       const bookingDataReady = removeEmptyFields(bookingData);
 
-      console.log(bookingDataReady);
-      const rooms = getMockRooms();
-      setRooms(rooms);
-      router.push('/lista');
+      const params = new URLSearchParams(bookingDataReady).toString();
+      console.log(params)
+      const url = `${process.env.NEXT_PUBLIC_API_URL}/rooms/filter?${params}`;
 
-      // Descomenta esto para hacer la llamada al backend
-      // const response = await fetch('/api/booking', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json'
-      //   },
-      //   body: JSON.stringify({ ...bookingData, filters })
-      // });
-      // if (!response.ok) {
-      //   throw new Error('Network response was not ok');
-      // }
-      // const result = await response.json();
-      // setRooms(result.rooms);
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const result = await response.json();
+      console.log(result)
+      setRooms(result);
+      router.push('/lista');
 
     } catch (error) {
       console.error('Booking failed:', error);
