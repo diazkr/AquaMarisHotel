@@ -59,7 +59,7 @@ const CreateRoom = () => {
         { value: 'television', label: 'Televisión' },
         { value: 'seaView', label: 'Vista al Mar' },
         { value: 'airConditioning', label: 'Aire Acondicionado' },
-        { value: 'heating', label: 'Calefacción' },
+        { value: 'heater', label: 'Calefacción' },
         { value: 'safeBox', label: 'Caja Fuerte' },
         { value: 'parking', label: 'Estacionamiento' },
         { value: 'fridge', label: 'Refrigerador' },
@@ -69,16 +69,20 @@ const CreateRoom = () => {
       
       const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log(habitacion);
+        //console.log(habitacion);
+
+        const { id, ...roomDataWithoutId } = habitacion;
+        console.log(JSON.stringify(roomDataWithoutId))
         try {
-            const response = await fetch('http://localhost/3001/rooms', {
+            const response = await fetch('http://localhost:3001/rooms', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(habitacion),
+                body: JSON.stringify(roomDataWithoutId),
             });
             if (response.ok) {
+                console.log(response)
                 alert("Habitacion creada correctamente")
                 router.push('/rooms/id');
             } else {
@@ -163,9 +167,9 @@ const CreateRoom = () => {
                 <label htmlFor="state" className="block text-gray-700 font-bold mb-2" style={{ color: 'rgb(81,161,168)', marginBottom: '1rem' }}>Estado:</label>
                 <select id='state' name="state" onChange={handleChange} value={habitacion.state} className="p-2 border border-gray-300 rounded-md w-full" >
                     <option value=''>Selecciona</option>
-                    <option value='Available'>Disponible</option>
-                    <option value='InMaintenance'>No disponible</option>
-                    <option value='Occupied'>Ocupado</option>
+                    <option value='available'>Disponible</option>
+                    <option value='inmaintenance'>No disponible</option>
+                    <option value='occupied'>Ocupado</option>
                 </select>
                 {errorsForm.state && <p>{errorsForm.state}</p>}
             </div>
@@ -241,14 +245,13 @@ const CreateRoom = () => {
                     </div>
                 </section>
             </main>
-            <Link href='/rooms/id'>
+            
                 <button type="submit" 
                 className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded transition duration-300" style={{ color: 'rgb(81,161,168)', marginBottom: '1rem' }}>
                     
 
                     Crear Habitación
                     </button>
-            </Link>
         </form>
         
     )
