@@ -25,7 +25,9 @@ const Page = ({ params }: { params: { id: string } }) => {
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
+        console.log('Respuesta de la petición', `${process.env.NEXT_PUBLIC_API_URL}/rooms/${id}`);
         const data = await response.json();
+        console.log(data);
         setRoom(data);
       } catch (error) {
         console.error('Fetching room failed:', error);
@@ -70,10 +72,11 @@ const Page = ({ params }: { params: { id: string } }) => {
                   <span className="text-lg font-semibold text-gray-600">Precio</span>
                   <span className="ml-2 text-gray-500">${room.price}</span>
                 </div>
-                <div className="flex items-center">
+                {/* El estado no es necesario que lo vea el usuario
+                 <div className="flex items-center">
                   <span className="text-lg font-semibold text-gray-600">Estado</span>
                   <span className="ml-2 text-gray-500">{room.state}</span>
-                </div>
+                </div> */}
                 <div className="flex items-center">
                   <span className="text-lg font-semibold text-gray-600">Número de habitación</span>
                   <span className="ml-2 text-gray-500">{room.roomNumber}</span>
@@ -84,6 +87,9 @@ const Page = ({ params }: { params: { id: string } }) => {
                 </div>
               </div>
             </div>
+            <button className="w-full bg-teal-600 text-white py-2 px-4 rounded-lg hover:bg-teal-500" disabled>
+              Calendario
+            </button>
             <button className="w-full bg-teal-600 text-white py-2 px-4 rounded-lg hover:bg-teal-500">
               Reservar
             </button>
@@ -96,14 +102,25 @@ const Page = ({ params }: { params: { id: string } }) => {
         contentLabel="Ver más fotos"
         className="modal"
         overlayClassName="overlay"
-      >
-        {room.images.length >= 6 ? (
-          <Image src={room.images[5]} alt="View 6" width={400} height={300} className="rounded-lg w-full h-auto" />
-        ) : (
-          <div className="flex justify-center items-center h-full">
-            <p className="text-gray-600 text-xl">No hay más fotos</p>
-          </div>
-        )}
+        >
+        <div className="image-scroll-container">
+          {room.images.length >= 6 ? (
+            room.images.slice(5).map((image) => (
+              <Image
+                key={image}
+                src={image}
+                alt="View 6"
+                width={400}
+                height={300}
+                className="rounded-lg w-full h-auto"
+              />
+            ))
+          ) : (
+            <div className="flex justify-center items-center h-full">
+              <p className="text-gray-600 text-xl">No hay más fotos</p>
+            </div>
+          )}
+        </div>
         <button onClick={closeModal} className="mt-4 bg-teal-600 text-white py-2 px-4 rounded-lg hover:bg-teal-500">
           Cerrar
         </button>
