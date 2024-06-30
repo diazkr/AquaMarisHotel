@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
 import Image from 'next/image';
 import Modal from 'react-modal';
 import { Habitacion } from '@/interfaces/HabitacionInterface';
