@@ -1,5 +1,5 @@
-"use client"
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+"use client";
+import React, { createContext, useContext, useState, ReactNode } from "react";
 
 interface FilterContextType {
   filters: any;
@@ -13,12 +13,10 @@ interface FilterContextType {
   people: number;
   setPeople: (people: number) => void;
   resetFilters: () => void;
-  sort:string;
+  sort: string;
   setSort: (sort: string) => void;
-  page:number;
+  page: number;
   setPage: (page: number) => void;
-
-
 }
 
 const FilterContext = createContext<FilterContextType | undefined>(undefined);
@@ -45,15 +43,22 @@ const initialFilters = {
   },
 };
 
+const getDefaultDepartureDate = (arriveDate: Date) => {
+  const departureDate = new Date(arriveDate);
+  departureDate.setDate(departureDate.getDate() + 2);
+  return departureDate;
+};
+
 export const FilterProvider = ({ children }: { children: ReactNode }) => {
   const [filters, setFilters] = useState<any>(initialFilters);
-  const [hotel, setHotel] = useState<string>('');
+  const [hotel, setHotel] = useState<string>("");
   const [arriveDate, setArriveDate] = useState<Date | null>(new Date());
-  const [departureDate, setDepartureDate] = useState<Date | null>(new Date());
+  const [departureDate, setDepartureDate] = useState<Date | null>(
+    getDefaultDepartureDate(new Date())
+  );
   const [people, setPeople] = useState<number>(1);
-  const [sort, setSort] = useState<string>('');
+  const [sort, setSort] = useState<string>("");
   const [page, setPage] = useState<number>(1);
-
 
   const resetFilters = () => {
     setFilters(initialFilters);
@@ -76,7 +81,7 @@ export const FilterProvider = ({ children }: { children: ReactNode }) => {
         sort,
         setSort,
         page,
-        setPage
+        setPage,
       }}
     >
       {children}
@@ -87,7 +92,7 @@ export const FilterProvider = ({ children }: { children: ReactNode }) => {
 export const useFilters = () => {
   const context = useContext(FilterContext);
   if (context === undefined) {
-    throw new Error('useFilters must be used within a FilterProvider');
+    throw new Error("useFilters must be used within a FilterProvider");
   }
   return context;
 };

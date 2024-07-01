@@ -71,7 +71,7 @@ export default function PaginationControlled() {
 
   return (
     <Stack spacing={2} className='mt-24'>
-      <Pagination color='primary' count={10} page={page} onChange={handleChange} />
+      <Pagination color='primary' count={5} page={page} onChange={handleChange} />
     </Stack>
   );
 }
