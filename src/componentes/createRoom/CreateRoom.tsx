@@ -83,8 +83,9 @@ const CreateRoom = () => {
         body: JSON.stringify(roomDataWithoutId),
       });
       if (response.ok) {
-        console.log(response);
+        const responseData = await response.json();
         setOpenSnackbar(true);
+        router.push(`/rooms/${responseData.id}`)
       } else {
         console.error("Error al enviar la habitación al servidor");
       }
