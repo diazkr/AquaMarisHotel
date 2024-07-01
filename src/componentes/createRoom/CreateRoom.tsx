@@ -11,7 +11,7 @@ import { Alert, Button, Snackbar } from "@mui/material";
 const CreateRoom = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [openSnackbar, setOpenSnackbar] = useState(true);
+  const [openSnackbar, setOpenSnackbar] = useState(false);
 
   const [habitacion, setHabitacion] = useState<Habitacion>({
     id: "",
