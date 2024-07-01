@@ -53,7 +53,7 @@ export const getMockRooms = (): Habitacion[] => {
         "https://i.pinimg.com/564x/54/13/4b/54134b8ca1bf13cdb8eb35008621d250.jpg",
       ],
       roomNumber: 103,
-      services: ["wifi", "television", "airConditioning", "heating"],
+      services: ["wifi", "television", "airConditioning", "heater"],
     },
     {
       id: "9c63b5c9-4a58-4e8b-8d1e-73f8b6b5c1c8",
@@ -89,7 +89,7 @@ export const getMockRooms = (): Habitacion[] => {
         "https://i.pinimg.com/564x/54/13/4b/54134b8ca1bf13cdb8eb35008621d250.jpg",
       ],
       roomNumber: 105,
-      services: ["wifi", "television", "airConditioning", "heating", "breakfast", "fridge", "parking"],
+      services: ["wifi", "television", "airConditioning", "heater", "breakfast", "fridge", "parking"],
     },
     {
       id: "af2f0cba-2f9b-4d0c-8a8e-6e8a8f8f8c8b",
@@ -125,7 +125,7 @@ export const getMockRooms = (): Habitacion[] => {
         "https://i.pinimg.com/564x/54/13/4b/54134b8ca1bf13cdb8eb35008621d250.jpg",
       ],
       roomNumber: 107,
-      services: ["wifi", "television", "airConditioning", "heating", "safeBox"],
+      services: ["wifi", "television", "airConditioning", "heater", "safeBox"],
     },
     {
       id: "c9f9f9f9-9f9f-4f9f-9f9f-9f9f9f9f9f9f",
@@ -180,7 +180,7 @@ export const getMockRooms = (): Habitacion[] => {
         "https://i.pinimg.com/564x/54/13/4b/54134b8ca1bf13cdb8eb35008621d250.jpg",
       ],
       roomNumber: 110,
-      services: ["wifi", "television", "airConditioning", "heating", "breakfast", "fridge", "parking", "safeBox"],
+      services: ["wifi", "television", "airConditioning", "heater", "breakfast", "fridge", "parking", "safeBox"],
     },
   ];
 };

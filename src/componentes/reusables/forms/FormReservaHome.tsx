@@ -166,7 +166,7 @@ const FormReservaHotel: React.FC<FormReservaHotelProps> = ({ onBooking }) => {
           size="large"
           onClick={onBooking}
         >
-          RESERVAR
+          BUSCAR
         </Button>
       </Box>
     </Box>

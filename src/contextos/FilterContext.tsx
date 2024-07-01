@@ -34,7 +34,7 @@ const initialFilters = {
     television: false,
     seaView: false,
     airConditioning: false,
-    heating: false,
+    heater: false,
     safeBox: false,
     parking: false,
     fridge: false,

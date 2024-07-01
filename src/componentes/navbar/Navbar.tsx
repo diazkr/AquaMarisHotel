@@ -41,6 +41,9 @@ function NavBar() {
     { title: "home", path: "/" },
     { title: "ingresar", path: "/login" },
   ];
+  const handleNavigation = (path: string) => {
+    router.push(path);
+  };
 
   return (
     <div>
@@ -90,21 +93,36 @@ function NavBar() {
             className="items-center"
           >
             <Link href="/">
-            <Box sx={{ marginLeft: 2, marginRight: 2, marginTop: 1 }}>
-              <Image src="/logos/logo.svg" alt="Logo" width={140} height={20} />
-            </Box>
+              <Box sx={{ marginLeft: 2, marginRight: 2, marginTop: 1 }}>
+                <Image
+                  src="/logos/logo.svg"
+                  alt="Logo"
+                  width={140}
+                  height={20}
+                />
+              </Box>
             </Link>
             <div className="flex items-center gap-4">
               {navLinks.map((item) => (
-                <Link href={item.path} passHref key={item.title}>
-                  <Button
-                    color="primary"
-                    className="text-md hover:bg-transparent hover:text-[#184549]"
-                    disabled={true}
-                  >
-                    {item.title}
-                  </Button>
-                </Link>
+                <Button
+                  key={item.title}
+                  color="primary"
+                  className="text-md bg-transparent hover:bg-transparent text-gray-500 hover:text-gray-700"
+                  variant="text"
+                  disabled={true} // Pon esto en true o false según necesites
+                  style={{
+                    backgroundColor: "transparent",
+                    cursor: "not-allowed",
+                  }}
+                  onClick={() => {
+                    if (!true) {
+                      // Cambia true a la condición que necesites para habilitar o deshabilitar
+                      handleNavigation(item.path);
+                    }
+                  }}
+                >
+                  {item.title}
+                </Button>
               ))}
             </div>
 

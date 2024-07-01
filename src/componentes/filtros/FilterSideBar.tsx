@@ -295,8 +295,8 @@ const FilterSidebar = () => {
           <FormControlLabel
             control={
               <Checkbox
-                name="heating"
-                checked={filters.services.heating}
+                name="heater"
+                checked={filters.services.heater}
                 onChange={handleServiceChange}
               />
             }

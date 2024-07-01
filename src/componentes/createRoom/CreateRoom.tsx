@@ -7,11 +7,15 @@ import Select, { MultiValue } from "react-select";
 import { validateRegister } from "@/helpers/validate";
 import Link from "next/link";
 import { Alert, Button, Snackbar } from "@mui/material";
+import Swal from 'sweetalert2';
+import ConfirmationDialog from "../reusables/texts/ConfirmationDialog";
+
 
 const CreateRoom = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
+  const [newRoomId, setNewRoomId] = useState('');
 
   const [habitacion, setHabitacion] = useState<Habitacion>({
     id: "",
@@ -46,7 +50,7 @@ const CreateRoom = () => {
       television: false,
       seaView: false,
       airConditioning: false,
-      heating: false,
+      heater: false,
       safeBox: false,
       parking: false,
       fridge: false,
@@ -84,9 +88,10 @@ const CreateRoom = () => {
       });
       if (response.ok) {
         const responseData = await response.json();
-        setOpenSnackbar(true);
-        //funcionamiento de id
-        router.push(`/rooms/${responseData.id}`)
+        setNewRoomId(responseData.id);
+        setOpenDialog(true);
+        
+        
       } else {
         console.error("Error al enviar la habitación al servidor");
       }
@@ -138,6 +143,15 @@ const CreateRoom = () => {
     const errors = validateRegister(habitacion);
     setErrorsForm(errors);
   }, [habitacion]);
+
+  const handleDialogClose = () => {
+    setOpenDialog(false);
+  };
+
+  const handleConfirm = () => {
+    setOpenDialog(false);
+    router.push(`/rooms/${newRoomId}`);
+  };
 
   return (
     <>
@@ -355,22 +369,9 @@ const CreateRoom = () => {
           </Button>
         </div>
       </form>
-      <Snackbar
-        open={openSnackbar}
-        autoHideDuration={10000}
-        onClose={() => setOpenSnackbar(false)}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        className="my-8"
+      <ConfirmationDialog open={openDialog} onClose={handleDialogClose} onConfirm={handleConfirm} />
 
-      >
-        <Alert
-          onClose={() => setOpenSnackbar(false)}
-          severity="success"
-          sx={{ width: "100%" }}
-        >
-          Habitacion creada correctamente
-        </Alert>
-      </Snackbar>
+      
     </>
   );
 };
