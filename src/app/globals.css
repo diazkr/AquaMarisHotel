@@ -80,3 +80,22 @@ body {
   height: 100%;
   text-align: center;
 }
+
+
+/* Styles for the selected menu item */
+.selected-item {
+  background-color: #d9eeed;
+  border-radius: 0 15px 15px 0; /* Rounded on right side */
+  border-left: 5px solid #184549; /* Left border */
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+  
+
+/* Styles for the non-selected menu item */
+.non-selected-item {
+  background-color: transparent;
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
