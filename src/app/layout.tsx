@@ -12,6 +12,7 @@ import '@mantine/core/styles.css';
 import '@mantine/dates/styles.css';
 import { MantineProvider } from "@mantine/core";
 import { mantineTheme } from "@/mantineTheme";
+import FloatingWhatsAppIcon from "@/componentes/reusables/botones/FloatingWhatsAppIcon";
 
 
 
@@ -40,7 +41,9 @@ export default function RootLayout({
               <NavBar />
               
               <main className="flex-grow">{children}</main>
+              
               <Footer />
+              <FloatingWhatsAppIcon />
             </RoomProvider>
           </FilterProvider>
           </MantineProvider>

@@ -8,8 +8,8 @@ const UploadPage = () => {
     style={{ backgroundImage: "url('/images/playas.jpg')" }}>
 
       <div className="p-4 bg-black bg-opacity-50 w-full flex items-center justify-center min-h-full mt-16">
-        <div className="bg-white bg-opacity-75 p-8 rounded-lg shadow-lg w-full max-w-lg">
-            <h2 className="text-4xl font-normal" style={{ color: 'rgb(81,161,168)', marginBottom: '1rem' }}>Creacion de Habitacion</h2>
+        <div className="bg-white bg-opacity-60 py-6 rounded-lg shadow-lg w-[50%]">
+            <p className="text-2xl text-center text-cyan-900 font-semibold" >Creacion de Habitacion</p>
               <CreateRoom />
         </div>
       </div>

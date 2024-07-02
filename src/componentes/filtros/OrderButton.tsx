@@ -58,10 +58,26 @@ function OrderButton() {
         sort: newSort,
       };
 
-      const formattedFiltersReady = removeEmptyFields(formattedFilters);
-      console.log(formattedFiltersReady);
-      const filteredRooms = getMockRoomsFilter(formattedFilters); // Reemplaza esta línea con tu llamada a la API
-      setRooms(filteredRooms);
+      const bookingDataReady = removeEmptyFields(formattedFilters);
+      const params = new URLSearchParams(bookingDataReady).toString();
+      console.log(params)
+      const url = `${process.env.NEXT_PUBLIC_API_URL}/rooms/filter?${params}`;
+
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const result = await response.json();
+      console.log(result)
+      setRooms(result);
+
     } catch (error) {
       console.error("Filtering failed:", error);
     }

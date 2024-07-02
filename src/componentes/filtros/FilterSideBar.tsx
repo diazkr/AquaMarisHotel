@@ -30,7 +30,7 @@ const FilterSidebar = () => {
     people,
   } = useFilters();
   const { setRooms } = useRooms();
-  const [expanded, setExpanded] = useState<string | false>("panel1");
+  const [expanded, setExpanded] = useState<string | false>(false);
 
   const handleChange =
     (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
@@ -77,25 +77,27 @@ const FilterSidebar = () => {
         people: people,
       };
 
-      
       const formattedFiltersReady = removeEmptyFields(formattedFilters);
-      console.log(formattedFiltersReady);
-      const filteredRooms = getMockRoomsFilter(formattedFilters); // Reemplaza esta línea con tu llamada a la API
-      setRooms(filteredRooms);
 
-      // Descomenta esto para hacer la llamada al backend
-      // const response = await fetch('/api/filterRooms', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json'
-      //   },
-      //   body: JSON.stringify(filters)
-      // });
-      // if (!response.ok) {
-      //   throw new Error('Network response was not ok');
-      // }
-      // const result = await response.json();
-      // setRooms(result.rooms);
+
+      const params = new URLSearchParams(formattedFiltersReady).toString();
+      console.log(params)
+      const url = `${process.env.NEXT_PUBLIC_API_URL}/rooms/filter?${params}`;
+
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const result = await response.json();
+      console.log(result)
+      setRooms(result);
     } catch (error) {
       console.error("Filtering failed:", error);
     }
@@ -111,24 +113,27 @@ const FilterSidebar = () => {
 
     try {
       resetFilters();
-      console.log(bookingData);
-      const rooms = getMockRooms();
-      setRooms(rooms);
 
-      // Descomenta esto para hacer la llamada al backend
-      // const response = await fetch('/api/booking', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json'
-      //   },
-      //   body: JSON.stringify({ ...bookingData, filters })
-      // });
-      // if (!response.ok) {
-      //   throw new Error('Network response was not ok');
-      // }
-      // const result = await response.json();
-      // setRooms(result.rooms);
+      const bookingDataReady = removeEmptyFields(bookingData);
 
+      const params = new URLSearchParams(bookingDataReady).toString();
+      console.log(params)
+      const url = `${process.env.NEXT_PUBLIC_API_URL}/rooms/filter?${params}`;
+
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const result = await response.json();
+      console.log(result)
+      setRooms(result);
     } catch (error) {
       console.error("Booking failed:", error);
     }
@@ -161,7 +166,14 @@ const FilterSidebar = () => {
         >
           <Typography>Tipos de habitación</Typography>
         </AccordionSummary>
-        <AccordionDetails sx={{ padding: 0 }} className="flex flex-col">
+        <AccordionDetails
+          sx={{
+            padding: 0,
+            height: 200,
+            overflowY: "auto",
+          }}
+          className="flex flex-col"
+        >
           <FormControlLabel
             control={
               <Checkbox
@@ -216,6 +228,8 @@ const FilterSidebar = () => {
       </Accordion>
 
       <Accordion
+        expanded={expanded === "panel2"}
+        onChange={handleChange("panel2")}
         sx={{
           boxShadow: "none",
           "&:before": { display: "none" },
@@ -230,7 +244,14 @@ const FilterSidebar = () => {
         >
           <Typography>Servicios</Typography>
         </AccordionSummary>
-        <AccordionDetails sx={{ padding: 0 }} className="flex flex-col">
+        <AccordionDetails
+          sx={{
+            padding: 0,
+            height: 200,
+            overflowY: "auto",
+          }}
+          className="flex flex-col"
+        >
           <FormControlLabel
             control={
               <Checkbox
@@ -274,8 +295,8 @@ const FilterSidebar = () => {
           <FormControlLabel
             control={
               <Checkbox
-                name="heating"
-                checked={filters.services.heating}
+                name="heater"
+                checked={filters.services.heater}
                 onChange={handleServiceChange}
               />
             }

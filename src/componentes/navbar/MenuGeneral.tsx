@@ -1,5 +1,4 @@
 import { Backdrop, IconButton, Menu, MenuItem } from "@mui/material";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { PiUserCircleFill } from "react-icons/pi";
@@ -40,7 +39,7 @@ const MenuGeneral = () => {
         <div className="px-4 py-2 font-semibold text-[#5C666F]">
             Mi cuenta
         </div>
-        <MenuItem className="px-8 mx-4 my-2 bg-gray-300" onClick={() => handleMenuItemClick('/login')}>
+        <MenuItem className="px-8 mx-4 my-2 bg-gray-300" onClick={() => handleMenuItemClick('/login')} disabled={true}>
           Iniciar sesión
         </MenuItem>
         <MenuItem

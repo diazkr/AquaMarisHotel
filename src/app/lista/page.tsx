@@ -4,6 +4,7 @@ import FilterSidebar from "@/componentes/filtros/FilterSideBar";
 import OrderButton from "@/componentes/filtros/OrderButton";
 import ImageForm from "@/componentes/lista/ImageForm";
 import ListaHabitaciones from "@/componentes/lista/ListaHabitaciones";
+import PaginationControlled from "@/componentes/paginacion/Pagination";
 import FetchBookingForm from "@/componentes/reusables/forms/FetchFormReserva";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -26,6 +27,9 @@ export default function PageLista() {
             <OrderButton/>
           </div>
           <ListaHabitaciones />
+          <div className="flex justify-center w-[100%]">
+            <PaginationControlled/>
+          </div>
         </div>
       </div>
     </div>
