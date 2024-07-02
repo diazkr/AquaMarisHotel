@@ -7,7 +7,6 @@ import Select, { MultiValue } from "react-select";
 import { validateRegister } from "@/helpers/validate";
 import Link from "next/link";
 import { Alert, Button, Snackbar } from "@mui/material";
-import Swal from 'sweetalert2';
 import ConfirmationDialog from "../reusables/texts/ConfirmationDialog";
 
 
