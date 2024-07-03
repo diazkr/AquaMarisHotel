@@ -1,17 +1,17 @@
 export interface AccompanistInterface {
     id_acompanante: string;
     name: string;
-    identificacion: string;
+    identityCard: string;
   }
   
 export interface ReservationInterface {
-    id_reserva: string;
-    id_usuario: string;
-    id_habitacion: string;
-    fecha_entrada: string;
-    fecha_salida: string;
-    estado_pago: string;
-    acompanantes: AccompanistInterface[];
+    reservation_id: string;
+    userId: string;
+    roomId: string;
+    entry_date: string;
+    departure_date: string;
+    payment_status: string;
+    companions: AccompanistInterface[];
   }
 export interface UserInterface {
     id: string;
@@ -20,12 +20,13 @@ export interface UserInterface {
     phone: string;
     country: string;
     reservations: ReservationInterface[];
+    comentario: Comentario[];
   }
 
   export interface Comentario {
-    id_comentario: string;
-    fecha: string;
-    comentario: string;
-    calificacion: number;
+    id_comment: string;
+    date: string;
+    comment: string;
+    qualification: string;
   }
   
