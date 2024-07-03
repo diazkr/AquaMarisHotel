@@ -17,6 +17,7 @@ import FAQContent from "./FAQContent";
 import { UserInterface } from "@/interfaces/UserInterface";
 import { getUserData } from "@/DataBase/getUserData";
 import Image from "next/image";
+import { ReservationInterface } from "@/interfaces/UserInterface";
 
 interface UserLayoutProps {
   id: string;
@@ -24,20 +25,51 @@ interface UserLayoutProps {
 
 const UserLayout: React.FC<UserLayoutProps> = ({ id }) => {
   const [user, setUser] = useState<UserInterface | null>(null);
+  const [ reservations, setReservations ] = useState<ReservationInterface[]>([]);
   const [selectedContent, setSelectedContent] = useState<React.ReactNode>(null);
   const [selectedIndex, setSelectedIndex] = useState(0);
 
   useEffect(() => {
     const fetchedUser = getUserData(id);
-    setUser(fetchedUser);
-    setSelectedContent(<ReservationsDetails />);
+    setUser(fetchedUser);  
+    setReservations(fetchedUser.reservations || []); 
+
+    setSelectedContent(
+      fetchedUser.reservations.length > 0 ? (
+        <ReservationsDetails
+          id_reserva={fetchedUser.reservations[0].id_reserva}
+          id_usuario={fetchedUser.reservations[0].id_usuario}
+          id_habitacion={fetchedUser.reservations[0].id_habitacion}
+          fecha_entrada={fetchedUser.reservations[0].fecha_entrada}
+          fecha_salida={fetchedUser.reservations[0].fecha_salida}
+          estado_pago={fetchedUser.reservations[0].estado_pago}
+          acompanantes={fetchedUser.reservations[0].acompanantes}
+        />
+      ) : (
+        <p>No hay reservaciones disponibles.</p>
+      )
+    );
+    
   }, [id]);
 
   const menuItems = [
     {
       text: "Reservaciones",
       icon: <FaClipboardList />,
-      content: <ReservationsDetails />,
+      content: reservations.length > 0 ? (
+        <ReservationsDetails
+        id_reserva={reservations[0].id_reserva}
+        id_usuario={reservations[0].id_usuario}
+        id_habitacion={reservations[0].id_habitacion}
+        fecha_entrada={reservations[0].fecha_entrada}
+        fecha_salida={reservations[0].fecha_salida}
+        estado_pago={reservations[0].estado_pago}
+        acompanantes={reservations[0].acompanantes}
+        
+
+
+      />
+      ) : null,
     },
     {
       text: "Información personal",

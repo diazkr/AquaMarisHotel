@@ -21,4 +21,11 @@ export interface UserInterface {
     country: string;
     reservations: ReservationInterface[];
   }
+
+  export interface Comentario {
+    id_comentario: string;
+    fecha: string;
+    comentario: string;
+    calificacion: number;
+  }
   
