@@ -99,3 +99,29 @@ body {
   margin-top: 8px;
   margin-bottom: 8px;
 }
+
+
+.svg-container {
+  filter: drop-shadow(0 24px 28px rgba(0, 0, 0, 1)) drop-shadow(0 12px 14px rgba(0, 0, 0, 1));
+}
+
+/* global.css */
+.gradient-button {
+  background: linear-gradient(45deg, #17858A 30%, #1a949bc4 90%);
+  border-radius: 9999px; /* rounded-full in Tailwind CSS */
+  text-transform: none;
+  font-size: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative; 
+}
+
+
+.icon-right {
+  position: absolute;
+  right: 16px; /* Adjust as needed */
+  top: 50%;
+  transform: translateY(-50%);
+}
+

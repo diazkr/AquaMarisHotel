@@ -8,13 +8,12 @@ import NavBar from "@/componentes/navbar/Navbar";
 import Footer from "@/componentes/footer/Footer";
 import { RoomProvider } from "@/contextos/RoomContext";
 import { FilterProvider } from "@/contextos/FilterContext";
-import '@mantine/core/styles.css';
-import '@mantine/dates/styles.css';
+import "@mantine/core/styles.css";
+import "@mantine/dates/styles.css";
 import { MantineProvider } from "@mantine/core";
 import { mantineTheme } from "@/mantineTheme";
 import FloatingWhatsAppIcon from "@/componentes/reusables/botones/FloatingWhatsAppIcon";
-
-
+import Providers from "@/contextos/ProvidersAuth";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -31,23 +30,22 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`flex flex-col min-h-screen ${inter.className}`}>
-
         <ThemeProvider theme={theme}>
-        <MantineProvider theme={mantineTheme}>
+          <MantineProvider theme={mantineTheme}>
+            <Providers>
+              <FilterProvider>
+                <RoomProvider>
+                  <CssBaseline />
+                  <NavBar />
 
-          <FilterProvider>
-            <RoomProvider>
-              <CssBaseline />
-              <NavBar />
-              
-              <main className="flex-grow">{children}</main>
-              
-              <Footer />
-              <FloatingWhatsAppIcon />
-            </RoomProvider>
-          </FilterProvider>
+                  <main className="flex-grow">{children}</main>
+
+                  <Footer />
+                  <FloatingWhatsAppIcon />
+                </RoomProvider>
+              </FilterProvider>
+            </Providers>
           </MantineProvider>
-
         </ThemeProvider>
       </body>
     </html>
