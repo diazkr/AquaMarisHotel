@@ -7,9 +7,9 @@ import React from "react";
 function PageRegistro() {
   return (
     <div className=" h-screen w-full flex">
-      <div className="w-7/12 relative">
+      <div className="w-7/12 relative shadow-2xl">
         <Image
-          src="/images/fondologin.jpg"
+          src="/images/fondologin2.jpg"
           alt="Background Image"
           layout="fill"
           objectFit="cover"
@@ -25,7 +25,7 @@ function PageRegistro() {
           </div>
         </div>
       </div>
-      <div className=" w-5/12 py-24 flex justify-center items-center">
+      <div className=" w-5/12 py-24 flex justify-center items-center bg-slate-50">
         <LoginForm />
       </div>
     </div>

@@ -159,7 +159,7 @@ const CreateRoom = () => {
         className="w-[80%] mx-auto mt-10 p-6 bg-[#d9eeec] rounded-lg shadow-lg"
       >
         <div className="mb-4">
-          <label
+          <label 
             htmlFor="type"
             className="block text-gray-700 font-bold mb-2"
             style={{ color: "rgb(81,161,168)", marginBottom: "1rem" }}
