@@ -16,7 +16,7 @@ function NavBar() {
   const [scrolled, setScrolled] = useState<boolean>(false);
   const [open, setOpen] = useState(false);
   const router = useRouter();
-  const { isAuthenticated, login } = useAuth();
+  const { isAuthenticated, userData, login } = useAuth();
   const { data: session } = useSession();
 
   useEffect(() => {
@@ -38,9 +38,10 @@ function NavBar() {
   useEffect(() => {
     if (session) {
       const token = localStorage.getItem("token");
-      const userId = localStorage.getItem("userId");
-      if (token && userId) {
-        login(token, userId);
+      const userDataString = localStorage.getItem("userData");
+      if (token && userDataString) {
+        const userData = JSON.parse(userDataString);
+        login(token, userData);
       }
     }
   }, [session, login]);

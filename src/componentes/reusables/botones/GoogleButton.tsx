@@ -6,15 +6,18 @@ import { FcGoogle } from "react-icons/fc";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contextos/AuthContex";
 
-interface UserData {
+interface GoogleUserData {
   name: string;
   email: string;
   user_photo: string;
 }
 
+interface UserData {
+  [key: string]: any;
+}
 interface AuthResponse {
   access_token: string;
-  userId: string;
+  userData: UserData;
 }
 
 const GoogleButton: React.FC = () => {
@@ -40,7 +43,7 @@ const GoogleButton: React.FC = () => {
     const authenticateUser = async () => {
       if (session) {
         const { user } = session;
-        const userData: UserData = {
+        const googleUserData: GoogleUserData = {
           name: user?.name || "",
           email: user?.email || "",
           user_photo: user?.image || "",
@@ -52,15 +55,15 @@ const GoogleButton: React.FC = () => {
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify(userData),
+            body: JSON.stringify(googleUserData),
           });
           if (!response.ok) {
             throw new Error('Network response was not ok');
           }
 
           const data: AuthResponse = await response.json();
-          const { access_token, userId } = data;
-          login(access_token, userId);
+          const { access_token, userData: userDataFromServer } = data;
+          login(access_token, userDataFromServer);
 
           // Redirigir después de autenticar
           router.push("/");

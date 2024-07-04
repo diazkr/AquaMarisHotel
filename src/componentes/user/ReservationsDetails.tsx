@@ -1,8 +1,17 @@
-import React, { Dispatch, SetStateAction } from 'react';
-import { ReservationInterface, Comentario } from '@/interfaces/UserInterface';
-import { useState } from 'react';
-import { Rating } from '@mui/material';
-import Link from 'next/link';
+import React, { Dispatch, SetStateAction } from "react";
+import { ReservationInterface, Comentario } from "@/interfaces/UserInterface";
+import { useState } from "react";
+import { Button, Rating } from "@mui/material";
+import Link from "next/link";
+import CardHabitacionReserva from "./cardHabitacionReserva";
+import {
+  FaCalendarAlt,
+  FaCheckCircle,
+  FaRegClock,
+  FaRegComments,
+  FaTimesCircle,
+  FaUser,
+} from "react-icons/fa";
 
 interface ReservationsDetailsProps extends ReservationInterface {
   setComentarios: Dispatch<SetStateAction<Comentario[]>>;
@@ -22,7 +31,7 @@ const ReservationsDetails: React.FC<ReservationsDetailsProps> = ({
   const currentDate = new Date();
   const isPastDepartureDate = departureDate <= currentDate;
   const [showCommentForm, setShowCommentForm] = useState(false);
-  const [comment, setComment] = useState('');
+  const [comment, setComment] = useState("");
   const [rating, setRating] = useState<number | null>(null);
 
   const handleCommentSubmit = (e: React.FormEvent) => {
@@ -32,68 +41,119 @@ const ReservationsDetails: React.FC<ReservationsDetailsProps> = ({
     const newComment: Comentario = { userId, roomId, comment, rating };
     setComentarios((prevComments) => [...prevComments, newComment]);
     setShowCommentForm(false);
-    setComment('');
+    setComment("");
     setRating(null);
   };
 
+  const getPaymentStatusInfo = (status: string) => {
+    switch (status) {
+      case "PENDING":
+        return {
+          text: "Pendiente",
+          icon: <FaRegClock className="text-yellow-500 mr-2 text-xl" />,
+        };
+      case "APPROVED":
+        return {
+          text: "Aprobado",
+          icon: <FaCheckCircle className="text-green-500 mr-2 text-xl" />,
+        };
+      case "FAILURE":
+        return {
+          text: "Fallido",
+          icon: <FaTimesCircle className="text-red-500 mr-2 text-xl" />,
+        };
+      default:
+        return {
+          text: "Desconocido",
+          icon: <FaRegClock className="text-gray-500 mr-2 text-xl" />,
+        };
+    }
+  };
+
+  const paymentStatusInfo = getPaymentStatusInfo(payment_status);
+
   return (
-    <div className="max-w-2xl mx-auto my-8 px-6">
-      <h2 className="text-3xl font-semibold text-teal-600 mb-6 text-center">
-        Historial de Reservas
-      </h2>
-      <div className="bg-white border border-gray-300 shadow-lg rounded-lg overflow-hidden p-6">
-        <div className="mb-4">
-          <p className="text-sm font-semibold text-gray-700">Reserva</p>
+    <div className="mx-auto px-6 my-3 ">
+      <div className="bg-gray-50 border border-gray-300 shadow-lg overflow-hidden p-6">
+        <div className="mb-4 flex gap-1">
+          <p className="text-sm font-semibold text-cyan-800">
+            Código de reserva:{" "}
+          </p>
           <p className="text-sm text-gray-900">{reservation_id}</p>
         </div>
-        <div className="mb-4">
-          <p className="text-sm font-semibold text-gray-700">Usuario</p>
-          <p className="text-sm text-gray-900">{userId}</p>
-        </div>
-        <div className="mb-4">
-          <p className="text-sm font-semibold text-gray-700">Habitacion</p>
-          <p className="text-sm text-gray-900">{roomId}</p>
-        </div>
-        <div className="mb-4">
-          <p className="text-sm font-semibold text-gray-700">Fecha de Entrada</p>
-          <p className="text-sm text-gray-900">{entry_date}</p>
-        </div>
-        <div className="mb-4">
-          <p className="text-sm font-semibold text-gray-700">Fecha de salida</p>
-          <p className="text-sm text-gray-900">{departure_date}</p>
-        </div>
-        <div className="mb-4">
-          <p className="text-sm font-semibold text-gray-700">Estado de pago</p>
-          <p className="text-sm text-gray-900">{payment_status}</p>
-        </div>
-        <div className="mb-4">
-          <p className="text-sm font-semibold text-gray-700">Acompañantes</p>
-          <p className="text-sm text-gray-900">
-            {companions ? companions.map((a) => a.name).join(', ') : 'Ninguno'}
-          </p>
+        <div className="flex gap-3 justify-between">
+          <div className="mb-4 flex flex-col items-center">
+            <p className="text-sm font-semibold text-cyan-800 py-2">
+              Fecha de Entrada
+            </p>
+            <div className="flex">
+              <FaCalendarAlt className="mr-2  text-gray-600 text-xl" />
+              <p className="text-sm text-gray-900 ml-2">{entry_date}</p>
+            </div>
+          </div>
+          <div className="mb-4 flex flex-col items-center">
+            <p className="text-sm font-semibold text-cyan-800 py-2">
+              Fecha de Entrada
+            </p>
+            <div className="flex">
+              <FaCalendarAlt className="mr-2  text-gray-600 text-xl" />
+              <p className="text-sm text-gray-900 ml-2">{departure_date}</p>
+            </div>
+          </div>
+          <div className="mb-4 flex flex-col items-center">
+            <p className="text-sm font-semibold text-cyan-800 py-2">
+              Estado de pago
+            </p>
+            <div className="flex">
+              {paymentStatusInfo.icon}
+              <p className="text-sm text-gray-900 ml-2">
+                {paymentStatusInfo.text}
+              </p>
+            </div>
+          </div>
         </div>
 
-        <Link href={`/rooms/${roomId}`}>
-          <button
-              className="w-full bg-indigo-500 text-white py-2 px-4 rounded-md hover:bg-indigo-600 transition duration-300"
-              type="submit"
-            >
-              Ver habitacion reservada
-            </button>
-        </Link>
-          
+        <div className="mb-4">
+          <p className="text-sm font-semibold text-cyan-800 py-2">
+            Acompañantes
+          </p>
+          <div className="flex flex-wrap gap-3">
+            {companions && companions.length > 0 ? (
+              companions.map((a) => (
+                <div
+                  key={a.id_acompanante}
+                  className="flex items-center text-sm text-gray-900"
+                >
+                  <FaUser className="mr-2 text-lg text-gray-600" />
+                  <p>{a.name}</p>
+                </div>
+              ))
+            ) : (
+              <p className="text-sm text-gray-900">Ninguno</p>
+            )}
+          </div>
+        </div>
+
+        <div>
+          <CardHabitacionReserva id={roomId}></CardHabitacionReserva>
+        </div>
+
         {isPastDepartureDate && (
-          <div className="mt-4">
-            <button
-              className="bg-teal-600 text-white px-4 py-2 rounded-lg shadow hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-opacity-50"
+          <div className="mt-4 flex justify-center">
+            <Button
+              variant="contained"
               onClick={() => setShowCommentForm(true)}
+              startIcon={<FaRegComments />}
             >
               Dejar Comentarios
-            </button>
+            </Button>
             {showCommentForm && (
               <form onSubmit={handleCommentSubmit} className="mt-4">
                 <div className="mb-4">
-                  <label className="block text-sm font-semibold text-gray-700 mb-2" htmlFor="comment">
+                  <label
+                    className="block text-sm font-semibold text-cyan-800 mb-2"
+                    htmlFor="comment"
+                  >
                     Comentario
                   </label>
                   <textarea
@@ -106,7 +166,7 @@ const ReservationsDetails: React.FC<ReservationsDetailsProps> = ({
                   />
                 </div>
                 <div className="mb-4">
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  <label className="block text-sm font-semibold text-cyan-800 mb-2">
                     Rating
                   </label>
                   <Rating
@@ -115,7 +175,6 @@ const ReservationsDetails: React.FC<ReservationsDetailsProps> = ({
                     onChange={(event, newValue) => {
                       setRating(newValue);
                     }}
-                    
                   />
                 </div>
                 <button
@@ -134,6 +193,3 @@ const ReservationsDetails: React.FC<ReservationsDetailsProps> = ({
 };
 
 export default ReservationsDetails;
-
-
-
