@@ -9,7 +9,6 @@ import {
   FaStar,
   FaUserCog,
 } from "react-icons/fa";
-import ReservationsDetails from "./ReservationsDetails";
 import UserDetail from "./UserDetail";
 import Comentarios from "./Comentarios";
 import Premium from "./Premium";
@@ -18,6 +17,8 @@ import { Comentario, UserInterface } from "@/interfaces/UserInterface";
 import { getUserData } from "@/DataBase/getUserData";
 import Image from "next/image";
 import { ReservationInterface } from "@/interfaces/UserInterface";
+import ReservationsList from "./ReservationList";
+import getReservations from "@/DataBase/ReservationMock";
 
 interface UserLayoutProps {
   id: string;
@@ -25,52 +26,34 @@ interface UserLayoutProps {
 
 const UserLayout: React.FC<UserLayoutProps> = ({ id }) => {
   const [user, setUser] = useState<UserInterface | null>(null);
-  const [ reservations, setReservations ] = useState<ReservationInterface[]>([]);
-  const [ comentarios, setComentarios] = useState<Comentario[]>([]);
+  const [reservations, setReservations] = useState<ReservationInterface[]>([]);
+  const [comentarios, setComentarios] = useState<Comentario[]>([]);
   const [selectedContent, setSelectedContent] = useState<React.ReactNode>(null);
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [loading, setLoading] = useState(true);
+
 
   useEffect(() => {
-    const fetchedUser = getUserData(id);
-    setUser(fetchedUser);  
-    setReservations(fetchedUser.reservations || []); 
-    setComentarios(fetchedUser.comentario || []);
+    const fetchData = async () => {
+      try {
+        const reservationsData = getReservations();
+        setReservations(reservationsData);
+        setSelectedContent(<ReservationsList reservations={reservationsData} />);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-    setSelectedContent(
-      fetchedUser.reservations.length > 0 ? (
-        <ReservationsDetails
-          reservation_id={fetchedUser.reservations[0].reservation_id}
-          userId={fetchedUser.reservations[0].userId}
-          roomId={fetchedUser.reservations[0].roomId}
-          entry_date={fetchedUser.reservations[0].entry_date}
-          departure_date={fetchedUser.reservations[0].departure_date}
-          payment_status={fetchedUser.reservations[0].payment_status}
-          companions={fetchedUser.reservations[0].companions} 
-          setComentarios={setComentarios}
-        />
-      ) : (
-        <p>No hay reservaciones disponibles.</p>
-      )
-    );
-    
+    fetchData();
   }, [id]);
 
   const menuItems = [
     {
       text: "Reservaciones",
       icon: <FaClipboardList />,
-      content: reservations.length > 0 ? (
-        <ReservationsDetails
-        reservation_id={reservations[0].reservation_id}
-        userId={reservations[0].userId}
-        roomId={reservations[0].roomId}
-        entry_date={reservations[0].entry_date}
-        departure_date={reservations[0].departure_date}
-        payment_status={reservations[0].payment_status}
-        companions={reservations[0].companions}
-        setComentarios={setComentarios}
-      />
-      ) : null,
+      content: <ReservationsList reservations={reservations} />,
     },
     {
       text: "Información personal",
@@ -90,19 +73,20 @@ const UserLayout: React.FC<UserLayoutProps> = ({ id }) => {
     {
       text: "Mis comentarios",
       icon: <FaCommentDots />,
-      content: comentarios.length > 0 ? (
-        comentarios.map((comentario, index) => (
-          <Comentarios 
-          key={index}
-          userId={comentario.userId}
-          roomId={comentario.roomId} 
-          comment={comentario.comment}
-          rating={comentario.rating}
-          />
-        ))
-      ) : (
-        <p>No hay comentarios disponibles.</p>
-      ),
+      content:
+        comentarios.length > 0 ? (
+          comentarios.map((comentario, index) => (
+            <Comentarios
+              key={index}
+              userId={comentario.userId}
+              roomId={comentario.roomId}
+              comment={comentario.comment}
+              rating={comentario.rating}
+            />
+          ))
+        ) : (
+          <p>No hay comentarios disponibles.</p>
+        ),
     },
     { text: "Mi suscripción", content: <Premium />, icon: <FaStar /> },
     {
@@ -144,7 +128,7 @@ const UserLayout: React.FC<UserLayoutProps> = ({ id }) => {
                 }
               >
                 <div className="text-[#17858A] text-xl mr-3">{item.icon}</div>
-                <ListItemText primary={item.text}  className="ml-0"/>
+                <ListItemText primary={item.text} className="ml-0" />
               </ListItem>
             ))}
           </List>

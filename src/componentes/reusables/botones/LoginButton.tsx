@@ -2,10 +2,14 @@ import React, { useState } from 'react';
 import { Button, Typography } from '@mui/material';
 import { IoIosArrowForward } from 'react-icons/io';
 import { useAuth } from '@/contextos/AuthContex';
+import { useRouter } from 'next/navigation';
 
+interface UserData {
+  [key: string]: any;
+}
 interface AuthResponse {
   token: string;
-  userId: string;
+  userData:UserData ;
 }
 
 interface LoginButtonProps {
@@ -16,6 +20,7 @@ interface LoginButtonProps {
 const LoginButton: React.FC<LoginButtonProps> = ({ email, password }) => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const { login } = useAuth(); 
+  const router = useRouter()
 
   const handleSignIn = async () => {
     try {
@@ -36,10 +41,11 @@ const LoginButton: React.FC<LoginButtonProps> = ({ email, password }) => {
       }
 
       const data: AuthResponse = await response.json();
-      const { token, userId } = data;
-      login(token, userId); // Llama a la función login del contexto
-      console.log('Token and UserID saved:', token, userId);
+      const { token, userData } = data;
+      login(token, userData); // Llama a la función login del
       setErrorMessage(null); // Clear any previous error messages
+      router.push("/")
+
     } catch (error) {
       console.error('Error during authentication:', error);
       setErrorMessage((error as Error).message); // Set the error message
