@@ -24,9 +24,9 @@ export interface UserInterface {
   }
 
   export interface Comentario {
-    id_comment: string;
-    date: string;
+    userId: string;
+    roomId: string;
     comment: string;
-    qualification: string;
+    rating: number;
   }
   
