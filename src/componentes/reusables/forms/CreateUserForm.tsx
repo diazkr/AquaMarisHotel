@@ -13,13 +13,24 @@ import {
   InputLabel,
   SelectChangeEvent,
 } from "@mui/material";
-import { Email, Person, Phone, Visibility, VisibilityOff } from "@mui/icons-material";
+import {
+  Email,
+  Person,
+  Phone,
+  Visibility,
+  VisibilityOff,
+} from "@mui/icons-material";
 import { IoIosArrowForward } from "react-icons/io";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { validateEmail, validateName, validatePassword, validatePhone } from "@/helpers/validationHelpers";
-const { getNames } = require('country-list');
-
+import {
+  validateEmail,
+  validateName,
+  validatePassword,
+  validatePhone,
+} from "@/helpers/validationHelpers";
+import RegisterButton from "../botones/CreateUserButton";
+const { getNames } = require("country-list");
 
 const CreateUserForm: React.FC = () => {
   const router = useRouter();
@@ -81,9 +92,7 @@ const CreateUserForm: React.FC = () => {
       formData.confirmPassword
     );
 
-    setIsFormValid(
-      !nameError && !emailError && !phoneError && !passwordError
-    );
+    setIsFormValid(!nameError && !emailError && !phoneError && !passwordError);
   };
 
   const handleCountryChange = (e: SelectChangeEvent<string>) => {
@@ -103,9 +112,7 @@ const CreateUserForm: React.FC = () => {
       formData.confirmPassword
     );
 
-    setIsFormValid(
-      !nameError && !emailError && !phoneError && !passwordError
-    );
+    setIsFormValid(!nameError && !emailError && !phoneError && !passwordError);
   };
 
   const handleClickShowPassword = () => {
@@ -115,7 +122,7 @@ const CreateUserForm: React.FC = () => {
   const handleSubmit = () => {
     const { name, email, country, phone, password } = formData;
     console.log({ name, email, country, phone, password });
-    router.push("/register")
+    router.push("/register");
   };
 
   const countryNames = getNames();
@@ -153,12 +160,12 @@ const CreateUserForm: React.FC = () => {
         fullWidth
         required
         InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <Person />
-              </InputAdornment>
-            ),
-          }}
+          startAdornment: (
+            <InputAdornment position="start">
+              <Person />
+            </InputAdornment>
+          ),
+        }}
       />
       <TextField
         label="Email"
@@ -173,12 +180,12 @@ const CreateUserForm: React.FC = () => {
         fullWidth
         required
         InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <Email />
-              </InputAdornment>
-            ),
-          }}
+          startAdornment: (
+            <InputAdornment position="start">
+              <Email />
+            </InputAdornment>
+          ),
+        }}
       />
       <FormControl margin="normal" fullWidth>
         <InputLabel id="country-label">País</InputLabel>
@@ -189,7 +196,7 @@ const CreateUserForm: React.FC = () => {
           onChange={handleCountryChange}
           error={!!errors.country}
         >
-          {countryNames.map((country:string) => (
+          {countryNames.map((country: string) => (
             <MenuItem key={country} value={country}>
               {country}
             </MenuItem>
@@ -208,12 +215,12 @@ const CreateUserForm: React.FC = () => {
         required
         placeholder="Escribe tu telefono"
         InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <Phone />
-              </InputAdornment>
-            ),
-          }}
+          startAdornment: (
+            <InputAdornment position="start">
+              <Phone />
+            </InputAdornment>
+          ),
+        }}
       />
       <TextField
         label="Contraseña"
@@ -252,17 +259,7 @@ const CreateUserForm: React.FC = () => {
         required
       />
 
-      <Button
-        variant="contained"
-        color="primary"
-        fullWidth
-        className="gradient-button my-1"
-        onClick={handleSubmit}
-        disabled={!isFormValid}
-      >
-        <span>Crear usuario</span>
-        <IoIosArrowForward className="icon-right text-lg" />
-      </Button>
+      <RegisterButton userData={formData} isDisabled={!isFormValid} />
     </Box>
   );
 };

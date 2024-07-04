@@ -8,12 +8,16 @@ import { AppBar, Box, Button, Drawer, IconButton } from "@mui/material";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import MenuGeneral from "./MenuGeneral";
+import { useSession } from "next-auth/react";
+import { useAuth } from "@/contextos/AuthContex";
+import NavUserLogged from "./NavUserLogged";
 
 function NavBar() {
   const [scrolled, setScrolled] = useState<boolean>(false);
   const [open, setOpen] = useState(false);
   const router = useRouter();
+  const { isAuthenticated, login } = useAuth();
+  const { data: session } = useSession();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -30,6 +34,16 @@ function NavBar() {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
+  useEffect(() => {
+    if (session) {
+      const token = localStorage.getItem("token");
+      const userId = localStorage.getItem("userId");
+      if (token && userId) {
+        login(token, userId);
+      }
+    }
+  }, [session, login]);
 
   const navLinks = [
     { title: "hoteles", path: "/hoteles" },
@@ -126,9 +140,13 @@ function NavBar() {
               ))}
             </div>
 
-            <div className="flex items-center">
-              <MenuGeneral />
-            </div>
+            {isAuthenticated ? (
+              <NavUserLogged/>
+            ) : (
+              <div className="flex items-center">
+                <Button variant="outlined" onClick={()=>router.push("/register")}>Iniciar sesión</Button>
+              </div>
+            )}
           </Box>
 
           <Box
