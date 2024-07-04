@@ -45,7 +45,8 @@ const UserLayout: React.FC<UserLayoutProps> = ({ id }) => {
           entry_date={fetchedUser.reservations[0].entry_date}
           departure_date={fetchedUser.reservations[0].departure_date}
           payment_status={fetchedUser.reservations[0].payment_status}
-          companions={fetchedUser.reservations[0].companions}
+          companions={fetchedUser.reservations[0].companions} 
+          setComentarios={setComentarios}
         />
       ) : (
         <p>No hay reservaciones disponibles.</p>
@@ -67,9 +68,7 @@ const UserLayout: React.FC<UserLayoutProps> = ({ id }) => {
         departure_date={reservations[0].departure_date}
         payment_status={reservations[0].payment_status}
         companions={reservations[0].companions}
-        
-
-
+        setComentarios={setComentarios}
       />
       ) : null,
     },
@@ -92,13 +91,13 @@ const UserLayout: React.FC<UserLayoutProps> = ({ id }) => {
       text: "Mis comentarios",
       icon: <FaCommentDots />,
       content: comentarios.length > 0 ? (
-        comentarios.map((comentario) => (
+        comentarios.map((comentario, index) => (
           <Comentarios 
-          key={comentario.id_comment}
-          id_comment={comentario.id_comment}
-          date={comentario.date} 
+          key={index}
+          userId={comentario.userId}
+          roomId={comentario.roomId} 
           comment={comentario.comment}
-          qualification={comentario.qualification}
+          rating={comentario.rating}
           />
         ))
       ) : (
