@@ -1,14 +1,58 @@
 "use client";
-import { Button } from "@mantine/core";
-import React from "react";
-import { signOut, useSession } from "next-auth/react";
+import React, { useState } from "react";
+import { signOut } from "next-auth/react";
+import { useAuth } from "@/contextos/AuthContex";
+import { Button, IconButton, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
+import { IoIosLogOut } from "react-icons/io";
 
-function CloseSession() {
+const CloseSession: React.FC = () => {
+  const { logout } = useAuth();
+  const [open, setOpen] = useState(false);
+
+  const handleSignOut = () => {
+    logout();
+    signOut();
+  };
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleConfirm = () => {
+    handleSignOut();
+    handleClose();
+  };
+
   return (
     <div>
-      <Button variant="contained" onClick={() => signOut()}>
-        Cerrar sesión
-      </Button>
+      <IconButton onClick={handleClickOpen} color="primary">
+        <IoIosLogOut className=" font-semibold" />
+      </IconButton>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"Cerrar sesión"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            ¿Estás seguro que quieres cerrar sesión?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary" variant="contained">
+            Cancelar
+          </Button>
+          <Button onClick={handleConfirm} color="primary" autoFocus variant="outlined">
+            Cerrar sesión
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 }

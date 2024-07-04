@@ -14,10 +14,13 @@ import GoogleButton from "../botones/GoogleButton";
 import { IoIosArrowForward } from "react-icons/io";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import LoginButton from "../botones/LoginButton";
 
 const LoginForm: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const router = useRouter()
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const router = useRouter();
 
   const handleClickShowPassword = () => {
     setShowPassword((prev) => !prev);
@@ -27,6 +30,14 @@ const LoginForm: React.FC = () => {
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
     event.preventDefault();
+  };
+
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
+  };
+
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(e.target.value);
   };
 
   return (
@@ -44,14 +55,24 @@ const LoginForm: React.FC = () => {
       <Typography variant="h5" component="div" gutterBottom className="text-[#175358]">
         Inicia sesión
       </Typography>
-      <TextField label="correo@example.com" variant="outlined" margin="normal" fullWidth className=" shadow-md bg-white"/>
       <TextField
-      className=" shadow-md bg-white" 
+        label="correo@example.com"
+        variant="outlined"
+        margin="normal"
+        fullWidth
+        className="shadow-md bg-white"
+        value={email}
+        onChange={handleEmailChange}
+      />
+      <TextField
+        className="shadow-md bg-white"
         label="Contraseña"
         variant="outlined"
         margin="normal"
         type={showPassword ? "text" : "password"}
         fullWidth
+        value={password}
+        onChange={handlePasswordChange}
         InputProps={{
           endAdornment: (
             <InputAdornment position="end">
@@ -67,22 +88,15 @@ const LoginForm: React.FC = () => {
           ),
         }}
       />
-      <Button
-        variant="contained"
-        color="primary"
-        fullWidth
-        className="gradient-button my-1"
-      >
-        <span>Continuar</span>
-        <IoIosArrowForward className="icon-right text-lg" />
-      </Button>
-      <Divider className="w-full my-5"/>
+      <LoginButton email={email} password={password} />
+
+      <Divider className="w-full my-5" />
       
       <GoogleButton />
-        <div className="flex justify-center items-center my-2">
-          <p className="text-gray-500 text-sm">¿No tienes cuenta?</p>
-          <Button onClick={()=>router.push("/createUser")}>Registrate!</Button>
-        </div>
+      <div className="flex justify-center items-center my-2">
+        <p className="text-gray-500 text-sm">¿No tienes cuenta?</p>
+        <Button onClick={() => router.push("/createUser")}>Registrate!</Button>
+      </div>
     </Box>
   );
 };

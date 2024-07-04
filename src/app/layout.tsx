@@ -14,6 +14,7 @@ import { MantineProvider } from "@mantine/core";
 import { mantineTheme } from "@/mantineTheme";
 import FloatingWhatsAppIcon from "@/componentes/reusables/botones/FloatingWhatsAppIcon";
 import Providers from "@/contextos/ProvidersAuth";
+import { AuthProvider } from "@/contextos/AuthContex";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -33,6 +34,7 @@ export default function RootLayout({
         <ThemeProvider theme={theme}>
           <MantineProvider theme={mantineTheme}>
             <Providers>
+            <AuthProvider>
               <FilterProvider>
                 <RoomProvider>
                   <CssBaseline />
@@ -44,6 +46,7 @@ export default function RootLayout({
                   <FloatingWhatsAppIcon />
                 </RoomProvider>
               </FilterProvider>
+              </AuthProvider>
             </Providers>
           </MantineProvider>
         </ThemeProvider>
