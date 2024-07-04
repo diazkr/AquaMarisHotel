@@ -7,8 +7,8 @@ export const getUserData = (id: string): UserInterface => {
       reservation_id: "123e4567-e89b-12d3-a456-426614174000",
       userId: id,
       roomId: "123e4567-e89b-12d3-a456-426614174002",
-      entry_date: "2024-07-15",
-      departure_date: "2024-07-20",
+      entry_date: "2024-07-01",
+      departure_date: "2024-07-02",
       payment_status: "paid",
       companions: [
         {
@@ -26,10 +26,10 @@ export const getUserData = (id: string): UserInterface => {
   ];
 
   const comentario: Comentario[] = [{
-    id_comment: "12345678987564321",
-    date: "2024-07-18",
+    userId: "12345678987564321",
+    roomId: "20240718",
     comment: "Muy buena atencion, me gusto mucho",
-    qualification: "5 estrellas",
+    rating: 5,
   }]
     
 
