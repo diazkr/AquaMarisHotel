@@ -14,7 +14,7 @@ import UserDetail from "./UserDetail";
 import Comentarios from "./Comentarios";
 import Premium from "./Premium";
 import FAQContent from "./FAQContent";
-import { UserInterface } from "@/interfaces/UserInterface";
+import { Comentario, UserInterface } from "@/interfaces/UserInterface";
 import { getUserData } from "@/DataBase/getUserData";
 import Image from "next/image";
 import { ReservationInterface } from "@/interfaces/UserInterface";
@@ -26,6 +26,7 @@ interface UserLayoutProps {
 const UserLayout: React.FC<UserLayoutProps> = ({ id }) => {
   const [user, setUser] = useState<UserInterface | null>(null);
   const [ reservations, setReservations ] = useState<ReservationInterface[]>([]);
+  const [ comentarios, setComentarios] = useState<Comentario[]>([]);
   const [selectedContent, setSelectedContent] = useState<React.ReactNode>(null);
   const [selectedIndex, setSelectedIndex] = useState(0);
 
@@ -33,17 +34,18 @@ const UserLayout: React.FC<UserLayoutProps> = ({ id }) => {
     const fetchedUser = getUserData(id);
     setUser(fetchedUser);  
     setReservations(fetchedUser.reservations || []); 
+    setComentarios(fetchedUser.comentario || []);
 
     setSelectedContent(
       fetchedUser.reservations.length > 0 ? (
         <ReservationsDetails
-          id_reserva={fetchedUser.reservations[0].id_reserva}
-          id_usuario={fetchedUser.reservations[0].id_usuario}
-          id_habitacion={fetchedUser.reservations[0].id_habitacion}
-          fecha_entrada={fetchedUser.reservations[0].fecha_entrada}
-          fecha_salida={fetchedUser.reservations[0].fecha_salida}
-          estado_pago={fetchedUser.reservations[0].estado_pago}
-          acompanantes={fetchedUser.reservations[0].acompanantes}
+          reservation_id={fetchedUser.reservations[0].reservation_id}
+          userId={fetchedUser.reservations[0].userId}
+          roomId={fetchedUser.reservations[0].roomId}
+          entry_date={fetchedUser.reservations[0].entry_date}
+          departure_date={fetchedUser.reservations[0].departure_date}
+          payment_status={fetchedUser.reservations[0].payment_status}
+          companions={fetchedUser.reservations[0].companions}
         />
       ) : (
         <p>No hay reservaciones disponibles.</p>
@@ -58,13 +60,13 @@ const UserLayout: React.FC<UserLayoutProps> = ({ id }) => {
       icon: <FaClipboardList />,
       content: reservations.length > 0 ? (
         <ReservationsDetails
-        id_reserva={reservations[0].id_reserva}
-        id_usuario={reservations[0].id_usuario}
-        id_habitacion={reservations[0].id_habitacion}
-        fecha_entrada={reservations[0].fecha_entrada}
-        fecha_salida={reservations[0].fecha_salida}
-        estado_pago={reservations[0].estado_pago}
-        acompanantes={reservations[0].acompanantes}
+        reservation_id={reservations[0].reservation_id}
+        userId={reservations[0].userId}
+        roomId={reservations[0].roomId}
+        entry_date={reservations[0].entry_date}
+        departure_date={reservations[0].departure_date}
+        payment_status={reservations[0].payment_status}
+        companions={reservations[0].companions}
         
 
 
@@ -82,13 +84,26 @@ const UserLayout: React.FC<UserLayoutProps> = ({ id }) => {
           phone={user.phone}
           country={user.country}
           reservations={user.reservations}
+          comentario={user.comentario}
         />
       ) : null,
     },
     {
       text: "Mis comentarios",
-      content: <Comentarios />,
       icon: <FaCommentDots />,
+      content: comentarios.length > 0 ? (
+        comentarios.map((comentario) => (
+          <Comentarios 
+          key={comentario.id_comment}
+          id_comment={comentario.id_comment}
+          date={comentario.date} 
+          comment={comentario.comment}
+          qualification={comentario.qualification}
+          />
+        ))
+      ) : (
+        <p>No hay comentarios disponibles.</p>
+      ),
     },
     { text: "Mi suscripción", content: <Premium />, icon: <FaStar /> },
     {
