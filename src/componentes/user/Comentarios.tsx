@@ -25,5 +25,3 @@ const ComentarioComponent: React.FC<Comentario> = ({ userId, roomId, comment, ra
 };
 
 export default ComentarioComponent;
-
-
