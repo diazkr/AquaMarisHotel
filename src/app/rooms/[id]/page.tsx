@@ -3,13 +3,16 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Modal from 'react-modal';
+import { useRouter } from 'next/navigation';
 import { Habitacion } from '@/interfaces/HabitacionInterface';
 import {FaWifi, FaTv, FaWater, FaSnowflake,FaFire,FaLock,FaParking,FaCoffee,FaIceCream,FaHotTub,} from "react-icons/fa";
+
 
 const Page = ({ params }: { params: { id: string } }) => {
   const { id } = params;
   const [room, setRoom] = useState<Habitacion | null>(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const router = useRouter();
 
   localStorage.setItem("rommUUID", id);
 
@@ -21,6 +24,10 @@ const Page = ({ params }: { params: { id: string } }) => {
     setModalIsOpen(false);
   };
 
+  const handleReserveClick = () => {
+    router.push('/payment'); 
+  };
+  
   const renderIcon = (servicio: string) => {
     switch (servicio) {
       case "wifi":
@@ -168,7 +175,7 @@ const Page = ({ params }: { params: { id: string } }) => {
             <button className="w-full bg-teal-600 text-white py-2 px-4 rounded-lg hover:bg-teal-500" disabled>
               Calendario
             </button>
-            <button className="w-full bg-teal-600 text-white py-2 px-4 rounded-lg hover:bg-teal-500">
+            <button className="w-full bg-teal-600 text-white py-2 px-4 rounded-lg hover:bg-teal-500" onClick={handleReserveClick}>
               Reservar
             </button>
           </div>
