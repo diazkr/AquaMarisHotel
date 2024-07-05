@@ -11,6 +11,8 @@ const Page = ({ params }: { params: { id: string } }) => {
   const [room, setRoom] = useState<Habitacion | null>(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
+  localStorage.setItem("rommUUID", id);
+
   const openModal = () => {
     setModalIsOpen(true);
   };

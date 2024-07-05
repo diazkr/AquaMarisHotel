@@ -34,6 +34,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   useEffect(() => {
     const token = localStorage.getItem("token");
     const userDataString = localStorage.getItem("userData");
+
     if (token && userDataString) {
       setIsAuthenticated(true);
       setUserData(JSON.parse(userDataString));
