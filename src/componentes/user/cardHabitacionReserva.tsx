@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from 'react';
+import React, { useState } from "react";
 import { Habitacion } from "@/interfaces/HabitacionInterface";
 import { Button, Popover, Typography } from "@mui/material";
 import {
@@ -18,39 +18,23 @@ import { CiCircleMore } from "react-icons/ci";
 import { IoMdSend } from "react-icons/io";
 import { useRouter } from "next/navigation";
 import SimpleCarousel from "../lista/CarouselComponent";
-import getHabitacion from '@/DataBase/getHabitacionMockeada';
 
-interface CardHabitacionProps {
-  id: string;
-}
+interface CardHabitacionProps extends Habitacion {}
 
-const CardHabitacionReserva: React.FC<CardHabitacionProps> = ({ id }) => {
-  const [habitacion, setHabitacion] = useState<Habitacion | null>(null);
-  const [loading, setLoading] = useState(true);
+const CardHabitacionReserva: React.FC<CardHabitacionProps> = ({
+  id,
+  type,
+  price,
+  description,
+  state,
+  images,
+  roomNumber,
+  services,
+}) => {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const [popoverContent, setPopoverContent] = useState<string>("");
 
   const router = useRouter();
-
-  useEffect(() => {
-    const fetchHabitacion = async () => {
-      try {
-        // const response = await fetch(`/api/habitaciones/${id}`); 
-        // const data = await response.json();
-        // setHabitacion(data);
-
-        const data = getHabitacion(); // Usa la función para obtener la información de la habitación
-        setHabitacion(data);
-
-      } catch (error) {
-        console.error('Error fetching habitacion:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchHabitacion();
-  }, [id]);
 
   const serviceNames: { [key: string]: string } = {
     wifi: "Wi-Fi",
@@ -160,26 +144,18 @@ const CardHabitacionReserva: React.FC<CardHabitacionProps> = ({ id }) => {
     return numberPrice.toLocaleString("es-ES");
   };
 
-  if (loading) {
-    return <p>Loading...</p>;
-  }
-
-  if (!habitacion) {
-    return <p>Habitación no encontrada.</p>;
-  }
-
   return (
     <div className="my-2 border border-gray-300 w-[100%] bg-slate-100">
       <div className="flex rounded-sm gap-4">
         <div className="w-[30%]">
-          <SimpleCarousel images={habitacion.images} />
+          <SimpleCarousel images={images} />
         </div>
         <div className="flex flex-col p-4 gap-1 text-[#07282C]">
           <p className=" text-lg font-medium">
-            {nameHabitacion(habitacion.type, habitacion.services)}
+            {nameHabitacion(type, services)}
           </p>
           <div className="flex space-x-2 text-2xl text-[#17858A] my-3">
-            {habitacion.services.map((servicio) => (
+            {services.map((servicio) => (
               <div
                 key={servicio}
                 className="flex items-center justify-center w-12 h-12 rounded-full border border-gray-300 hover:bg-[#d9eeec] hover:scale-95 transition-transform duration-200"

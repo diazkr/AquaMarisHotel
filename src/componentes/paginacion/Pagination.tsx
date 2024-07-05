@@ -52,7 +52,7 @@ export default function PaginationControlled() {
       const result = await response.json();
       console.log('API Result:', result);
 
-      setRooms(result);
+      setRooms(result.allRooms);
       
     } catch (error) {
       console.error("Fetching rooms failed:", error);
