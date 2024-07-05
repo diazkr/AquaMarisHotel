@@ -4,14 +4,18 @@ import { signOut } from "next-auth/react";
 import { useAuth } from "@/contextos/AuthContex";
 import { Button, IconButton, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
 import { IoIosLogOut } from "react-icons/io";
+import { useRouter } from "next/navigation";
 
 const CloseSession: React.FC = () => {
   const { logout } = useAuth();
   const [open, setOpen] = useState(false);
+  const router = useRouter()
 
   const handleSignOut = () => {
     logout();
     signOut();
+    router.push("/")
+
   };
 
   const handleClickOpen = () => {

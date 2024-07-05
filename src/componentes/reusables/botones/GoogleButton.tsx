@@ -41,6 +41,7 @@ const GoogleButton: React.FC = () => {
 
   useEffect(() => {
     const authenticateUser = async () => {
+      setLoading(true); // Asegurar que el loader se muestre mientras se autentica
       if (session) {
         const { user } = session;
         const googleUserData: GoogleUserData = {
