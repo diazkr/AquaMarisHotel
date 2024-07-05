@@ -11,6 +11,8 @@ const Page = ({ params }: { params: { id: string } }) => {
   const [room, setRoom] = useState<Habitacion | null>(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
+  localStorage.setItem("rommUUID", id);
+
   const openModal = () => {
     setModalIsOpen(true);
   };
@@ -85,7 +87,14 @@ const Page = ({ params }: { params: { id: string } }) => {
         console.log('Respuesta de la petición', `${process.env.NEXT_PUBLIC_API_URL}/rooms/${id}`);
         const data = await response.json();
         console.log(data);
+
+        localStorage.setItem("roomPrice", data.price);
+        localStorage.setItem('roomDescription', data.description);
+        localStorage.setItem('roomServices', JSON.stringify(data.services));
+
+
         setRoom(data);
+
       } catch (error) {
         console.error('Fetching room failed:', error);
       }

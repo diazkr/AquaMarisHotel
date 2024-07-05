@@ -1,150 +1,193 @@
-"use client";
+'use client';
 
-import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import React, { useState, useEffect } from 'react';
+import { useFilters } from '@/contextos/FilterContext';
 import { initMercadoPago, Wallet } from '@mercadopago/sdk-react';
-import TermsAndConditions from '../termsAndConditions/page';
-import { MdDiscount } from "react-icons/md";
+import { format } from 'date-fns';
 
-interface UserData {
+interface Companion {
   name: string;
-  address: string;
-  age: number;
-  email: string;
-  phone: string;
-  nationality: string;
+  identityCard: number;
 }
 
-const ConfirmReservation: React.FC = () => {
-  const router = useRouter();
-
-  const [userData, setUserData] = useState<UserData | null>(null);
-  const [acceptPolicies, setAcceptPolicies] = useState(false);
+const PaymentView: React.FC = () => {
+  const { hotel, arriveDate, departureDate, people, setFilters } = useFilters();
+  const [checkInDate, setCheckInDate] = useState('');
+  const [checkOutDate, setCheckOutDate] = useState('');
+  const [companions, setCompanions] = useState<Companion[]>([]);
+  const [userId, setUserId] = useState('');
+  const [roomId, setRoomId] = useState('');
+  const [discountCode, setDiscountCode] = useState('');
   const [error, setError] = useState('');
+  const [bookingSuccessful, setBookingSuccessful] = useState(false);
+  const [preferenceId, setPreferenceId] = useState('');
 
-  // Inicializar Mercado Pago al cargar el componente
+  // Nuevas variables de estado para los datos adicionales de la habitación
+  const [roomPrice, setRoomPrice] = useState('');
+  const [roomDescription, setRoomDescription] = useState('');
+  const [roomServices, setRoomServices] = useState<string[]>([]);
+
+  // Estados para los datos del usuario
+  const [userName, setUserName] = useState('');
+  const [userEmail, setUserEmail] = useState('');
+  const [userContry, setUseContry] = useState('');
+  const [userPhone, setUsePhone] = useState('');
+
   useEffect(() => {
-    try {
-      initMercadoPago('YOUR_PUBLIC_KEY');
-    } catch (error) {
-      setError('Error al inicializar Mercado Pago.');
-    }
+    initMercadoPago('APP_USR-50c5501b-9412-483e-874b-6653c0de1f93');
   }, []);
 
-  // Obtener datos del usuario desde el backend (mockeado por ahora)
   useEffect(() => {
-    const mockUserData = async () => {
-      try {
-        // Simulando la llamada a la API
-        const data: UserData = {
-          name: 'Mariana Lopez Castillos',
-          address: 'Calle Luis Donaldo Colosio',
-          age: 33,
-          email: 'mariana@gmail.com',
-          phone: '5569063654',
-          nationality: 'Mexicana',
-        };
-        setUserData(data);
-        console.log('Datos del usuario mockeados:', data);
+    const storedUserId = localStorage.getItem('userId') || '';
+    const storedRoomId = localStorage.getItem('rommUUID') || '';
+    const storedCheckInDate = localStorage.getItem('checkInDate') || '';
+    const storedCheckOutDate = localStorage.getItem('checkOutDate') || '';
+    const storedRoomPrice = localStorage.getItem('roomPrice') || '';
+    const storedRoomDescription = localStorage.getItem('roomDescription') || '';
+    const storedRoomServices = JSON.parse(localStorage.getItem('roomServices') || '[]');
+    const storedUserData = JSON.parse(localStorage.getItem('userData') || '{}');
 
-        //TODO cuando tenga el la API lista cambiar a esto
-        // const response = await fetch('/api/user'); // Cambia esto cuando tengas la API
-        // if (!response.ok) {
-        //   throw new Error('Network response was not ok');
-        // }
-        // const data = await response.json();
-        // setUserData(data);
-      } catch (error) {
-        setError('Error al obtener los datos del usuario.');
-        console.error('Error al obtener los datos del usuario:', error);
-      }
+    setUserId(storedUserData.id || '');
+    setRoomId(storedRoomId);
+    setCheckInDate(storedCheckInDate);
+    setCheckOutDate(storedCheckOutDate);
+    setRoomPrice(storedRoomPrice);
+    setRoomDescription(storedRoomDescription);
+    setRoomServices(storedRoomServices);
+
+    // Setear datos del usuario desde localStorage
+    setUserName(storedUserData.name || '');
+    setUserEmail(storedUserData.email || '');
+    setUseContry(storedUserData.country || '');
+    setUsePhone(storedUserData.phone || '');
+  }, []);
+
+  const handleAddCompanion = () => {
+    setCompanions([...companions, { name: '', identityCard: 0 }]);
+  };
+
+  const handleCompanionChange = (index: number, field: keyof Companion, value: string | number) => {
+    const newCompanions = companions.slice();
+    newCompanions[index] = { ...newCompanions[index], [field]: value };
+    setCompanions(newCompanions);
+  };
+
+  const handleSubmit = async () => {
+    const bookingData = {
+      check_in_date: format(arriveDate!, 'yyyy-MM-dd'),
+      check_out_date: format(departureDate!, 'yyyy-MM-dd'),
+      userId,
+      roomId,
+      companions,
     };
 
-    mockUserData();
-  }, []);
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/booking`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(bookingData),
+      });
 
-  const handleAddCompanions = () => {
-    // TODO cambiar ruta por AquaClub
-    router.push('/');
-  };
+      if (!response.ok) {
+        throw new Error('Error al enviar la reserva. Por favor, inténtelo nuevamente más tarde.');
+      }
 
-  const handlePayment = () => {
-    if (!acceptPolicies) {
-      setError('Debe aceptar las políticas para proceder con el pago.');
-      return;
+      alert('Envio de información exitosa');
+
+      const responseData = await response.json();
+      const preferenceId = responseData.order.id;
+
+      setPreferenceId(preferenceId);
+      setBookingSuccessful(true);
+    } catch (error) {
+      setError('Error al enviar la reserva. Por favor, inténtelo nuevamente más tarde.');
+      console.error('Error en la solicitud de reserva:', error);
     }
-    //  proceder con el pago
-    setError('');
   };
-
-  if (!userData) {
-    return <p>Cargando datos del usuario...</p>;
-  }
 
   return (
-    <div className="p-5 max-w-xl mt-14 mx-auto">
-      <h2 className="text-2xl font-bold mb-4 text-center">CONFIRMA TUS DATOS</h2>
-      <div className="bg-white shadow-lg rounded-lg p-6 mb-4">
+    <div className="payment-view mt-20 max-w-md mx-auto p-4 border rounded-lg shadow-lg">
+      <h1 className="text-2xl font-bold mb-4">Reservar Habitación</h1>
+      <form>
         <div className="mb-4">
-          <p><strong>Nombre:</strong> {userData.name}</p>
-          <p><strong>Dirección:</strong> {userData.address}</p>
-          <p><strong>Edad:</strong> {userData.age} años</p>
-          <p><strong>Email:</strong> {userData.email}</p>
-          <p><strong>Teléfono:</strong> {userData.phone}</p>
-          <p><strong>Nacionalidad:</strong> {userData.nationality}</p>
+          <label className="block mb-1">Fecha de llegada: {arriveDate?.toDateString()}</label>
         </div>
-
         <div className="mb-4">
-          <button
-            className="w-full mb-3 py-2 px-4 bg-teal-600 text-white rounded-full hover:bg-teal-500 transition-colors"
-            onClick={handleAddCompanions}
-          >
-            Tener codigos de descuento todo el año
-          </button>
-          <p>Si tienes un codigo de descuento agregalo aqui</p>
-            <div className="flex items-center">
-              <MdDiscount className="text-gray-400 mr-2" />
+          <label className="block mb-1">Fecha de salida: {departureDate?.toDateString()}</label>
+        </div>
+        <div className="mb-4">
+          <label className="block mb-1">Agregar Acompañantes (opcional):</label>
+          {companions.map((companion, index) => (
+            <div key={index} className="mb-2">
               <input
                 type="text"
-                placeholder="Agregar código de descuento"
-                className="w-full py-2 px-4 border rounded mb-2"
+                placeholder="Nombre"
+                value={companion.name}
+                onChange={(e) => handleCompanionChange(index, 'name', e.target.value)}
+                className="block w-full px-3 py-2 border rounded-lg"
+              />
+              <input
+                type="number"
+                placeholder="Cédula de Identidad"
+                value={companion.identityCard}
+                onChange={(e) => handleCompanionChange(index, 'identityCard', parseInt(e.target.value, 10))}
+                className="block w-full px-3 py-2 border rounded-lg mt-2"
               />
             </div>
+          ))}
+          <button
+            type="button"
+            onClick={handleAddCompanion}
+            className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 mt-2"
+          >
+            Agregar Acompañante
+          </button>
         </div>
         <div className="mb-4">
+          <label className="block mb-1">Código de Descuento (opcional):</label>
           <input
-            type="checkbox"
-            id="acceptPolicies"
-            name="acceptPolicies"
-            className="mr-2"
-            checked={acceptPolicies}
-            onChange={() => setAcceptPolicies(!acceptPolicies)}
+            type="text"
+            value={discountCode}
+            onChange={(e) => setDiscountCode(e.target.value)}
+            className="block w-full px-3 py-2 border rounded-lg"
           />
-            <label htmlFor="acceptPolicies">
-             <a href="/termsAndConditions" className='underline'>Acepto Términos y Condiciones</a>
-            </label>
         </div>
-        {error && <p className="text-red-500 mb-4">{error}</p>}
-      </div>
-      <h3 className="text-xl font-bold mb-4 text-center">¿Cómo deseas pagar?</h3>
-      <div className="flex justify-between">
-        <div id="wallet_container" className="w-full">
+        <h2 className="text-xl font-bold mt-8">Datos del Usuario</h2>
+        <p className="mb-2">ID de Usuario: {userId}</p>
+        <p className="mb-2">Nombre: {userName}</p>
+        <p className="mb-4">Correo Electrónico: {userEmail}</p>
+        <p className="mb-4">Pais: {userContry}</p>
+        <p className="mb-4">Cel: {userPhone}</p>
+      
+        <h2 className="text-xl font-bold">Datos de la Habitación</h2>
+        <p className="mb-2">Número de Habitación: {roomId}</p>
+        <p className="mb-2">Descripción: {roomDescription}</p>
+        <p className="mb-2">Precio: ${roomPrice}</p>
+        <p className="mb-4">Servicios: {roomServices.join(', ')}</p>
+        <button
+          type="button"
+          onClick={handleSubmit}
+          className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600"
+        >
+          Siguiente
+        </button>
+      </form>
+
+      {error && <p className="text-red-500 mt-4">{error}</p>}
+
+      {bookingSuccessful && preferenceId && (
+        <div id="wallet_container" className="w-full mt-4">
           <Wallet
-            initialization={{ preferenceId: '<PREFERENCE_ID>' }}
+            initialization={{ preferenceId }}
             customization={{ texts: { valueProp: 'smart_option' } }}
             onError={() => setError('Error al cargar el componente de pago.')}
           />
         </div>
-      </div>
-      {/* <button
-        className="w-full mt-4 py-2 px-4 bg-green-500 text-white rounded-full hover:bg-green-700 transition-colors"
-        onClick={handlePayment}
-      >
-        Proceder al pago
-      </button> */}
+      )}
     </div>
   );
 };
 
-export default ConfirmReservation;
-// <script src="https://sdk.mercadopago.com/js/v2"></script>
+export default PaymentView;
