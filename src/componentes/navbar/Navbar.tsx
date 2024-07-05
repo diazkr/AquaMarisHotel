@@ -105,17 +105,9 @@ function NavBar() {
                 <Button
                   key={item.title}
                   color="primary"
-                  className="text-md bg-transparent hover:bg-transparent text-gray-500 hover:text-gray-700"
                   variant="text"
-                  style={{
-                    backgroundColor: "transparent",
-                    cursor: "not-allowed",
-                  }}
                   onClick={() => {
-                    if (!true) {
-                      // Cambia true a la condición que necesites para habilitar o deshabilitar
                       handleNavigation(item.path);
-                    }
                   }}
                 >
                   {item.title}

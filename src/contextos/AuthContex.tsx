@@ -27,6 +27,7 @@ interface AuthProviderProps {
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  
 
   useEffect(() => {
     const token = localStorage.getItem("token");
