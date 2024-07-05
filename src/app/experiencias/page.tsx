@@ -1,4 +1,4 @@
-import MapComponent from '@/componentes/experiencias/MapComponent';
+import MapComponent from '@/componentes/mapa/MapComponent';
 import React from 'react';
 import dynamic from "next/dynamic"
 
