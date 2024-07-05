@@ -26,9 +26,9 @@ const ReservationsList: React.FC<ReservationsListProps> = ({
         Historial de reservas
       </Typography>
       {reservations.map((reservation) => (
-        <div key={reservation.reservation_id}>
+        <div key={reservation.id}>
           <ReservationsDetails
-            key={reservation.reservation_id}
+            key={reservation.id}
             {...reservation}
             setComentarios={setComentarios}
           />

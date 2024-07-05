@@ -18,16 +18,16 @@ interface ReservationsDetailsProps extends ReservationInterface {
 }
 
 const ReservationsDetails: React.FC<ReservationsDetailsProps> = ({
-  reservation_id,
+  id,
   userId,
   room,
-  entry_date,
-  departure_date,
-  payment_status,
+  check_in_date,
+  check_out_date,
+  paymentStatus,
   companions,
   setComentarios,
 }) => {
-  const departureDate = new Date(departure_date);
+  const departureDate = new Date(check_out_date);
   const currentDate = new Date();
   const isPastDepartureDate = departureDate <= currentDate;
   const [showCommentForm, setShowCommentForm] = useState(false);
@@ -70,7 +70,7 @@ const ReservationsDetails: React.FC<ReservationsDetailsProps> = ({
     }
   };
 
-  const paymentStatusInfo = getPaymentStatusInfo(payment_status);
+  const paymentStatusInfo = getPaymentStatusInfo(paymentStatus);
 
   return (
     <div className="mx-auto px-6 my-3 ">
@@ -79,7 +79,7 @@ const ReservationsDetails: React.FC<ReservationsDetailsProps> = ({
           <p className="text-sm font-semibold text-cyan-800">
             Código de reserva:{" "}
           </p>
-          <p className="text-sm text-gray-900">{reservation_id}</p>
+          <p className="text-sm text-gray-900">{id}</p>
         </div>
         <div className="flex gap-3 justify-between">
           <div className="mb-4 flex flex-col items-center">
@@ -88,7 +88,7 @@ const ReservationsDetails: React.FC<ReservationsDetailsProps> = ({
             </p>
             <div className="flex">
               <FaCalendarAlt className="mr-2  text-gray-600 text-xl" />
-              <p className="text-sm text-gray-900 ml-2">{entry_date}</p>
+              <p className="text-sm text-gray-900 ml-2">{check_in_date}</p>
             </div>
           </div>
           <div className="mb-4 flex flex-col items-center">
@@ -97,7 +97,7 @@ const ReservationsDetails: React.FC<ReservationsDetailsProps> = ({
             </p>
             <div className="flex">
               <FaCalendarAlt className="mr-2  text-gray-600 text-xl" />
-              <p className="text-sm text-gray-900 ml-2">{departure_date}</p>
+              <p className="text-sm text-gray-900 ml-2">{check_out_date}</p>
             </div>
           </div>
           <div className="mb-4 flex flex-col items-center">
