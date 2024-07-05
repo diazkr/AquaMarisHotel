@@ -3,21 +3,18 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Modal from 'react-modal';
-import { Habitacion } from '@/interfaces/HabitacionInterface';
-import { FaWifi, FaTv, FaWater, FaSnowflake, FaFire, FaLock, FaParking, FaCoffee, FaIceCream, FaHotTub } from 'react-icons/fa';
 import { useRouter } from 'next/navigation';
-import { useAuth } from '@/contextos/AuthContex';
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
+import { Habitacion } from '@/interfaces/HabitacionInterface';
+import {FaWifi, FaTv, FaWater, FaSnowflake,FaFire,FaLock,FaParking,FaCoffee,FaIceCream,FaHotTub,} from "react-icons/fa";
+
 
 const Page = ({ params }: { params: { id: string } }) => {
   const { id } = params;
   const [room, setRoom] = useState<Habitacion | null>(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [authModalIsOpen, setAuthModalIsOpen] = useState(false);
-  const { isAuthenticated } = useAuth();
   const router = useRouter();
 
-  localStorage.setItem("roomUUID", id);
+  localStorage.setItem("rommUUID", id);
 
   const openModal = () => {
     setModalIsOpen(true);
@@ -27,14 +24,10 @@ const Page = ({ params }: { params: { id: string } }) => {
     setModalIsOpen(false);
   };
 
-  const openAuthModal = () => {
-    setAuthModalIsOpen(true);
+  const handleReserveClick = () => {
+    router.push('/payment'); 
   };
-
-  const closeAuthModal = () => {
-    setAuthModalIsOpen(false);
-  };
-
+  
   const renderIcon = (servicio: string) => {
     switch (servicio) {
       case "wifi":
@@ -60,6 +53,7 @@ const Page = ({ params }: { params: { id: string } }) => {
       default:
         return null;
     }
+
   };
 
   const renderTextEspanol = (servicio: string) => {
@@ -87,6 +81,7 @@ const Page = ({ params }: { params: { id: string } }) => {
       default:
         return null;
     }
+
   };
 
   useEffect(() => {
@@ -96,11 +91,17 @@ const Page = ({ params }: { params: { id: string } }) => {
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
+        console.log('Respuesta de la petición', `${process.env.NEXT_PUBLIC_API_URL}/rooms/${id}`);
         const data = await response.json();
+        console.log(data);
+
         localStorage.setItem("roomPrice", data.price);
         localStorage.setItem('roomDescription', data.description);
         localStorage.setItem('roomServices', JSON.stringify(data.services));
+
+
         setRoom(data);
+
       } catch (error) {
         console.error('Fetching room failed:', error);
       }
@@ -108,14 +109,6 @@ const Page = ({ params }: { params: { id: string } }) => {
 
     fetchRoom();
   }, [id]);
-
-  const handleReservation = () => {
-    if (isAuthenticated) {
-      router.push('/payment');
-    } else {
-      openAuthModal();
-    }
-  };
 
   if (!room) {
     return <div>Habitación no encontrada</div>;
@@ -126,11 +119,11 @@ const Page = ({ params }: { params: { id: string } }) => {
       <div className="space-y-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <Image src={room.images[0]} alt="Main view" width={800} height={400} className="rounded-lg w-full h-full" />
+            <Image src={room.images[0]} alt="Main view" width={800} height={600} className="rounded-lg w-full h-full" />
           </div>
           <div className="grid grid-cols-2 gap-2">
             {room.images.slice(1, 4).map((image, index) => (
-              <Image key={index} src={image} alt={"view"} width={400} height={300} className="rounded-lg w-full h-full my-2" />
+              <Image key={index} src={image} alt={"view"} width={400} height={300} className="rounded-lg w-full h-full" />
             ))}
             <div className="relative">
               <Image src={room.images[4]} alt="View 5" width={400} height={300} className="rounded-lg w-full h-full" />
@@ -152,6 +145,11 @@ const Page = ({ params }: { params: { id: string } }) => {
                   <span className="text-lg font-semibold text-gray-600">Precio</span>
                   <span className="ml-2 text-gray-500">${room.price}</span>
                 </div>
+                {/* El estado no es necesario que lo vea el usuario
+                 <div className="flex items-center">
+                  <span className="text-lg font-semibold text-gray-600">Estado</span>
+                  <span className="ml-2 text-gray-500">{room.state}</span>
+                </div> */}
                 <div className="flex items-center">
                   <span className="text-lg font-semibold text-gray-600">Número de habitación</span>
                   <span className="ml-2 text-gray-500">{room.roomNumber}</span>
@@ -162,22 +160,22 @@ const Page = ({ params }: { params: { id: string } }) => {
                 </div>
                 <div className="flex items-center">
                   <div className="flex space-x-2 text-2xl text-[#17858A] my-3">
-                    {room.services.map((servicio) => (
+                        {room.services.map((servicio) => (
                       <div
-                        key={servicio}
-                        className="flex items-center justify-center w-12 h-12 rounded-full border border-gray-300 hover:bg-[#d9eeec] hover:scale-95 transition-transform duration-200"
-                      >
-                        {renderIcon(servicio)}
+                            key={servicio}
+                            className="flex items-center justify-center w-12 h-12 rounded-full border border-gray-300 hover:bg-[#d9eeec] hover:scale-95 transition-transform duration-200"
+                          >
+                            {renderIcon(servicio)}
+                          </div>
+                          ))}
                       </div>
-                    ))}
                   </div>
                 </div>
-              </div>
             </div>
             <button className="w-full bg-teal-600 text-white py-2 px-4 rounded-lg hover:bg-teal-500" disabled>
               Calendario
             </button>
-            <button className="w-full bg-teal-600 text-white py-2 px-4 rounded-lg hover:bg-teal-500" onClick={handleReservation}>
+            <button className="w-full bg-teal-600 text-white py-2 px-4 rounded-lg hover:bg-teal-500" onClick={handleReserveClick}>
               Reservar
             </button>
           </div>
@@ -189,7 +187,7 @@ const Page = ({ params }: { params: { id: string } }) => {
         contentLabel="Ver más fotos"
         className="modal"
         overlayClassName="overlay"
-      >
+        >
         <div className="image-scroll-container">
           {room.images.length >= 6 ? (
             room.images.slice(5).map((image) => (
@@ -212,19 +210,9 @@ const Page = ({ params }: { params: { id: string } }) => {
           Cerrar
         </button>
       </Modal>
-      <Dialog open={authModalIsOpen} onClose={closeAuthModal}>
-        <DialogTitle>¡Ups! Debes estar logueado</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Para reservar una habitación, por favor inicia sesión o regístrate.
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button variant='contained' onClick={() => router.push('/register')} color="primary">Ir a registro</Button>
-        </DialogActions>
-      </Dialog>
     </div>
   );
 };
 
 export default Page;
+

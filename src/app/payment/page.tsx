@@ -108,45 +108,55 @@ const PaymentView: React.FC = () => {
   };
 
   return (
-    <div className="payment-view mt-20 max-w-md mx-auto p-4 border rounded-lg shadow-lg">
-      <h1 className="text-2xl font-bold mb-4">Reservar Habitación</h1>
+    <div className="payment-view mt-20 mb-20 max-w-3xl mx-auto p-6 border rounded-lg shadow-lg bg-white">
+      <h1 className="text-3xl font-bold mb-6 text-center text-gray-800">Reservar Habitación</h1>
       <form>
-        <div className="mb-4">
-          <label className="block mb-1">Fecha de llegada: {arriveDate?.toDateString()}</label>
+        <div className="mb-6">
+          <h2 className="text-xl font-semibold mb-2 text-gray-700">Fecha de la Reserva</h2>
+          <p className="mb-4">Fecha de llegada: {arriveDate?.toDateString()}</p>
+          <p className="mb-4">Fecha de salida: {departureDate?.toDateString()}</p>
         </div>
-        <div className="mb-4">
-          <label className="block mb-1">Fecha de salida: {departureDate?.toDateString()}</label>
+
+        <div className="mb-6">
+          <h2 className="text-xl font-semibold mb-2 text-gray-700">Datos del Usuario</h2>
+          <p className="mb-2">ID de Usuario: {userId}</p>
+          <p className="mb-2">Nombre: {userName}</p>
+          <p className="mb-2">Correo Electrónico: {userEmail}</p>
+          <p className="mb-2">País: {userContry}</p>
+          <p className="mb-4">Cel: {userPhone}</p>
         </div>
-        <div className="mb-4">
-          <label className="block mb-1">Agregar Acompañantes (opcional):</label>
+
+        <div className="mb-6">
+          <h2 className="text-xl font-semibold mb-2 text-gray-700">Agregar Acompañantes (opcional)</h2>
           {companions.map((companion, index) => (
-            <div key={index} className="mb-2">
+            <div key={index} className="mb-4">
               <input
                 type="text"
                 placeholder="Nombre"
                 value={companion.name}
                 onChange={(e) => handleCompanionChange(index, 'name', e.target.value)}
-                className="block w-full px-3 py-2 border rounded-lg"
+                className="block w-full px-3 py-2 mb-2 border rounded-lg"
               />
               <input
                 type="number"
                 placeholder="Cédula de Identidad"
                 value={companion.identityCard}
                 onChange={(e) => handleCompanionChange(index, 'identityCard', parseInt(e.target.value, 10))}
-                className="block w-full px-3 py-2 border rounded-lg mt-2"
+                className="block w-full px-3 py-2 border rounded-lg"
               />
             </div>
           ))}
           <button
             type="button"
             onClick={handleAddCompanion}
-            className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 mt-2"
+            className="bg-teal-600 text-white px-4 py-2 rounded-full hover:bg-teal-500"
           >
             Agregar Acompañante
           </button>
         </div>
-        <div className="mb-4">
-          <label className="block mb-1">Código de Descuento (opcional):</label>
+
+        <div className="mb-6">
+          <h2 className="text-xl font-semibold mb-2 text-gray-700">Código de Descuento (opcional)</h2>
           <input
             type="text"
             value={discountCode}
@@ -154,25 +164,24 @@ const PaymentView: React.FC = () => {
             className="block w-full px-3 py-2 border rounded-lg"
           />
         </div>
-        <h2 className="text-xl font-bold mt-8">Datos del Usuario</h2>
-        <p className="mb-2">ID de Usuario: {userId}</p>
-        <p className="mb-2">Nombre: {userName}</p>
-        <p className="mb-4">Correo Electrónico: {userEmail}</p>
-        <p className="mb-4">Pais: {userContry}</p>
-        <p className="mb-4">Cel: {userPhone}</p>
-      
-        <h2 className="text-xl font-bold">Datos de la Habitación</h2>
-        <p className="mb-2">Número de Habitación: {roomId}</p>
-        <p className="mb-2">Descripción: {roomDescription}</p>
-        <p className="mb-2">Precio: ${roomPrice}</p>
-        <p className="mb-4">Servicios: {roomServices.join(', ')}</p>
-        <button
-          type="button"
-          onClick={handleSubmit}
-          className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600"
-        >
-          Siguiente
-        </button>
+
+        <div className="mb-6">
+          <h2 className="text-xl font-semibold mb-2 text-gray-700">Datos de la Habitación</h2>
+          <p className="mb-2">Número de Habitación: {roomId}</p>
+          <p className="mb-2">Descripción: {roomDescription}</p>
+          <p className="mb-2">Precio: ${roomPrice}</p>
+          <p className="mb-4">Servicios: {roomServices.join(', ')}</p>
+        </div>
+
+        <div className="flex justify-center mt-6">
+          <button
+            type="button"
+            onClick={handleSubmit}
+            className="bg-teal-600 text-white w-80 px-4 py-2 rounded-full hover:bg-teal-500"
+          >
+            Siguiente
+          </button>
+        </div>
       </form>
 
       {error && <p className="text-red-500 mt-4">{error}</p>}
@@ -191,3 +200,8 @@ const PaymentView: React.FC = () => {
 };
 
 export default PaymentView;
+
+
+
+
+
