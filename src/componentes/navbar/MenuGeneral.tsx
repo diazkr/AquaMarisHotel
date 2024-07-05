@@ -39,17 +39,14 @@ const MenuGeneral = () => {
         <div className="px-4 py-2 font-semibold text-[#5C666F]">
             Mi cuenta
         </div>
-        <MenuItem className="px-8 mx-4 my-2 bg-gray-300" onClick={() => handleMenuItemClick('/login')} disabled={true}>
-          Iniciar sesión
-        </MenuItem>
         <MenuItem
           className="px-8 mx-4 my-2 "
-          onClick={() => handleMenuItemClick('/createrooms')}
+          onClick={() => handleMenuItemClick('/usuario/123')}
           sx={{
             border: '1px solid #9ca3af',
           }}
         >
-          Registrar habitación
+          Mis reservas
         </MenuItem>
       </Menu>
 

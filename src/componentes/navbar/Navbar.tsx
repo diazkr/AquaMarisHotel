@@ -8,20 +8,18 @@ import { AppBar, Box, Button, Drawer, IconButton } from "@mui/material";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import MenuGeneral from "./MenuGeneral";
+import { useAuth } from "@/contextos/AuthContex";
+import NavUserLogged from "./NavUserLogged";
 
 function NavBar() {
   const [scrolled, setScrolled] = useState<boolean>(false);
   const [open, setOpen] = useState(false);
   const router = useRouter();
+  const { isAuthenticated } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 50) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
-      }
+      setScrolled(window.scrollY > 50);
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -41,6 +39,7 @@ function NavBar() {
     { title: "home", path: "/" },
     { title: "ingresar", path: "/login" },
   ];
+
   const handleNavigation = (path: string) => {
     router.push(path);
   };
@@ -58,7 +57,6 @@ function NavBar() {
           transition: "background-color 0.3s ease-in-out",
           paddingX: 2,
           paddingY: 1,
-
           "&:hover": {
             backgroundColor: "#F5F5F5",
           },
@@ -109,7 +107,6 @@ function NavBar() {
                   color="primary"
                   className="text-md bg-transparent hover:bg-transparent text-gray-500 hover:text-gray-700"
                   variant="text"
-                  disabled={true} // Pon esto en true o false según necesites
                   style={{
                     backgroundColor: "transparent",
                     cursor: "not-allowed",
@@ -126,9 +123,15 @@ function NavBar() {
               ))}
             </div>
 
-            <div className="flex items-center">
-              <MenuGeneral />
-            </div>
+            {isAuthenticated ? (
+              <NavUserLogged />
+            ) : (
+              <div className="flex items-center">
+                <Button variant="outlined" onClick={() => router.push("/register")}>
+                  Iniciar sesión
+                </Button>
+              </div>
+            )}
           </Box>
 
           <Box

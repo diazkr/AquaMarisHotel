@@ -97,7 +97,7 @@ const FilterSidebar = () => {
 
       const result = await response.json();
       console.log(result)
-      setRooms(result);
+      setRooms(result.allRooms);
     } catch (error) {
       console.error("Filtering failed:", error);
     }
@@ -133,7 +133,7 @@ const FilterSidebar = () => {
 
       const result = await response.json();
       console.log(result)
-      setRooms(result);
+      setRooms(result.allRooms);
     } catch (error) {
       console.error("Booking failed:", error);
     }
