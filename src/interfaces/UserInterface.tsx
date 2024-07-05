@@ -5,12 +5,12 @@ export interface AccompanistInterface {
   }
   
 export interface ReservationInterface {
-    reservation_id: string;
+    id: string;
     userId: string;
     roomId: string;
-    entry_date: string;
-    departure_date: string;
-    payment_status: string;
+    check_in_date: string;
+    check_out_date: string;
+    paymentStatus: string;
     companions: AccompanistInterface[];
     room: any;
   }

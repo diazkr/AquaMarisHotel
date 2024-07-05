@@ -84,8 +84,8 @@ export const getUserData = () => {
       },
       {
         id: "bdf7d09d-ba68-40fa-bef4-cc9cc654f93f",
-        check_in_date: "2024-08-09",
-        check_out_date: "2024-08-14",
+        check_in_date: "2024-05-09",
+        check_out_date: "2024-05-14",
         paymentStatus: "IN_PROGRESS",
         user: {
           id: "231e2a09-5a45-459f-ad20-f619d9d544b8",
