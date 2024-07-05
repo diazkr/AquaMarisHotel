@@ -65,8 +65,7 @@ const GoogleButton: React.FC = () => {
           const { access_token, userData: userDataFromServer } = data;
           login(access_token, userDataFromServer);
 
-          // Redirigir después de autenticar
-          router.push("/");
+          router.replace("/");
         } catch (error) {
           console.error('Error during authentication:', error);
           setLoading(false); // Ocultar el loader si hay un error

@@ -14,11 +14,6 @@ interface RegisterButtonProps {
   isDisabled: boolean;
 }
 
-interface AuthResponse {
-  access_token: string;
-  userId: string;
-}
-
 const RegisterButton: React.FC<RegisterButtonProps> = ({ userData, isDisabled }) => {
   const router = useRouter();
 
@@ -34,10 +29,8 @@ const RegisterButton: React.FC<RegisterButtonProps> = ({ userData, isDisabled })
         body: JSON.stringify(userDataWithRole),
       });
 
-      console.log(userData)
+      console.log(userDataWithRole)
 
-      console.log('Response status:', response.status);
-      console.log(response)
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
