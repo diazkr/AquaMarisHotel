@@ -41,7 +41,7 @@ const MenuGeneral = () => {
         </div>
         <MenuItem
           className="px-8 mx-4 my-2 "
-          onClick={() => handleMenuItemClick('/user')}
+          onClick={() => handleMenuItemClick('/usuario/123')}
           sx={{
             border: '1px solid #9ca3af',
           }}

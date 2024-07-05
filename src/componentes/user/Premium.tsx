@@ -1,9 +1,16 @@
-import React from 'react'
+import React from 'react';
 
-function Premium() {
-  return (
-    <div>Premium</div>
-  )
+interface PremiumProps {
+  membershipStatus: string;
 }
 
-export default Premium
+const Premium: React.FC<PremiumProps> = ({ membershipStatus }) => {
+  return (
+    <div className="p-4">
+      <h2 className="text-2xl font-semibold mb-4">Estado de Membresía</h2>
+      <p>{membershipStatus}</p>
+    </div>
+  );
+};
+
+export default Premium;

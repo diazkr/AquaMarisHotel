@@ -12,6 +12,7 @@ export interface ReservationInterface {
     departure_date: string;
     payment_status: string;
     companions: AccompanistInterface[];
+    room: any;
   }
 export interface UserInterface {
     id: string;
@@ -24,9 +25,8 @@ export interface UserInterface {
   }
 
   export interface Comentario {
-    userId: string;
-    roomId: string;
     comment: string;
     rating: number;
+    comment_date:string;
   }
   

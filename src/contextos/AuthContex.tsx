@@ -6,8 +6,6 @@ interface UserData {
 }
 
 interface AuthContextType {
-  isAuthenticated: boolean;
-  userData: UserData | null;
   login: (token: string, userData: UserData) => void;
   logout: () => void;
 }
@@ -27,36 +25,21 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-  const [userData, setUserData] = useState<UserData | null>(null);
 
-
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    const userDataString = localStorage.getItem("userData");
-
-    if (token && userDataString) {
-      setIsAuthenticated(true);
-      setUserData(JSON.parse(userDataString));
-    }
-  }, []);
 
   const login = (token: string, userData: UserData) => {
     localStorage.setItem("token", token);
     localStorage.setItem("userData", JSON.stringify(userData));
-    setIsAuthenticated(true);
-    setUserData(userData);
   };
 
   const logout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("userData");
-    setIsAuthenticated(false);
-    setUserData(null);
+
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, userData, login, logout }}>
+    <AuthContext.Provider value={{ login, logout }}>
       {children}
     </AuthContext.Provider>
   );

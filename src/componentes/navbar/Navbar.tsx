@@ -16,8 +16,10 @@ function NavBar() {
   const [scrolled, setScrolled] = useState<boolean>(false);
   const [open, setOpen] = useState(false);
   const router = useRouter();
-  const { isAuthenticated, userData, login } = useAuth();
+  const { login } = useAuth();
   const { data: session } = useSession();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
 
   useEffect(() => {
     const handleScroll = () => {
@@ -36,15 +38,20 @@ function NavBar() {
   }, []);
 
   useEffect(() => {
-    if (session) {
+    const checkAuth = () => {
       const token = localStorage.getItem("token");
-      const userDataString = localStorage.getItem("userData");
-      if (token && userDataString) {
-        const userData = JSON.parse(userDataString);
-        login(token, userData);
-      }
-    }
-  }, [session, login]);
+      setIsAuthenticated(!!token);
+    };
+
+    checkAuth(); // Check authentication on initial render
+
+    window.addEventListener("storage", checkAuth); // Listen for storage events
+
+    return () => {
+      window.removeEventListener("storage", checkAuth);
+    };
+  }, []);
+
 
   const navLinks = [
     { title: "hoteles", path: "/hoteles" },

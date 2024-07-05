@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { Box, List, ListItem, ListItemIcon, ListItemText } from "@mui/material";
+import { Box, CircularProgress, List, ListItem, ListItemIcon, ListItemText } from "@mui/material";
 import {
   FaClipboardList,
   FaCommentDots,
@@ -10,35 +10,39 @@ import {
   FaUserCog,
 } from "react-icons/fa";
 import UserDetail from "./UserDetail";
-import Comentarios from "./Comentarios";
 import Premium from "./Premium";
 import FAQContent from "./FAQContent";
-import { Comentario, UserInterface } from "@/interfaces/UserInterface";
 import { getUserData } from "@/DataBase/getUserData";
 import Image from "next/image";
-import { ReservationInterface } from "@/interfaces/UserInterface";
 import ReservationsList from "./ReservationList";
-import getReservations from "@/DataBase/ReservationMock";
+import CommentList from "./CommentList";
 
 interface UserLayoutProps {
   id: string;
 }
 
 const UserLayout: React.FC<UserLayoutProps> = ({ id }) => {
-  const [user, setUser] = useState<UserInterface | null>(null);
-  const [reservations, setReservations] = useState<ReservationInterface[]>([]);
-  const [comentarios, setComentarios] = useState<Comentario[]>([]);
+  const [user, setUser] = useState<any | null>(null);
+  const [loading, setLoading] = useState(true);
   const [selectedContent, setSelectedContent] = useState<React.ReactNode>(null);
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const [loading, setLoading] = useState(true);
 
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const reservationsData = getReservations();
-        setReservations(reservationsData);
-        setSelectedContent(<ReservationsList reservations={reservationsData} />);
+        const userData = getUserData();
+        setUser(userData);
+        setSelectedContent(
+          <UserDetail
+            id={userData.id}
+            name={userData.name}
+            email={userData.email}
+            phone={userData.phone}
+            country={userData.country}
+          />
+        );
+
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -50,11 +54,7 @@ const UserLayout: React.FC<UserLayoutProps> = ({ id }) => {
   }, [id]);
 
   const menuItems = [
-    {
-      text: "Reservaciones",
-      icon: <FaClipboardList />,
-      content: <ReservationsList reservations={reservations} />,
-    },
+    
     {
       text: "Información personal",
       icon: <FaInfoCircle />,
@@ -65,30 +65,23 @@ const UserLayout: React.FC<UserLayoutProps> = ({ id }) => {
           email={user.email}
           phone={user.phone}
           country={user.country}
-          reservations={user.reservations}
-          comentario={user.comentario}
         />
       ) : null,
     },
     {
+      text: "Reservaciones",
+      icon: <FaClipboardList />,
+      content: user ? <ReservationsList reservations={user.booking} /> : null,
+    },
+    {
       text: "Mis comentarios",
       icon: <FaCommentDots />,
-      content:
-        comentarios.length > 0 ? (
-          comentarios.map((comentario, index) => (
-            <Comentarios
-              key={index}
-              userId={comentario.userId}
-              roomId={comentario.roomId}
-              comment={comentario.comment}
-              rating={comentario.rating}
-            />
-          ))
-        ) : (
-          <p>No hay comentarios disponibles.</p>
-        ),
+      content: user ? <CommentList comments={user.comments} /> : null,
+
     },
-    { text: "Mi suscripción", content: <Premium />, icon: <FaStar /> },
+    { text: "Mi suscripción",
+      content: user ? <Premium membershipStatus={user.membership_status} /> : null,
+     icon: <FaStar /> },
     {
       text: "Preguntas frecuentes",
       content: <FAQContent />,
@@ -103,17 +96,14 @@ const UserLayout: React.FC<UserLayoutProps> = ({ id }) => {
 
   return (
     <Box className="flex flex-col justify-center items-center my-4">
-      <div className="flex flex-col md:flex-row md:w-3/4 justify-center ">
+      <div className="flex flex-col md:flex-row md:w-10/12 justify-center ">
         <div className="w-[100%] py-2">
-          <div className="flex justify-center items-center my-2">
-            <Image src="/logos/logo.svg" alt="" width={200} height={200} />
-          </div>
           <p className="bg-[#17858A] py-3 text-center text-[#F5F5F5] font-semibold w-full drop-shadow-md">
             Información de usuario
           </p>
         </div>
       </div>
-      <div className="flex flex-col md:flex-row md:w-3/4 ">
+      <div className="flex flex-col md:flex-row md:w-10/12 ">
         <Box className="md:w-1/3 mr-3 pr-4 bg-white">
           <List>
             {menuItems.map((item, index) => (
@@ -135,7 +125,7 @@ const UserLayout: React.FC<UserLayoutProps> = ({ id }) => {
         </Box>
         <div className="md:w-2/3 m-1 flex bg-white md:h-[50vh] border-4 rounded-xl border-[#d9eeed] shadow-lg">
           <div className="drop-shadow-md overflow-y-auto w-full">
-            {selectedContent}
+          {loading ? <CircularProgress /> : selectedContent}
           </div>
         </div>
       </div>

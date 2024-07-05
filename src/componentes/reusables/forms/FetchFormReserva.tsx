@@ -53,7 +53,7 @@ const FetchBookingForm: React.FC = () => {
 
       const result = await response.json();
       console.log(result)
-      setRooms(result);
+      setRooms(result.allRooms);
       router.push('/lista');
 
     } catch (error) {

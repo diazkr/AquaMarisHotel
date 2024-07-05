@@ -1,14 +1,13 @@
-
-import { UserInterface } from "@/interfaces/UserInterface";
+import React from 'react';
 import { FaEnvelope, FaMapMarkerAlt, FaPhone, FaUser } from "react-icons/fa";
+import { UserInterface } from "@/interfaces/UserInterface";
 
-const UserDetail: React.FC<UserInterface> = ({
+const UserDetail: React.FC<Pick<UserInterface, 'id' | 'name' | 'email' | 'phone' | 'country'>> = ({
   id,
   name,
   email,
   phone,
-  country,
-  reservations,
+  country
 }) => {
   return (
     <div className="p-6 mx-auto w-full">

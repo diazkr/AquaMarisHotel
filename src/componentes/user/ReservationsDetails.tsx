@@ -3,7 +3,6 @@ import { ReservationInterface, Comentario } from "@/interfaces/UserInterface";
 import { useState } from "react";
 import { Button, Rating } from "@mui/material";
 import Link from "next/link";
-import CardHabitacionReserva from "./cardHabitacionReserva";
 import {
   FaCalendarAlt,
   FaCheckCircle,
@@ -12,6 +11,7 @@ import {
   FaTimesCircle,
   FaUser,
 } from "react-icons/fa";
+import CardHabitacionReserva from "./cardHabitacionReserva";
 
 interface ReservationsDetailsProps extends ReservationInterface {
   setComentarios: Dispatch<SetStateAction<Comentario[]>>;
@@ -20,7 +20,7 @@ interface ReservationsDetailsProps extends ReservationInterface {
 const ReservationsDetails: React.FC<ReservationsDetailsProps> = ({
   reservation_id,
   userId,
-  roomId,
+  room,
   entry_date,
   departure_date,
   payment_status,
@@ -37,8 +37,8 @@ const ReservationsDetails: React.FC<ReservationsDetailsProps> = ({
   const handleCommentSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (rating === null) return;
-
-    const newComment: Comentario = { userId, roomId, comment, rating };
+    const comment_date = new Date().toISOString();
+    const newComment: Comentario = { comment_date, comment, rating };
     setComentarios((prevComments) => [...prevComments, newComment]);
     setShowCommentForm(false);
     setComment("");
@@ -93,7 +93,7 @@ const ReservationsDetails: React.FC<ReservationsDetailsProps> = ({
           </div>
           <div className="mb-4 flex flex-col items-center">
             <p className="text-sm font-semibold text-cyan-800 py-2">
-              Fecha de Entrada
+              Fecha de Salida
             </p>
             <div className="flex">
               <FaCalendarAlt className="mr-2  text-gray-600 text-xl" />
@@ -135,7 +135,7 @@ const ReservationsDetails: React.FC<ReservationsDetailsProps> = ({
         </div>
 
         <div>
-          <CardHabitacionReserva id={roomId}></CardHabitacionReserva>
+          <CardHabitacionReserva {...room}></CardHabitacionReserva>
         </div>
 
         {isPastDepartureDate && (
