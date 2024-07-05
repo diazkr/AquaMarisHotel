@@ -37,6 +37,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     localStorage.removeItem("userData");
 
   };
+  // comentarios
 
   return (
     <AuthContext.Provider value={{ login, logout }}>
