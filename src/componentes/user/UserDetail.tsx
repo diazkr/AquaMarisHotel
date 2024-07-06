@@ -10,8 +10,8 @@ const UserDetail: React.FC<
     <div className="p-6 mx-auto w-[50%] ">
       <div className=" flex justify-center items-center my-3">
       <Image
-            // src={photo || "/iconos/usuario.png"}
-            src={"/iconos/usuario.png"}
+            src={photo || "/iconos/usuario.png"}
+            // src={"/iconos/usuario.png"}
 
             width="100"
             height="100"
