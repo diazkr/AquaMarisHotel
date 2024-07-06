@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Typography } from '@mui/material';
+import { Alert, Button, Snackbar, Typography } from '@mui/material';
 import { IoIosArrowForward } from 'react-icons/io';
 import { useAuth } from '@/contextos/AuthContex';
 import { useRouter } from 'next/navigation';
@@ -21,6 +21,8 @@ const LoginButton: React.FC<LoginButtonProps> = ({ email, password }) => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const { login } = useAuth(); 
   const router = useRouter()
+  const [success, setSuccess] = useState<boolean>(false);
+  const [open, setOpen] = useState<boolean>(false);
 
   const handleSignIn = async () => {
     try {
@@ -42,14 +44,25 @@ const LoginButton: React.FC<LoginButtonProps> = ({ email, password }) => {
 
       const data: AuthResponse = await response.json();
       const { token, userData } = data;
-      login(token, userData); // Llama a la función login del
-      setErrorMessage(null); // Clear any previous error messages
-      router.push("/")
+      login(token, userData); 
+      setErrorMessage(null); 
+      setSuccess(true);
+      setOpen(true);
+      setTimeout(() => {
+        router.push("/");
+      }, 1500);
 
     } catch (error) {
       console.error('Error during authentication:', error);
       setErrorMessage((error as Error).message); // Set the error message
     }
+  };
+
+  const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpen(false);
   };
 
   return (
@@ -69,6 +82,17 @@ const LoginButton: React.FC<LoginButtonProps> = ({ email, password }) => {
         <span>Continuar</span>
         <IoIosArrowForward className="icon-right text-lg" />
       </Button>
+
+      <Snackbar 
+        open={open} 
+        autoHideDuration={6000} 
+        onClose={handleClose}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }} // Ajusta la posición aquí
+      >
+        <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+          Inicio de sesión exitoso
+        </Alert>
+      </Snackbar>
     </div>
   );
 };

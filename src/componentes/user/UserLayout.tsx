@@ -1,6 +1,13 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { Box, CircularProgress, List, ListItem, ListItemIcon, ListItemText } from "@mui/material";
+import {
+  Box,
+  CircularProgress,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+} from "@mui/material";
 import {
   FaClipboardList,
   FaCommentDots,
@@ -27,11 +34,14 @@ const UserLayout: React.FC<UserLayoutProps> = ({ id }) => {
   const [selectedContent, setSelectedContent] = useState<React.ReactNode>(null);
   const [selectedIndex, setSelectedIndex] = useState(0);
 
-
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const userData = getUserData();
+        const response = await fetch(`http://localhost:3001/user/${id}`);
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const userData = await response.json();
         setUser(userData);
         setSelectedContent(
           <UserDetail
@@ -40,9 +50,9 @@ const UserLayout: React.FC<UserLayoutProps> = ({ id }) => {
             email={userData.email}
             phone={userData.phone}
             country={userData.country}
+            photo={userData.user_photo}
           />
         );
-
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -54,7 +64,6 @@ const UserLayout: React.FC<UserLayoutProps> = ({ id }) => {
   }, [id]);
 
   const menuItems = [
-    
     {
       text: "Información personal",
       icon: <FaInfoCircle />,
@@ -65,6 +74,7 @@ const UserLayout: React.FC<UserLayoutProps> = ({ id }) => {
           email={user.email}
           phone={user.phone}
           country={user.country}
+          photo={user.user_photo}
         />
       ) : null,
     },
@@ -77,11 +87,14 @@ const UserLayout: React.FC<UserLayoutProps> = ({ id }) => {
       text: "Mis comentarios",
       icon: <FaCommentDots />,
       content: user ? <CommentList comments={user.comments} /> : null,
-
     },
-    { text: "Mi suscripción",
-      content: user ? <Premium membershipStatus={user.membership_status} /> : null,
-     icon: <FaStar /> },
+    {
+      text: "Mi suscripción",
+      content: user ? (
+        <Premium membershipStatus={user.membership_status} />
+      ) : null,
+      icon: <FaStar />,
+    },
     {
       text: "Preguntas frecuentes",
       content: <FAQContent />,
@@ -123,9 +136,15 @@ const UserLayout: React.FC<UserLayoutProps> = ({ id }) => {
             ))}
           </List>
         </Box>
-        <div className="md:w-2/3 m-1 flex bg-white md:h-[50vh] border-4 rounded-xl border-[#d9eeed] shadow-lg">
+        <div className="md:w-2/3 m-1 flex bg-white md:h-[50vh] border border-gray-200 shadow-lg">
           <div className="drop-shadow-md overflow-y-auto w-full">
-          {loading ? <CircularProgress /> : selectedContent}
+            {loading ? (
+              <div className="flex justify-center items-center h-full">
+                <CircularProgress sx={{ color: "gray" }} />
+              </div>
+            ) : (
+              selectedContent
+            )}
           </div>
         </div>
       </div>

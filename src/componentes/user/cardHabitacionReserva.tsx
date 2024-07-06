@@ -144,18 +144,21 @@ const CardHabitacionReserva: React.FC<CardHabitacionProps> = ({
     return numberPrice.toLocaleString("es-ES");
   };
 
+  const imageUrls = images.map((image) => image.url);
+  const serviceNamesArray = services.map((service) => service.name);
+
   return (
-    <div className="my-2 border border-gray-300 w-[100%] bg-slate-100">
+    <div className="my-2 border border-gray-300 w-[100%]">
       <div className="flex rounded-sm gap-4">
         <div className="w-[30%]">
-          <SimpleCarousel images={images} />
+          <SimpleCarousel images={imageUrls} />
         </div>
         <div className="flex flex-col p-4 gap-1 text-[#07282C]">
           <p className=" text-lg font-medium">
             {nameHabitacion(type, services)}
           </p>
           <div className="flex space-x-2 text-2xl text-[#17858A] my-3">
-            {services.map((servicio) => (
+            {serviceNamesArray.map((servicio) => (
               <div
                 key={servicio}
                 className="flex items-center justify-center w-12 h-12 rounded-full border border-gray-300 hover:bg-[#d9eeec] hover:scale-95 transition-transform duration-200"

@@ -12,6 +12,7 @@ import {
   FaUser,
 } from "react-icons/fa";
 import CardHabitacionReserva from "./cardHabitacionReserva";
+import CreateComment from "../reusables/botones/CreateComment";
 
 interface ReservationsDetailsProps extends ReservationInterface {
   setComentarios: Dispatch<SetStateAction<Comentario[]>>;
@@ -19,7 +20,7 @@ interface ReservationsDetailsProps extends ReservationInterface {
 
 const ReservationsDetails: React.FC<ReservationsDetailsProps> = ({
   id,
-  userId,
+  user,
   room,
   check_in_date,
   check_out_date,
@@ -32,13 +33,13 @@ const ReservationsDetails: React.FC<ReservationsDetailsProps> = ({
   const isPastDepartureDate = departureDate <= currentDate;
   const [showCommentForm, setShowCommentForm] = useState(false);
   const [comment, setComment] = useState("");
-  const [rating, setRating] = useState<number | null>(null);
+  const [rating, setRating] = useState<number | null>(5);
 
   const handleCommentSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (rating === null) return;
     const comment_date = new Date().toISOString();
-    const newComment: Comentario = { comment_date, comment, rating };
+    const newComment: any = { comment_date, comment, rating };
     setComentarios((prevComments) => [...prevComments, newComment]);
     setShowCommentForm(false);
     setComment("");
@@ -47,25 +48,25 @@ const ReservationsDetails: React.FC<ReservationsDetailsProps> = ({
 
   const getPaymentStatusInfo = (status: string) => {
     switch (status) {
-      case "PENDING":
+      case "IN_PROGRESS":
         return {
-          text: "Pendiente",
-          icon: <FaRegClock className="text-yellow-500 mr-2 text-xl" />,
+          text: "En proceso",
+          icon: <FaRegClock className="text-yellow-500 mr-1 text-xl" />,
         };
       case "APPROVED":
         return {
           text: "Aprobado",
-          icon: <FaCheckCircle className="text-green-500 mr-2 text-xl" />,
+          icon: <FaCheckCircle className="text-green-500 mr-1 text-xl" />,
         };
       case "FAILURE":
         return {
           text: "Fallido",
-          icon: <FaTimesCircle className="text-red-500 mr-2 text-xl" />,
+          icon: <FaTimesCircle className="text-red-500 mr-1 text-xl" />,
         };
       default:
         return {
           text: "Desconocido",
-          icon: <FaRegClock className="text-gray-500 mr-2 text-xl" />,
+          icon: <FaRegClock className="text-gray-500 mr-1 text-xl" />,
         };
     }
   };
@@ -113,40 +114,23 @@ const ReservationsDetails: React.FC<ReservationsDetailsProps> = ({
           </div>
         </div>
 
-        <div className="mb-4">
-          <p className="text-sm font-semibold text-cyan-800 py-2">
-            Acompañantes
-          </p>
-          <div className="flex flex-wrap gap-3">
-            {companions && companions.length > 0 ? (
-              companions.map((a) => (
-                <div
-                  key={a.id_acompanante}
-                  className="flex items-center text-sm text-gray-900"
-                >
-                  <FaUser className="mr-2 text-lg text-gray-600" />
-                  <p>{a.name}</p>
-                </div>
-              ))
-            ) : (
-              <p className="text-sm text-gray-900">Ninguno</p>
-            )}
-          </div>
-        </div>
-
         <div>
           <CardHabitacionReserva {...room}></CardHabitacionReserva>
         </div>
 
         {isPastDepartureDate && (
-          <div className="mt-4 flex justify-center">
+          <div className="mt-4 flex flex-col justify-center">
+            <div className="flex justify-center items-center">
             <Button
               variant="contained"
               onClick={() => setShowCommentForm(true)}
               startIcon={<FaRegComments />}
             >
-              Dejar Comentarios
+              Agregar comentario de tu experiencia
             </Button>
+
+            </div>
+            
             {showCommentForm && (
               <form onSubmit={handleCommentSubmit} className="mt-4">
                 <div className="mb-4">
@@ -177,12 +161,14 @@ const ReservationsDetails: React.FC<ReservationsDetailsProps> = ({
                     }}
                   />
                 </div>
-                <button
-                  className="bg-teal-600 text-white px-4 py-2 rounded-lg shadow hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-opacity-50"
-                  type="submit"
-                >
-                  Submit
-                </button>
+                <div className="w-[100%] flex justify-center items-center gap-2">
+                <Button variant="outlined" onClick={() => setShowCommentForm(false)}>
+                  Cancelar
+                </Button>
+                <CreateComment userId={user.id} roomId={room.id} comment={comment} rating={rating ?? 0}></CreateComment>
+
+                </div>
+               
               </form>
             )}
           </div>

@@ -4,9 +4,9 @@ export interface Habitacion {
   price: number;               // Price of the room (float)
   description: string;         // Description of the room
   state: string;              // Status of the room
-  images: string[];            // Array of image URLs
+  images: any[];            // Array of image URLs
   roomNumber: number;         // Room number
-  services: string[];          // Array of services
+  services: any[];          // Array of services
   hotel?: string;
 }
 
