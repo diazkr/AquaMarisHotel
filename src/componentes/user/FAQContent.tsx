@@ -1,44 +1,72 @@
-import React from 'react';
+"use client"
+import React, { useState } from 'react';
+import { Accordion, AccordionSummary, AccordionDetails, Typography } from '@mui/material';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 function FAQContent() {
+  const [expanded, setExpanded] = useState<string | false>('panel1');
+
+  const handleChange =
+    (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
+      setExpanded(isExpanded ? panel : false);
+    };
   return (
-    <div className="p-6 mx-auto">
-      <h1 className="text-md font-bold mb-4">Preguntas Frecuentes</h1>
+    <div className="p-6 mx-auto w-[100%]">
 
-      <div className="mb-4">
-        <h2 className="text-sm font-semibold mb-2">¿Cómo puedo realizar un pedido?</h2>
-        <p className="text-sm">
-          Para realizar un pedido, navegue por nuestro catálogo de productos, añada los artículos que desee a su carrito y siga las instrucciones de pago en nuestro sitio web. Si necesita ayuda, no dude en contactarnos.
-        </p>
-      </div>
+      <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
+        <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1a-content" id="panel1a-header">
+          <Typography variant="subtitle1" className="font-semibold" color="primary">¿Cómo puedo realizar una reserva?</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Typography variant="body2">
+            Para realizar una reserva en Aqua Maris, puede visitar nuestro sitio web, seleccionar las fechas de su estadía, elegir el tipo de habitación y seguir las instrucciones para completar la reserva. Si necesita ayuda, puede contactarnos directamente.
+          </Typography>
+        </AccordionDetails>
+      </Accordion>
 
-      <div className="mb-4">
-        <h2 className="text-sm font-semibold mb-2">¿Cuáles son las opciones de envío disponibles?</h2>
-        <p className="text-sm">
-          Ofrecemos varias opciones de envío para satisfacer sus necesidades. Puede elegir entre envío estándar, exprés o envío internacional durante el proceso de pago. Los costos y tiempos de envío varían según la opción seleccionada.
-        </p>
-      </div>
+      <Accordion>
+        <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel2a-content" id="panel2a-header">
+          <Typography variant="subtitle1" className="font-semibold" color="primary">¿Cuáles son las opciones de pago disponibles?</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Typography variant="body2">
+            En Aqua Maris, aceptamos varias opciones de pago, incluyendo tarjetas de crédito, débito y transferencias bancarias. También puede pagar en efectivo en la recepción del hotel. Todos los pagos son seguros y confidenciales.
+          </Typography>
+        </AccordionDetails>
+      </Accordion>
 
-      <div className="mb-4">
-        <h2 className="text-sm font-semibold mb-2">¿Cómo puedo rastrear mi pedido?</h2>
-        <p className="text-sm">
-          Una vez que su pedido haya sido enviado, recibirá un correo electrónico con un número de seguimiento y un enlace para rastrear su paquete en línea. También puede rastrear su pedido desde su cuenta en nuestro sitio web.
-        </p>
-      </div>
+      <Accordion>
+        <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel3a-content" id="panel3a-header">
+          <Typography variant="subtitle1" className="font-semibold" color="primary">¿El hotel ofrece transporte desde el aeropuerto?</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Typography variant="body2">
+            Sí, ofrecemos servicio de transporte desde y hacia el aeropuerto por un costo adicional. Puede reservar este servicio al momento de hacer su reserva o contactarnos con anticipación para organizarlo.
+          </Typography>
+        </AccordionDetails>
+      </Accordion>
 
-      <div className="mb-4">
-        <h2 className="text-sm font-semibold mb-2">¿Cuál es su política de devoluciones?</h2>
-        <p className="text-sm">
-          Aceptamos devoluciones dentro de los 30 días posteriores a la recepción de su pedido. El producto debe estar en su estado original y sin usar. Para más detalles, consulte nuestra política de devoluciones en el sitio web.
-        </p>
-      </div>
+      <Accordion>
+        <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel4a-content" id="panel4a-header">
+          <Typography variant="subtitle1" className="font-semibold" color="primary">¿Cuál es la política de cancelación del hotel?</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Typography variant="body2">
+            Nuestra política de cancelación permite cancelaciones gratuitas hasta 48 horas antes de la fecha de llegada. Si cancela después de este período, se aplicará un cargo equivalente a una noche de estancia. Para más detalles, consulte nuestra política de cancelación en el sitio web.
+          </Typography>
+        </AccordionDetails>
+      </Accordion>
 
-      <div className="mb-4">
-        <h2 className="text-sm font-semibold mb-2">¿Cómo puedo contactar al servicio al cliente?</h2>
-        <p className="text-sm">
-          Puede contactarnos a través de nuestro formulario de contacto en el sitio web, por correo electrónico o llamándonos directamente. Nuestro equipo de servicio al cliente está disponible para ayudarle con cualquier pregunta o problema que pueda tener.
-        </p>
-      </div>
+      <Accordion>
+        <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel5a-content" id="panel5a-header">
+          <Typography variant="subtitle1" className="font-semibold" color="primary">¿Qué servicios adicionales ofrece el hotel?</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Typography variant="body2">
+            Aqua Maris ofrece una variedad de servicios adicionales para su comodidad, incluyendo Wi-Fi gratuito, desayuno buffet, servicio de lavandería, y actividades turísticas. Puede solicitar más información en la recepción durante su estancia.
+          </Typography>
+        </AccordionDetails>
+      </Accordion>
     </div>
   );
 }

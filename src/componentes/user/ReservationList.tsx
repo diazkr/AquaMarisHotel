@@ -2,7 +2,10 @@
 import React, { useState } from "react";
 import ReservationsDetails from "./ReservationsDetails";
 import { ReservationInterface, Comentario } from "@/interfaces/UserInterface";
-import { Divider, Typography } from "@mui/material";
+import { Button, Divider, Typography } from "@mui/material";
+import { useRouter } from "next/navigation";
+import { TbCalendarSad } from "react-icons/tb";
+
 
 interface ReservationsListProps {
   reservations: ReservationInterface[];
@@ -12,19 +15,29 @@ const ReservationsList: React.FC<ReservationsListProps> = ({
   reservations,
 }) => {
   const [comentarios, setComentarios] = useState<Comentario[]>([]);
+  const router = useRouter()
 
   if (reservations.length === 0) {
-    return <p>No hay reservaciones disponibles.</p>;
+    return (
+      <div className='flex flex-col justify-center items-center my-3'>
+
+          <div className='text-5xl my-4 text-gray-500'>
+          <TbCalendarSad />
+
+          </div>
+
+          <p className="text-sm text-gray-700">Por ahora no tienes ninguna reserva.</p>
+          <p className="text-md text-gray-700">Te invitamos a conocer las maravillas de Aqua Maris</p>
+          <div className="text-md text-gray-700 my-3">
+            <Button variant="contained" onClick={()=>router.push("/")}>Ver nuestro hotel!</Button>
+          </div>
+
+        </div>
+    );
   }
 
   return (
     <div>
-      <Typography
-        color="primary"
-        className="text-center font-medium text-lg py-1"
-      >
-        Historial de reservas
-      </Typography>
       {reservations.map((reservation) => (
         <div key={reservation.id}>
           <ReservationsDetails
@@ -32,8 +45,6 @@ const ReservationsList: React.FC<ReservationsListProps> = ({
             {...reservation}
             setComentarios={setComentarios}
           />
-
-          <Divider className="w-[100%]" />
         </div>
       ))}
     </div>
