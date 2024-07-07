@@ -7,7 +7,7 @@ interface ImageHeroProps {
 
 const ImageExp: React.FC<ImageHeroProps> = ({ children }) => {
   return (
-    <div className="relative w-full twenty-screen ">
+    <div className="relative w-full h-[40vh]">
       <Image
         src="/Hero/hero1.jpg"
         alt="Hero Image"
