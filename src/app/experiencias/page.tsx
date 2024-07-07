@@ -2,9 +2,9 @@ import MapComponent from "@/componentes/mapa/MapComponent";
 import React from "react";
 import dynamic from "next/dynamic";
 import ImageExp from "@/componentes/mapa/ImageExperience";
-import DescriptionExperiences from "@/componentes/vistaExperiencias/DescriptionExperiences";
-import GuideToExperiences from "@/componentes/vistaExperiencias/GuideToExperiences";
-import TabsComponent from "@/componentes/vistaExperiencias/SitiosDeInteres";
+import DescriptionExperiences from "@/componentes/vistas/vistaExperiencias/DescriptionExperiences";
+import GuideToExperiences from "@/componentes/vistas/vistaExperiencias/GuideToExperiences";
+import TabsComponent from "@/componentes/vistas/vistaExperiencias/SitiosDeInteres";
 
 const DynamicMap = dynamic(
   () => import("../../componentes/mapa/MapComponent"),
