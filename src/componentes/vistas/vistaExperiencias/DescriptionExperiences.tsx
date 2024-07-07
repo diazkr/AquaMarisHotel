@@ -5,6 +5,7 @@ function DescriptionExperiences() {
     <div className="mt-12 w-[60%]">
       <div className="my-6 text-4xl text-gray-700 tracking-wider font-medium">
         VIVE LA EXPERIENCIA AQUA MARIS HOTEL
+        
       </div>
 
       <div className="mx-4">
