@@ -33,9 +33,9 @@ export default function Home() {
 
       <div className="w-[100%] flex flex-col justify-center items-center">
         <div className="my-3 text-2xl text-gray-700 tracking-wider font-medium w-2/3 text-center flex flex-col justify-center items-center">
-        <p>CONOCE NUESTRO HOTEL</p>
+        <p>CONOCE NUESTROS SERVICIOS</p>
           
-          <div className="w-28 h-1 bg-cyan-800">
+          <div className="w-28 h-1 mt-2 bg-cyan-700">
 
           </div>
         </div>

@@ -6,12 +6,16 @@ import Modal from 'react-modal';
 import { useRouter } from 'next/navigation';
 import { Habitacion } from '@/interfaces/HabitacionInterface';
 import {FaWifi, FaTv, FaWater, FaSnowflake,FaFire,FaLock,FaParking,FaCoffee,FaIceCream,FaHotTub,} from "react-icons/fa";
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/material';
+
 
 
 const Page = ({ params }: { params: { id: string } }) => {
   const { id } = params;
   const [room, setRoom] = useState<Habitacion | null>(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
   const router = useRouter();
 
   localStorage.setItem("rommUUID", id);
@@ -25,7 +29,22 @@ const Page = ({ params }: { params: { id: string } }) => {
   };
 
   const handleReserveClick = () => {
-    router.push('/payment'); 
+    const token = localStorage.getItem("token");
+
+    if (token) {
+      router.push('/payment');
+    } else {
+      openDialog();
+    }
+  };
+  
+
+  const openDialog = () => {
+    setIsDialogOpen(true);
+  };
+  
+  const closeDialog = () => {
+    setIsDialogOpen(false);
   };
   
   const renderIcon = (servicio: string) => {
@@ -98,7 +117,8 @@ const Page = ({ params }: { params: { id: string } }) => {
         localStorage.setItem("roomPrice", data.price);
         localStorage.setItem('roomDescription', data.description);
         localStorage.setItem('roomServices', JSON.stringify(data.services));
-
+        localStorage.setItem('roomImages', JSON.stringify(data.images));
+        localStorage.setItem('roomType', JSON.stringify(data.type));
 
         setRoom(data);
 
@@ -210,6 +230,18 @@ const Page = ({ params }: { params: { id: string } }) => {
           Cerrar
         </button>
       </Modal>
+
+      <Dialog open={isDialogOpen} onClose={closeDialog}>
+      <DialogTitle>Inicio de sesión requerido</DialogTitle>
+      <DialogContent>
+        Debes iniciar sesión para poder realizar una reservación.
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={closeDialog} color="primary">
+          Cerrar
+        </Button>
+      </DialogActions>
+    </Dialog>
     </div>
   );
 };

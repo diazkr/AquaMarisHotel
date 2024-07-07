@@ -101,14 +101,15 @@ function NavBar() {
               </Box>
             </Link>
             <div className="flex items-center gap-4">
-              {navLinks.map((item) => (
+              {navLinks.map((item, index) => (
                 <Button
                   key={item.title}
                   color="primary"
                   variant="text"
                   onClick={() => {
-                      handleNavigation(item.path);
+                    handleNavigation(item.path);
                   }}
+                  disabled={index !== 1} // Deshabilitar todos los botones excepto el segundo (índice 1)
                 >
                   {item.title}
                 </Button>
@@ -119,7 +120,10 @@ function NavBar() {
               <NavUserLogged />
             ) : (
               <div className="flex items-center">
-                <Button variant="outlined" onClick={() => router.push("/register")}>
+                <Button
+                  variant="outlined"
+                  onClick={() => router.push("/register")}
+                >
                   Iniciar sesión
                 </Button>
               </div>
