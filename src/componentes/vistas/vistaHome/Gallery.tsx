@@ -60,7 +60,8 @@ function Gallery() {
               cursor: 'pointer',
             }}
             onClick={() => handleFlip(index)}
-            className=" shadow-lg"
+            
+            className=" shadow-lg hover:scale-[0.98] transition-all duration-300"
           >
             <CardMedia
               component="img"

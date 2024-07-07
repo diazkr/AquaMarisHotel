@@ -1,8 +1,7 @@
-import React from 'react';
-import Image from 'next/image';
-import { Button } from '@mui/material';
+import React from "react";
+import Image from "next/image";
+import { Button } from "@mui/material";
 import { IoIosArrowRoundForward } from "react-icons/io";
-
 
 function ImageText() {
   return (
@@ -18,9 +17,13 @@ function ImageText() {
         <h3 className="text-xl mb-2">Nuestros servicios en todo el mundo</h3>
         <h1 className="text-5xl font-bold mb-2">AQUA CLUB</h1>
         <h2 className="text-2xl mb-4">*****</h2>
-        <Button variant='outlined' sx={{ color: '#FFFFFF', borderColor: '#FFFFFF' }} endIcon={<IoIosArrowRoundForward />
-}>
-            Conoce los beneficios de unirte!
+        <Button
+          variant="outlined"
+          sx={{ color: "#FFFFFF", borderColor: "#FFFFFF" }}
+          endIcon={<IoIosArrowRoundForward />}
+          disabled
+        >
+          Conoce los beneficios de unirte!
         </Button>
       </div>
     </div>
