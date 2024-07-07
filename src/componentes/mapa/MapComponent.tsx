@@ -44,7 +44,7 @@ const MapComponent: React.FC = () => {
   return (
     <MapContainer
       center={[12.5739, -81.7008]}
-      zoom={14}
+      zoom={15}
       style={{ width: "100%", height: "100%" }}
     >
       <TileLayer

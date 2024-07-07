@@ -11,19 +11,23 @@ const SimpleCarousel: React.FC<SimpleCarouselProps> = ({ images }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const nextImage = () => {
+  const nextImage = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
     setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
   };
 
-  const prevImage = () => {
+  const prevImage = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
     setCurrentIndex((prevIndex) => (prevIndex - 1 + images.length) % images.length);
   };
 
-  const openModal = () => {
+  const openModal = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
     setIsModalOpen(true);
   };
 
-  const closeModal = () => {
+  const closeModal = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
     setIsModalOpen(false);
   };
 
@@ -100,7 +104,6 @@ const SimpleCarousel: React.FC<SimpleCarouselProps> = ({ images }) => {
           </div>
           <IconButton
             onClick={prevImage}
-
             sx={{
               position: 'absolute',
               left: 2,
@@ -121,9 +124,7 @@ const SimpleCarousel: React.FC<SimpleCarouselProps> = ({ images }) => {
               transform: 'translateY(-50%)',
               bgcolor: '#d9eeec',
             }}
-
             className='w-8 h-8 m-1 hover:opacity-50'
-
           >
             &#8250;
           </IconButton>
@@ -135,8 +136,6 @@ const SimpleCarousel: React.FC<SimpleCarouselProps> = ({ images }) => {
               right: 2,
               bgcolor: 'white',
             }}
-
-
             className='w-8 h-8 m-1 hover:opacity-50'
           >
             &#10005;
