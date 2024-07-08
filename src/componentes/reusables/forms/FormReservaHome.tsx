@@ -1,4 +1,3 @@
-// src/components/FormReservaHotel.tsx
 import React, { useState } from "react";
 import {
   MenuItem,
@@ -53,15 +52,19 @@ const FormReservaHotel: React.FC<FormReservaHotelProps> = ({ onBooking }) => {
       <FormControl
         variant="outlined"
         className="w-[30%]"
-        sx={{ backgroundColor: "#F5F5F5" }}
+        sx={{ margin: 0 }}
       >
+        <InputLabel shrink>Hotel</InputLabel>
         <TextField
-          label="Hotel"
           variant="outlined"
           value="San Andrés"
           InputProps={{
             readOnly: true,
+            sx:{
+              backgroundColor:'#F5F5F5'
+            }
           }}
+          sx={{ marginTop: "8px" }}
         />
       </FormControl>
 
@@ -76,7 +79,7 @@ const FormReservaHotel: React.FC<FormReservaHotelProps> = ({ onBooking }) => {
             <FormControl
               variant="outlined"
               className="w-[100%] p-0 m-0"
-              sx={{ backgroundColor: "#F5F5F5" }}
+              sx={{ margin: 0 }}
             >
               <InputLabel shrink>Llegada</InputLabel>
               <Box
@@ -87,6 +90,7 @@ const FormReservaHotel: React.FC<FormReservaHotelProps> = ({ onBooking }) => {
                   alignItems: "center",
                   justifyContent: "center",
                   padding: "8px",
+                  marginTop: "8px",
                 }}
               >
                 <FaRegCalendarAlt className="text-2xl text-gray-500" />
@@ -101,7 +105,7 @@ const FormReservaHotel: React.FC<FormReservaHotelProps> = ({ onBooking }) => {
             <FormControl
               variant="outlined"
               className="w-[100%]"
-              sx={{ backgroundColor: "#F5F5F5" }}
+              sx={{ margin: 0 }}
             >
               <InputLabel shrink>Salida</InputLabel>
               <Box
@@ -112,6 +116,7 @@ const FormReservaHotel: React.FC<FormReservaHotelProps> = ({ onBooking }) => {
                   alignItems: "center",
                   justifyContent: "center",
                   padding: "8px",
+                  marginTop: "8px",
                 }}
               >
                 <FaRegCalendarAlt className="text-2xl text-gray-500" />
@@ -142,7 +147,7 @@ const FormReservaHotel: React.FC<FormReservaHotelProps> = ({ onBooking }) => {
         fullWidth
         variant="outlined"
         className="w-[20%]"
-        sx={{ backgroundColor: "#F5F5F5" }}
+        sx={{ margin: 0 }}
       >
         <InputLabel id="people-label">Personas</InputLabel>
         <Select
@@ -150,6 +155,12 @@ const FormReservaHotel: React.FC<FormReservaHotelProps> = ({ onBooking }) => {
           value={people}
           onChange={(e) => setPeople(Number(e.target.value))}
           label="Personas"
+          sx={{
+            marginTop: "8px",
+            '.MuiSelect-select': {
+              backgroundColor: '#F5F5F5',
+            }
+          }}
         >
           {peopleOptions.map((num) => (
             <MenuItem key={num} value={num}>

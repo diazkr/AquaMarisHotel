@@ -13,6 +13,7 @@ import {
 } from "react-icons/fa";
 import CardHabitacionReserva from "./cardHabitacionReserva";
 import CreateComment from "../reusables/botones/CreateComment";
+import CopyToClipboard from "../reusables/texts/CopyComponent";
 
 interface ReservationsDetailsProps extends ReservationInterface {
   setComentarios: Dispatch<SetStateAction<Comentario[]>>;
@@ -76,11 +77,13 @@ const ReservationsDetails: React.FC<ReservationsDetailsProps> = ({
   return (
     <div className="mx-auto px-6 my-3 ">
       <div className="bg-gray-50 border border-gray-300 shadow-lg overflow-hidden p-6">
-        <div className="mb-4 flex gap-1">
+        <div className="mb-4 flex gap-3 justify-start items-center my-1">
           <p className="text-sm font-semibold text-cyan-800">
             Código de reserva:{" "}
           </p>
-          <p className="text-sm text-gray-900">{id}</p>
+          <div>
+            <CopyToClipboard textToCopy={id}></CopyToClipboard>
+          </div>
         </div>
         <div className="flex gap-3 justify-between">
           <div className="mb-4 flex flex-col items-center">
