@@ -23,7 +23,7 @@ const ImageForm: React.FC<ImageHeroProps>=({children})=> {
             width={200} // ajusta el tamaño según tus necesidades
             height={200} // ajusta el tamaño según tus necesidades
           />
-          <div className="w-4/5 lg:w-4/5 xl:w-3/5">
+          <div className="w-[70%]">
             {children}
           </div>
         </div>
