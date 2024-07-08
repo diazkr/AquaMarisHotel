@@ -51,7 +51,7 @@ const FormReservaHotel: React.FC<FormReservaHotelProps> = ({ onBooking }) => {
     >
       <FormControl
         variant="outlined"
-        className="w-[30%]"
+        className="w-[40%]"
         sx={{ margin: 0 }}
       >
         <InputLabel shrink>Hotel</InputLabel>
@@ -146,7 +146,7 @@ const FormReservaHotel: React.FC<FormReservaHotelProps> = ({ onBooking }) => {
       <FormControl
         fullWidth
         variant="outlined"
-        className="w-[20%]"
+        className="w-[40%]"
         sx={{ margin: 0 }}
       >
         <InputLabel id="people-label">Personas</InputLabel>
