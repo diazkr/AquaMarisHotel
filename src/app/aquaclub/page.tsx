@@ -1,6 +1,6 @@
 import React from 'react';
 import AquaClub from '@/componentes/aquaClub/AquaClub';
-import ImageAquaClub from '@/componentes/aquaClub/imagenAquaClub';
+import ImageAquaClub from '@/componentes/aquaClub/ImagenAquaClub';
 
 const ViewAquaClub: React.FC = () => {
   return (

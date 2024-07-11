@@ -65,7 +65,6 @@ const Hotels: React.FC = () => {
                     <div key={index} className="bg-gray-100 p-4 rounded-lg shadow-md mb-4">
                         <p className="text-lg font-semibold">{comentario.comment}</p>
                         <p className="text-gray-700">{comentario.comment_date}</p>
-                        <p className="text-gray-700">{comentario.comment_status}</p>
                         <p className="text-gray-700">{comentario.rating}</p>
                     </div>
                 ))}
