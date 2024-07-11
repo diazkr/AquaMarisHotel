@@ -23,7 +23,7 @@ const VerificationForm = () => {
 
             const data = await response.json();
             console.log(data)
-            if (response.ok && data.success) {
+            if (response.ok) {
 
                 alert('¡Verificación exitosa! Usuario logeado.');
             } else {
