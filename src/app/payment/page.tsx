@@ -34,6 +34,7 @@ const PaymentView: React.FC = () => {
   const [roomImages, setRoomImages] = useState<string[]>([]);
   const [roomType, setRoomType] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const [promotionCode, setpromotionCode] = useState("")
 
 
   // Estados para los datos del usuario
@@ -113,6 +114,7 @@ const PaymentView: React.FC = () => {
       userId,
       roomId,
       companions,
+      promotionCode
     };
 
     try {

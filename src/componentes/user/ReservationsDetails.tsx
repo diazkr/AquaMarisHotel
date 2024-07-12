@@ -1,4 +1,5 @@
-import React, { Dispatch, SetStateAction } from "react";
+"use client";
+import React, { Dispatch, SetStateAction, useEffect } from "react";
 import { ReservationInterface, Comentario } from "@/interfaces/UserInterface";
 import { useState } from "react";
 import { Button, Rating } from "@mui/material";
@@ -14,6 +15,8 @@ import {
 import CardHabitacionReserva from "./cardHabitacionReserva";
 import CreateComment from "../reusables/botones/CreateComment";
 import CopyToClipboard from "../reusables/texts/CopyComponent";
+import { differenceInDays } from "date-fns";
+import CancelReservationModal from "./Reservation/CancelReservationsModal";
 
 interface ReservationsDetailsProps extends ReservationInterface {
   setComentarios: Dispatch<SetStateAction<Comentario[]>>;
@@ -36,6 +39,17 @@ const ReservationsDetails: React.FC<ReservationsDetailsProps> = ({
   const [comment, setComment] = useState("");
   const [rating, setRating] = useState<number | null>(5);
 
+  const [isCancelButtonDisabled, setIsCancelButtonDisabled] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  useEffect(() => {
+    const daysUntilCheckIn = differenceInDays(
+      new Date(check_in_date),
+      new Date()
+    );
+    setIsCancelButtonDisabled(daysUntilCheckIn <= 3);
+  }, [check_in_date]);
+
   const handleCommentSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (rating === null) return;
@@ -47,6 +61,14 @@ const ReservationsDetails: React.FC<ReservationsDetailsProps> = ({
     setRating(null);
   };
 
+  const handleCancelReservation = () => {
+    console.log(`La reserva con ID ${id} ha sido cancelada.`);
+    setIsModalOpen(false);
+  };
+
+  const handleOpenModal = () => setIsModalOpen(true);
+  const handleCloseModal = () => setIsModalOpen(false);
+
   const getPaymentStatusInfo = (status: string) => {
     switch (status) {
       case "IN_PROGRESS":
@@ -54,15 +76,15 @@ const ReservationsDetails: React.FC<ReservationsDetailsProps> = ({
           text: "En proceso",
           icon: <FaRegClock className="text-yellow-500 mr-1 text-xl" />,
         };
-      case "APPROVED":
+      case "approved":
         return {
           text: "Aprobado",
           icon: <FaCheckCircle className="text-green-500 mr-1 text-xl" />,
         };
-      case "FAILURE":
+      case "PENDING":
         return {
-          text: "Fallido",
-          icon: <FaTimesCircle className="text-red-500 mr-1 text-xl" />,
+          text: "Pendiente",
+          icon: <FaRegClock className="text-yellow-500 mr-1 text-xl" />,
         };
       default:
         return {
@@ -77,12 +99,24 @@ const ReservationsDetails: React.FC<ReservationsDetailsProps> = ({
   return (
     <div className="mx-auto px-6 my-3 ">
       <div className="bg-gray-50 border border-gray-300 shadow-lg overflow-hidden p-6">
-        <div className="mb-4 flex gap-3 justify-start items-center my-1">
-          <p className="text-sm font-semibold text-cyan-800">
-            Código de reserva:{" "}
-          </p>
+        <div className="mb-4 flex gap-3 justify-between items-center my-1">
+          <div className="flex items-center gap-2">
+            <p className="text-sm font-semibold text-cyan-800">
+              Código de reserva:{" "}
+            </p>
+            <div>
+              <CopyToClipboard textToCopy={id}></CopyToClipboard>
+            </div>
+          </div>
           <div>
-            <CopyToClipboard textToCopy={id}></CopyToClipboard>
+            <Button
+              variant="contained"
+              color="error"
+              onClick={handleOpenModal}
+              disabled={isCancelButtonDisabled}
+            >
+              Cancelar Reserva
+            </Button>
           </div>
         </div>
         <div className="flex gap-3 justify-between">
@@ -124,16 +158,15 @@ const ReservationsDetails: React.FC<ReservationsDetailsProps> = ({
         {isPastDepartureDate && (
           <div className="mt-4 flex flex-col justify-center">
             <div className="flex justify-center items-center">
-            <Button
-              variant="contained"
-              onClick={() => setShowCommentForm(true)}
-              startIcon={<FaRegComments />}
-            >
-              Agregar comentario de tu experiencia
-            </Button>
-
+              <Button
+                variant="contained"
+                onClick={() => setShowCommentForm(true)}
+                startIcon={<FaRegComments />}
+              >
+                Agregar comentario de tu experiencia
+              </Button>
             </div>
-            
+
             {showCommentForm && (
               <form onSubmit={handleCommentSubmit} className="mt-4">
                 <div className="mb-4">
@@ -165,18 +198,29 @@ const ReservationsDetails: React.FC<ReservationsDetailsProps> = ({
                   />
                 </div>
                 <div className="w-[100%] flex justify-center items-center gap-2">
-                <Button variant="outlined" onClick={() => setShowCommentForm(false)}>
-                  Cancelar
-                </Button>
-                <CreateComment userId={user.id} roomId={room.id} comment={comment} rating={rating ?? 0}></CreateComment>
-
+                  <Button
+                    variant="outlined"
+                    onClick={() => setShowCommentForm(false)}
+                  >
+                    Cancelar
+                  </Button>
+                  <CreateComment
+                    userId={user.id}
+                    roomId={room.id}
+                    comment={comment}
+                    rating={rating ?? 0}
+                  ></CreateComment>
                 </div>
-               
               </form>
             )}
           </div>
         )}
       </div>
+      <CancelReservationModal
+                open={isModalOpen}
+                handleClose={handleCloseModal}
+                handleConfirm={handleCancelReservation}
+              />
     </div>
   );
 };

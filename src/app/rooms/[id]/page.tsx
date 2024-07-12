@@ -21,6 +21,8 @@ const Page = ({ params }: { params: { id: string } }) => {
   const [popoverOpened, setPopoverOpened] = useState(false);
   const router = useRouter();
 
+  localStorage.setItem("rommUUID", id);
+
   const openModal = () => {
     setModalIsOpen(true);
   };
