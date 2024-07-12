@@ -30,9 +30,9 @@ function NavBar() {
   }, []);
 
   const navLinks = [
-    { title: "hoteles", path: "/hoteles" },
+    { title: "hoteles", path: "/hotels" },
     { title: "Experiencias", path: "/experiencias" },
-    { title: "Aqua Club", path: "/premium" },
+    { title: "Aqua Club", path: "/aquaclub" },
   ];
 
   const navLinkSecond = [
@@ -109,7 +109,6 @@ function NavBar() {
                   onClick={() => {
                     handleNavigation(item.path);
                   }}
-                  disabled={index !== 1} // Deshabilitar todos los botones excepto el segundo (índice 1)
                 >
                   {item.title}
                 </Button>
