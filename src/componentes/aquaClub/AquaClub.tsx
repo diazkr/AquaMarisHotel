@@ -1,11 +1,13 @@
-'use client'
-import React, { useState } from 'react';
-import { FaPercentage, FaCocktail, FaSpa, FaClock } from 'react-icons/fa';
-import { Box, Typography, Button, Grid } from '@mui/material';
-import { useRouter } from 'next/navigation';
-import LoginPromptModal from './LoginPromptModal';
-import MembershipBenefitsModal from './MembershipBenefitsModal';
-import Image from 'next/image';
+"use client";
+import React, { useState } from "react";
+import { FaPercentage, FaCocktail, FaSpa, FaClock } from "react-icons/fa";
+import { Box, Typography, Button, Grid } from "@mui/material";
+import { useRouter } from "next/navigation";
+import LoginPromptModal from "./LoginPromptModal";
+import MembershipBenefitsModal from "./MembershipBenefitsModal";
+import { MdOutlineDiscount } from "react-icons/md";
+
+import Image from "next/image";
 
 const AquaClub: React.FC = () => {
   const router = useRouter();
@@ -13,33 +15,32 @@ const AquaClub: React.FC = () => {
   const [isBenefitsModalOpen, setIsBenefitsModalOpen] = useState(false);
 
   const handleRegisterClick = () => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
     if (!token) {
       setIsLoginPromptOpen(true);
     } else {
-      const userData = JSON.parse(localStorage.getItem('userData') || '{}');
-      if (userData.membership_status === 'DISABLED') {
+      const userData = JSON.parse(localStorage.getItem("userData") || "{}");
+      if (userData.membership_status === "ACTIVE") {
         setIsBenefitsModalOpen(true);
-      } else if (userData.membership_status === 'ACTIVE') {
-        router.push('/paypal');
+      } else if (userData.membership_status === "DISABLED") {
+        router.push("/paypal");
       }
     }
   };
 
   const handleLogin = () => {
     setIsLoginPromptOpen(false);
-    router.push('/register');
+    router.push("/register");
   };
 
   const benefitImages = [
     "https://i.pinimg.com/564x/af/a8/8f/afa88f97b37a9e8c7e3d73964452a0e5.jpg",
+    "https://i.pinimg.com/564x/fa/ae/f0/faaef0d338986cb0bcf83d99d92d6b7d.jpg",
     "https://i.pinimg.com/564x/69/6d/16/696d1605229c2a16abba80b8f70167f9.jpg",
+    "https://i.pinimg.com/564x/86/67/e1/8667e1c9d703753bf1bb5bd317c08a4b.jpg",
     "https://i.pinimg.com/564x/0b/b0/7e/0bb07ee1aec87be31e0b9231e0e6ff68.jpg",
-    "https://i.pinimg.com/564x/db/9e/d6/db9ed6bc70be744e1a048dac50582d1b.jpg",
-    "https://i.pinimg.com/564x/92/04/a2/9204a2521796e523576c4308b0199c35.jpg",
-    "https://i.pinimg.com/564x/3e/16/10/3e16108263083f94b37bbae33f0c6a37.jpg",
+    "https://i.pinimg.com/564x/a6/8a/19/a68a1995ff6349972e02af0bd44d18f6.jpg",
   ];
-
 
   const items = [
     {
@@ -73,37 +74,52 @@ const AquaClub: React.FC = () => {
 
   return (
     <div className="my-12 w-[60%]">
-      <Typography variant="h2" className="my-6 text-4xl text-gray-700 tracking-wider font-medium">Beneficios de ser parte de AquaClub</Typography>
+      <Typography
+        variant="h2"
+        className="my-6 text-4xl text-gray-700 tracking-wider font-medium"
+      >
+        Beneficios de ser parte de AquaClub
+      </Typography>
       <div className="w-60 h-1 bg-[#17858A] my-6"></div>
 
-
       <Grid container spacing={2} className="mt-2">
-                {benefitImages.map((image, index) => (
-                  <Grid item xs={4} key={index}>
-                    <div className="relative overflow-hidden rounded-sm">
-                      <div className="relative w-full h-56">
-                        <Image
-                          className="object-cover transform transition-transform duration-300 hover:scale-105"
-                          src={image}
-                          alt={`Benefit ${index + 1}`}
-                          layout="fill"
-                        />
-                      </div>
-                    </div>
-                  </Grid>
-                ))}
-              </Grid>
-
+        {benefitImages.map((image, index) => (
+          <Grid item xs={4} key={index}>
+            <div className="relative overflow-hidden rounded-sm">
+              <div className="relative w-full h-56">
+                <Image
+                  className="object-cover transform transition-transform duration-300 hover:scale-105"
+                  src={image}
+                  alt={`Benefit ${index + 1}`}
+                  layout="fill"
+                />
+              </div>
+            </div>
+          </Grid>
+        ))}
+      </Grid>
 
       {items.map((item, index) => (
         <Box key={index} textAlign="left" mb={6}>
           {item.icon}
-          <Typography variant="h4" className="text-2xl font-bold text-teal-800 mb-2">{item.title}</Typography>
+          <Typography
+            variant="h4"
+            className="text-2xl font-bold text-teal-800 mb-2"
+          >
+            {item.title}
+          </Typography>
           <Typography className="text-lg mb-4">{item.description}</Typography>
         </Box>
       ))}
       <Box className="mt-8 text-center">
-        <Button variant="contained" color="primary"  onClick={handleRegisterClick}>
+        <Button
+          variant="contained"
+          color="primary"
+          className="px-6 shadow-lg"
+          size="large"
+          onClick={handleRegisterClick}
+          endIcon={<MdOutlineDiscount />}
+        >
           Activar membresía
         </Button>
       </Box>

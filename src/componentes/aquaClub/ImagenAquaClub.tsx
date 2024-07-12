@@ -9,12 +9,12 @@ const ImageAquaClub: React.FC<ImageHeroProps> = ({ children }) => {
   return (
     <div className="relative w-full h-[40vh]">
       <Image
-        src="/Hero/hero1.jpg"
+        src="/Hero/hero7.jpg"
         alt="Hero Image"
         className="object-cover w-full h-full"
         quality={100}
         fill
-        style={{ objectPosition: "bottom" }}
+        style={{ objectPosition: "center" }}
       />
       <div className="absolute inset-0 bg-black bg-opacity-20"></div>
       <div className="absolute inset-0 flex items-center justify-center">
