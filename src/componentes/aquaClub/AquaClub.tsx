@@ -48,17 +48,14 @@ const AquaClub: React.FC = () => {
       title: "Descuento del 5% en todas las reservas",
       description: `Ser un usuario premium ofrece una serie de ventajas exclusivas que mejoran significativamente la experiencia 
                     en nuestro hotel. Una de las principales ventajas es el descuento del 5% en todas las reservas, lo que permite a 
-                    los usuarios premium disfrutar de nuestras lujosas habitaciones y servicios a un precio más accesible. 
-                    Este descuento se aplica automáticamente, haciendo que cada estancia sea no solo más cómoda, sino también más 
-                    económica.`,
+                    los usuarios premium disfrutar de nuestras lujosas habitaciones y servicios a un precio más accesible.`,
     },
     {
       icon: <FaCocktail className="text-[#d9eeec] text-6xl mx-auto mb-4" />,
       title: "Bebida o cóctel de bienvenida",
       description: `Además, ser un usuario premium otorga acceso a instalaciones exclusivas dentro del hotel. Los huéspedes premium pueden 
                     disfrutar de áreas privadas, como lounges de lujo, piscinas reservadas solo para ellos y gimnasios con equipamiento de 
-                    última generación. También tienen prioridad en las reservas de nuestros restaurantes y spas, asegurando que siempre 
-                    tengan un lugar en nuestras instalaciones más solicitadas, sin tener que esperar.`,
+                    última generación. `,
     },
     {
       icon: <FaSpa className="text-[#d9eeec] text-6xl mx-auto mb-4" />,
@@ -66,9 +63,7 @@ const AquaClub: React.FC = () => {
       description: `Otra de las ventajas de ser un usuario premium es el servicio personalizado. Desde el momento de la llegada, un equipo dedicado 
                     se encargará de satisfacer todas las necesidades y preferencias del huésped, desde arreglos especiales en la habitación hasta 
                     recomendaciones personalizadas sobre actividades locales. Además, los usuarios premium tienen acceso a un servicio de 
-                    conserjería 24/7, que puede ayudar con cualquier cosa, desde reservas en restaurantes hasta organizar excursiones. Ser un 
-                    usuario premium no solo significa una estancia más cómoda, sino una experiencia de lujo y atención personalizada en cada 
-                    detalle.`,
+                    conserjería 24/7, que puede ayudar con cualquier cosa, desde reservas en restaurantes hasta organizar excursiones.`,
     },
   ];
 
@@ -85,7 +80,7 @@ const AquaClub: React.FC = () => {
       <Grid container spacing={2} className="mt-2">
         {benefitImages.map((image, index) => (
           <Grid item xs={4} key={index}>
-            <div className="relative overflow-hidden rounded-sm">
+            <div className="relative overflow-hidden">
               <div className="relative w-full h-56">
                 <Image
                   className="object-cover transform transition-transform duration-300 hover:scale-105"
