@@ -4,18 +4,7 @@ import React, { useState, useEffect } from "react";
 import { useFilters } from "@/contextos/FilterContext";
 import { initMercadoPago, Wallet } from "@mercadopago/sdk-react";
 import { format } from "date-fns";
-import {
-  TextField,
-  Button,
-  Typography,
-  Box,
-  Container,
-  Paper,
-  Divider,
-  Snackbar,
-  Alert,
-  CircularProgress,
-} from "@mui/material";
+import {TextField,Button,Typography,Box,Container,Paper,Divider,Snackbar,Alert,CircularProgress,} from "@mui/material";
 import { FaCalendarAlt, FaUser, FaUsers, FaTag, FaBed } from "react-icons/fa";
 import CardPaymentRoom from "@/componentes/vistas/vistaPayment/CardPaymentRoom";
 import { IoSend } from "react-icons/io5";
@@ -84,7 +73,6 @@ const PaymentView: React.FC = () => {
     setRoomImages(storedRoomImages);
     setRoomType(storedRoomType);
 
-    // Setear datos del usuario desde localStorage
     setUserName(storedUserData.name || "");
     setUserEmail(storedUserData.email || "");
     setUseContry(storedUserData.country || "");
@@ -94,9 +82,14 @@ const PaymentView: React.FC = () => {
   }, []);
 
   const handleAddCompanion = () => {
+    const roomCapacity = getRoomCapacity(roomType);
+    if (companions.length >= roomCapacity - 1) {
+      setError(`No se pueden agregar más acompañantes. Capacidad máxima de ${roomCapacity} personas.`);
+      return;
+    }
     setCompanions([...companions, { name: "", identityCard: 0 }]);
   };
-
+  
   const handleCompanionChange = (
     index: number,
     field: keyof Companion,
@@ -107,6 +100,12 @@ const PaymentView: React.FC = () => {
     setCompanions(newCompanions);
   };
 
+  const handleRemoveCompanion = (index: number) => {
+    const newCompanions = companions.slice();
+    newCompanions.splice(index, 1);
+    setCompanions(newCompanions);
+  };
+  
   const handleSubmit = async () => {
     const bookingData = {
       check_in_date: format(arriveDate!, "yyyy-MM-dd"),
@@ -160,6 +159,26 @@ const PaymentView: React.FC = () => {
   const handleCloseSnackbar = () => {
     setOpenSnackbar(false);
   };
+
+  const getRoomCapacity = (tipoHabitacion: string): number => {
+    switch (tipoHabitacion) {
+      case "standar":
+        return 2;
+      case "double":
+        return 2;
+      case "deluxe":
+        return 3;
+      case "suite":
+        return 4;
+      case "family":
+        return 6;
+      default:
+        return 1;
+    }
+  };
+
+  const roomCapacity = getRoomCapacity(roomType);
+  const canAddMoreCompanions = companions.length < roomCapacity - 1;
 
   return (
     <Container className="my-24 w-[80%]">
@@ -239,52 +258,62 @@ const PaymentView: React.FC = () => {
               </Box>
             </div>
             <div className="w-1/2">
-              <Box mb={4}>
-                <Box display="flex" alignItems="center" mb={2}>
-                  <FaUsers
-                    size={24}
-                    style={{ marginRight: 8 }}
-                    className=" text-cyan-900"
-                  />
-                  <Typography variant="h6" className="text-gray-600">
-                    Agregar Acompañantes
-                  </Typography>
-                </Box>
-                {companions.map((companion, index) => (
-                  <Box key={index} mb={2}>
-                    <TextField
-                      fullWidth
-                      label="Nombre"
-                      value={companion.name}
-                      onChange={(e) =>
-                        handleCompanionChange(index, "name", e.target.value)
-                      }
-                      margin="dense"
-                    />
-                    <TextField
-                      fullWidth
-                      label="Documento de Identidad"
-                      type="number"
-                      value={companion.identityCard}
-                      onChange={(e) =>
-                        handleCompanionChange(
-                          index,
-                          "identityCard",
-                          parseInt(e.target.value, 10)
-                        )
-                      }
-                      margin="dense"
-                    />
-                  </Box>
-                ))}
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={handleAddCompanion}
-                >
-                  Agregar Acompañante
-                </Button>
-              </Box>
+            <Box mb={4}>
+  <Box display="flex" alignItems="center" mb={2}>
+    <FaUsers size={24} style={{ marginRight: 8 }} className="text-cyan-800" />
+    <Typography variant="h6" className="text-gray-700">
+      Información de los Acompañantes
+    </Typography>
+  </Box>
+  <Box>
+    {companions.map((companion, index) => (
+      <Box key={index} display="flex" alignItems="center" mb={2}>
+        <TextField
+          label="Nombre del Acompañante"
+          value={companion.name}
+          onChange={(e) =>
+            handleCompanionChange(index, "name", e.target.value)
+          }
+          fullWidth
+          margin="normal"
+          style={{ marginRight: 8 }}
+        />
+        <TextField
+          label="Num. identificación"
+          value={companion.identityCard}
+          onChange={(e) =>
+            handleCompanionChange(index, "identityCard", e.target.value)
+          }
+          fullWidth
+          margin="normal"
+          type="number"
+          style={{ marginRight: 8 }}
+        />
+        <Button
+          variant="contained"
+          color="secondary"
+          onClick={() => handleRemoveCompanion(index)}
+        >
+          Eliminar
+        </Button>
+      </Box>
+    ))}
+    {canAddMoreCompanions && (
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={handleAddCompanion}
+      >
+        Agregar Acompañante
+      </Button>
+    )}
+    {!canAddMoreCompanions && (
+      <Typography color="error" variant="body1">
+        No se pueden agregar más acompañantes. Capacidad máxima de {roomCapacity} personas.
+      </Typography>
+    )}
+  </Box>
+</Box>
             </div>
           </div>
         </form>

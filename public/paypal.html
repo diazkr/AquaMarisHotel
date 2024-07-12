@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1"> 
+  <title>PayPal Subscription</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    .visually-hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body class="bg-transparent p-2 flex justify-center items-center min-h-screen">
+  <div class="flex flex-col items-center space-y-4">
+    <button id="fetch-plan" style="background-color:#17858A;" class=" hover:bg-green-700 text-white font-bold py-3 px-6 rounded-full">
+      PAGAR MEMBRESÍA
+    </button>
+    <button id="paypal-button" class="visually-hidden bg-yellow-500 hover:bg-yellow-600 text-blue-900 font-bold py-3 px-6 rounded-full flex items-center">
+      <img src="/images/paypal.png" style="height: auto; width: 120px" ; alt="PayPal Logo" class="h-6 mr-2">
+    </button>
+  </div>
+
+  <script>
+    let link = '';
+
+    document.getElementById('fetch-plan').addEventListener('click', async () => {
+      try {
+        const userData = JSON.parse(localStorage.getItem('userData'));
+        const id = userData.id;
+        if (!id) {
+          throw new Error('User ID not found in localStorage');
+        }
+
+        const response = await fetch(`http://localhost:3001/payment/subscription?userId=${id}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error("Error al obtener el plan. Por favor, inténtelo nuevamente más tarde.");
+        }
+
+        const data = await response.json();
+        console.log(data); 
+        link = data.links[0].href;
+        console.log("link", link);
+
+        // Mostrar el botón de PayPal una vez obtenido el enlace
+        document.getElementById('paypal-button').classList.remove('visually-hidden');
+      } catch (error) {
+        console.error(error.message);
+        alert(error.message);
+      }
+    });
+
+    document.getElementById('paypal-button').addEventListener('click', () => {
+      if (link) {
+        window.location.href = link;
+      } else {
+        alert("No hay enlace de PayPal disponible. Por favor, obtenga el plan primero.");
+      }
+    });
+  </script>
+</body>
+</html>
