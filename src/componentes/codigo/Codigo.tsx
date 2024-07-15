@@ -1,7 +1,21 @@
 'use client'
 import React, { useState } from 'react';
+import {
+    TextField,
+    Button,
+    IconButton,
+    InputAdornment,
+    Typography,
+    Box,
+    Divider,
+  } from "@mui/material";
+  import { Visibility, VisibilityOff } from "@mui/icons-material";
+  import { IoIosArrowForward } from "react-icons/io";
+  import Image from "next/image";
+  import { useRouter } from "next/navigation";
 
 const VerificationForm = () => {
+    const router = useRouter();
     const [code, setCode] = useState('');
     const [email, setEmail] = useState('');
     const [error, setError] = useState('');
@@ -24,8 +38,8 @@ const VerificationForm = () => {
             const data = await response.json();
             console.log(data)
             if (response.ok) {
-
                 alert('¡Verificación exitosa! Usuario logeado.');
+                router.push("/register")
             } else {
                 setError('Código de verificación incorrecto.');
             }
@@ -36,41 +50,64 @@ const VerificationForm = () => {
     };
 
     return (
-        <div className="max-w-sm mx-auto px-4 py-8 bg-white shadow-md rounded-lg overflow-hidden">
-            <form onSubmit={handleSubmit} className="mx-auto px-4 py-8">
-                <h2 className="text-4xl font-bold text-center text-teal-800 mb-8">AquaMaris Hotel</h2>
-                <div className="mb-4">
-                    <label htmlFor="email" className="block text-teal-900 font-semibold mb-2">Correo electrónico:</label>
-                    <input
-                        id="email"
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                        className="w-full py-2 px-3 rounded border border-teal-500 focus:outline-none focus:border-teal-700"
-                    />
-                </div>
-                <div className="mb-4">
-                    <label htmlFor="code" className="block text-teal-900 font-semibold mb-2">Código de verificación:</label>
-                    <input
-                        id="code"
-                        type="text"
-                        value={code}
-                        onChange={(e) => setCode(e.target.value)}
-                        required
-                        className="w-full py-2 px-3 rounded border border-teal-500 focus:outline-none focus:border-teal-700"
-                    />
-                </div>
-                <button
-                    type="submit"
-                    className="bg-teal-500 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                >
-                    Verificar y Iniciar Sesión
-                </button>
-                {error && <p className="text-red-600 mt-4">{error}</p>}
-            </form>
-        </div>
+        <Box
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+            p={3}
+            borderRadius={2}
+            className="w-[80%]"
+        >
+            <div>
+                <Image src="/logos/iconoA.svg" alt="" width={70} height={70} />
+            </div>
+            <Typography variant="h5" component="div" gutterBottom className="text-[#175358]">
+                Confirmacion de Cuenta
+            </Typography>
+            <TextField
+                label="correo@example.com"
+                variant="outlined"
+                margin="normal"
+                fullWidth
+                className="shadow-md bg-white"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+            />
+            <TextField
+                className="shadow-md bg-white"
+                label="Codigo"
+                variant="outlined"
+                margin="normal"
+                type="text"
+                fullWidth
+                value={code}
+                onChange={(e) => setCode(e.target.value)}
+                InputProps={{
+                    endAdornment: (
+                        <InputAdornment position="end">
+                        <IconButton
+                            aria-label="toggle password visibility"
+                            edge="end"
+                        >
+                        </IconButton>
+                        </InputAdornment>
+                    ),
+                }}
+            />
+            <Button
+                variant="contained"
+                color="primary"
+                fullWidth
+                className="gradient-button my-1 w-[100%]"
+                onClick={handleSubmit}
+            >
+                <span>Continuar</span>
+                <IoIosArrowForward className="icon-right text-lg" />
+            </Button>
+
+        </Box>
     );
 };
+
 
 export default VerificationForm;

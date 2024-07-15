@@ -4,9 +4,12 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import RoomServiceIcon from '@mui/icons-material/RoomService';
 import StarIcon from '@mui/icons-material/Star';
 import { Comentario } from "@/interfaces/UserInterface";
+import { Rating } from '@mantine/core';
 
 const Hotels: React.FC = () => {
     const [comentarios, setComentarios] = useState<Comentario[]>([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [commentsPerPage] = useState(5); 
 
     useEffect(() => {
         fetchComentarios();
@@ -24,6 +27,13 @@ const Hotels: React.FC = () => {
             console.error('Error al obtener los comentarios:', error);
         }
     };
+
+    // Paginación de comentarios
+    const indexOfLastComment = currentPage * commentsPerPage;
+    const indexOfFirstComment = indexOfLastComment - commentsPerPage;
+    const currentComments = comentarios.slice(indexOfFirstComment, indexOfLastComment);
+
+    const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
     return (
         <div className="mt-12 w-[60%]">
@@ -61,13 +71,32 @@ const Hotels: React.FC = () => {
             </div>
             <div className="mb-8">
                 <h3 className="text-2xl font-bold text-teal-800 mb-2">Comentarios de los usuarios</h3>
-                {comentarios.map((comentario, index) => (
+                {comentarios.length === 0 ? (
+                    <p>¡No hay comentarios disponibles!</p>
+                ) : (
+                    <>
+                {currentComments.map((comentario, index) => (
                     <div key={index} className="bg-gray-100 p-4 rounded-lg shadow-md mb-4">
                         <p className="text-lg font-semibold">{comentario.comment}</p>
                         <p className="text-gray-700">{comentario.comment_date}</p>
-                        <p className="text-gray-700">{comentario.rating}</p>
+                        <Rating name="read-only" value={comentario.rating} readOnly />
                     </div>
                 ))}
+                {/* Paginación */}
+                <ul className="flex list-none">
+                    {Array.from({ length: Math.ceil(comentarios.length / commentsPerPage) }, (_, i) => (
+                        <li key={i}>
+                            <button
+                                onClick={() => paginate(i + 1)}
+                                className={`px-3 py-1 mx-1 rounded-md ${currentPage === i + 1 ? 'bg-teal-500 text-white' : 'bg-gray-300 text-gray-700'}`}
+                            >
+                                {i + 1}
+                            </button>
+                        </li>
+                    ))}
+                </ul> 
+            </>
+            )}
             </div>
         </div>
     );
