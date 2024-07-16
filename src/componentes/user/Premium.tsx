@@ -1,15 +1,30 @@
-import React from "react";
+"use client"
+import React, { useState } from "react";
 import { Card, CardContent, Typography, Grid, Button } from "@mui/material";
 import Image from "next/image";
 import { CheckCircle } from "@mui/icons-material";
 import theme from "@/theme";
+import { useRouter } from "next/navigation";
+import CancelMembershipModal from "./CancelMembershipModal";
 
 interface PremiumProps {
   membershipStatus: string;
+  userId:string;
 }
 
-const Premium: React.FC<PremiumProps> = ({ membershipStatus }) => {
-  const isActive = membershipStatus === "ACTIVE";
+const Premium: React.FC<PremiumProps> = ({ membershipStatus, userId }) => {
+  const isActive = membershipStatus === "DISABLED";
+  const router = useRouter()
+
+  const [open, setOpen] = useState(false);
+
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+  const handleConfirm = () => {
+    console.log(`El usuario con userId ${userId} ha cancelado su suscripción`);
+    setOpen(false);
+  };
 
   const benefitImages = [
     "https://i.pinimg.com/564x/af/a8/8f/afa88f97b37a9e8c7e3d73964452a0e5.jpg",
@@ -88,6 +103,14 @@ const Premium: React.FC<PremiumProps> = ({ membershipStatus }) => {
                     Y mucho más...
                   </li>
                 </ul>
+
+                <div className="text-center mt-4">
+                <Button variant="outlined" className="px-6" color="error" onClick={handleOpen}>
+                  Cancelar membresía
+                </Button>
+              </div>
+
+
               </div>
 
               <Grid container spacing={2} className="mt-4">
@@ -146,7 +169,7 @@ const Premium: React.FC<PremiumProps> = ({ membershipStatus }) => {
                 </ul>
               </div>
               <div className="text-center mt-4">
-                <Button variant="contained" color="primary" disabled>
+                <Button variant="contained" color="primary" onClick={()=>router.push("/paypal")}>
                   Activar Membresía
                 </Button>
               </div>
@@ -170,6 +193,12 @@ const Premium: React.FC<PremiumProps> = ({ membershipStatus }) => {
           )}
         </Typography>
       </CardContent>
+
+      <CancelMembershipModal
+        open={open}
+        handleClose={handleClose}
+        handleConfirm={handleConfirm}
+      />
     </Card>
   );
 };

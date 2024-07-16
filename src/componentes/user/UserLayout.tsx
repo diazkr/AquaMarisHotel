@@ -91,7 +91,7 @@ const UserLayout: React.FC<UserLayoutProps> = ({ id }) => {
     {
       text: "Mi suscripción",
       content: user ? (
-        <Premium membershipStatus={user.membership_status} />
+        <Premium membershipStatus={user.membership_status} userId={user.id} />
       ) : null,
       icon: <FaStar />,
     },

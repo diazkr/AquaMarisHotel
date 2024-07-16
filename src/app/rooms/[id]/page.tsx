@@ -1,21 +1,24 @@
-'use client';
+"use client";
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Modal from 'react-modal';
 import { useRouter } from 'next/navigation';
 import { Habitacion } from '@/interfaces/HabitacionInterface';
-import {FaWifi, FaTv, FaWater, FaSnowflake,FaFire,FaLock,FaParking,FaCoffee,FaIceCream,FaHotTub,} from "react-icons/fa";
+import { FaWifi, FaTv, FaWater, FaSnowflake, FaFire, FaLock, FaParking, FaCoffee, FaIceCream, FaHotTub } from "react-icons/fa";
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/material';
-
-
+import { useFilters } from "@/contextos/FilterContext";
+import { Popover } from "@mantine/core";
+import { DatePicker } from "@mantine/dates";
+import dayjs from 'dayjs';
 
 const Page = ({ params }: { params: { id: string } }) => {
   const { id } = params;
   const [room, setRoom] = useState<Habitacion | null>(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-
+  const { arriveDate, setArriveDate, departureDate, setDepartureDate } = useFilters();
+  const [popoverOpened, setPopoverOpened] = useState(false);
   const router = useRouter();
 
   localStorage.setItem("rommUUID", id);
@@ -37,16 +40,15 @@ const Page = ({ params }: { params: { id: string } }) => {
       openDialog();
     }
   };
-  
 
   const openDialog = () => {
     setIsDialogOpen(true);
   };
-  
+
   const closeDialog = () => {
     setIsDialogOpen(false);
   };
-  
+
   const renderIcon = (servicio: string) => {
     switch (servicio) {
       case "wifi":
@@ -72,7 +74,6 @@ const Page = ({ params }: { params: { id: string } }) => {
       default:
         return null;
     }
-
   };
 
   const renderTextEspanol = (servicio: string) => {
@@ -100,7 +101,6 @@ const Page = ({ params }: { params: { id: string } }) => {
       default:
         return null;
     }
-
   };
 
   useEffect(() => {
@@ -110,9 +110,7 @@ const Page = ({ params }: { params: { id: string } }) => {
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
-        console.log('Respuesta de la petición', `${process.env.NEXT_PUBLIC_API_URL}/rooms/${id}`);
         const data = await response.json();
-        console.log(data);
 
         localStorage.setItem("roomPrice", data.price);
         localStorage.setItem('roomDescription', data.description);
@@ -121,7 +119,6 @@ const Page = ({ params }: { params: { id: string } }) => {
         localStorage.setItem('roomType', JSON.stringify(data.type));
 
         setRoom(data);
-
       } catch (error) {
         console.error('Fetching room failed:', error);
       }
@@ -133,6 +130,11 @@ const Page = ({ params }: { params: { id: string } }) => {
   if (!room) {
     return <div>Habitación no encontrada</div>;
   }
+
+  const handleDateRangeChange = (range: [Date | null, Date | null]) => {
+    setArriveDate(range[0]);
+    setDepartureDate(range[1]);
+  };
 
   return (
     <div className="container mx-auto p-4 bg-neutral-100 mt-14">
@@ -165,11 +167,6 @@ const Page = ({ params }: { params: { id: string } }) => {
                   <span className="text-lg font-semibold text-gray-600">Precio</span>
                   <span className="ml-2 text-gray-500">${room.price}</span>
                 </div>
-                {/* El estado no es necesario que lo vea el usuario
-                 <div className="flex items-center">
-                  <span className="text-lg font-semibold text-gray-600">Estado</span>
-                  <span className="ml-2 text-gray-500">{room.state}</span>
-                </div> */}
                 <div className="flex items-center">
                   <span className="text-lg font-semibold text-gray-600">Número de habitación</span>
                   <span className="ml-2 text-gray-500">{room.roomNumber}</span>
@@ -180,21 +177,42 @@ const Page = ({ params }: { params: { id: string } }) => {
                 </div>
                 <div className="flex items-center">
                   <div className="flex space-x-2 text-2xl text-[#17858A] my-3">
-                        {room.services.map((servicio) => (
+                    {room.services.map((servicio) => (
                       <div
-                            key={servicio}
-                            className="flex items-center justify-center w-12 h-12 rounded-full border border-gray-300 hover:bg-[#d9eeec] hover:scale-95 transition-transform duration-200"
-                          >
-                            {renderIcon(servicio)}
-                          </div>
-                          ))}
+                        key={servicio}
+                        className="flex items-center justify-center w-12 h-12 rounded-full border border-gray-300 hover:bg-[#d9eeec] hover:scale-95 transition-transform duration-200"
+                      >
+                        {renderIcon(servicio)}
                       </div>
+                    ))}
                   </div>
                 </div>
+              </div>
             </div>
-            <button className="w-full bg-teal-600 text-white py-2 px-4 rounded-lg hover:bg-teal-500" disabled>
-              Calendario
-            </button>
+            <Popover
+              opened={popoverOpened}
+              onChange={setPopoverOpened}
+              position="bottom"
+              withArrow
+            >
+              <Popover.Target>
+                <button
+                  className="w-full bg-teal-600 text-white py-2 px-4 rounded-lg hover:bg-teal-500"
+                  onClick={() => setPopoverOpened((o) => !o)}
+                >
+                  Calendario
+                </button>
+              </Popover.Target>
+              <Popover.Dropdown>
+                <DatePicker
+                  type="range"
+                  value={[arriveDate, departureDate]}
+                  onChange={handleDateRangeChange}
+                  minDate={new Date()}
+                  classNames={{ day: "rounded-full" }}
+                />
+              </Popover.Dropdown>
+            </Popover>
             <button className="w-full bg-teal-600 text-white py-2 px-4 rounded-lg hover:bg-teal-500" onClick={handleReserveClick}>
               Reservar
             </button>
@@ -207,7 +225,7 @@ const Page = ({ params }: { params: { id: string } }) => {
         contentLabel="Ver más fotos"
         className="modal"
         overlayClassName="overlay"
-        >
+      >
         <div className="image-scroll-container">
           {room.images.length >= 6 ? (
             room.images.slice(5).map((image) => (
@@ -232,19 +250,18 @@ const Page = ({ params }: { params: { id: string } }) => {
       </Modal>
 
       <Dialog open={isDialogOpen} onClose={closeDialog}>
-      <DialogTitle>Inicio de sesión requerido</DialogTitle>
-      <DialogContent>
-        Debes iniciar sesión para poder realizar una reservación.
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={closeDialog} color="primary">
-          Cerrar
-        </Button>
-      </DialogActions>
-    </Dialog>
+        <DialogTitle>Inicio de sesión requerido</DialogTitle>
+        <DialogContent>
+          Debes iniciar sesión para poder realizar una reservación.
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={closeDialog} color="primary">
+            Cerrar
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };
 
 export default Page;
-
