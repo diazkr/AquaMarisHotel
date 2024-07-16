@@ -8,6 +8,6 @@ interface ChatCompletionMessage {
 export async function getGroqChatCompletion(messages: ChatCompletionMessage[]) {
   return groq.chat.completions.create({
     messages: messages,
-    model: "llama3-8b-8192",
+    model: "llama3-70b-8192",
   });
 }

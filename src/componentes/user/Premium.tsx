@@ -13,7 +13,7 @@ interface PremiumProps {
 }
 
 const Premium: React.FC<PremiumProps> = ({ membershipStatus, userId }) => {
-  const isActive = membershipStatus === "DISABLED";
+  const isActive = membershipStatus ==="ACTIVE";
   const router = useRouter()
 
   const [open, setOpen] = useState(false);

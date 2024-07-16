@@ -1,23 +1,41 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
-import Image from 'next/image';
-import Modal from 'react-modal';
-import { useRouter } from 'next/navigation';
-import { Habitacion } from '@/interfaces/HabitacionInterface';
-import { FaWifi, FaTv, FaWater, FaSnowflake, FaFire, FaLock, FaParking, FaCoffee, FaIceCream, FaHotTub } from "react-icons/fa";
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/material';
+import React, { useState, useEffect } from "react";
+import Image from "next/image";
+import Modal from "react-modal";
+import { useRouter } from "next/navigation";
+import { Habitacion } from "@/interfaces/HabitacionInterface";
+import {
+  FaWifi,
+  FaTv,
+  FaWater,
+  FaSnowflake,
+  FaFire,
+  FaLock,
+  FaParking,
+  FaCoffee,
+  FaIceCream,
+  FaHotTub,
+} from "react-icons/fa";
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+} from "@mui/material";
 import { useFilters } from "@/contextos/FilterContext";
 import { Popover } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
-import dayjs from 'dayjs';
+import dayjs from "dayjs";
 
 const Page = ({ params }: { params: { id: string } }) => {
   const { id } = params;
   const [room, setRoom] = useState<Habitacion | null>(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const { arriveDate, setArriveDate, departureDate, setDepartureDate } = useFilters();
+  const { arriveDate, setArriveDate, departureDate, setDepartureDate } =
+    useFilters();
   const [popoverOpened, setPopoverOpened] = useState(false);
   const router = useRouter();
 
@@ -35,7 +53,7 @@ const Page = ({ params }: { params: { id: string } }) => {
     const token = localStorage.getItem("token");
 
     if (token) {
-      router.push('/payment');
+      router.push("/payment");
     } else {
       openDialog();
     }
@@ -106,21 +124,23 @@ const Page = ({ params }: { params: { id: string } }) => {
   useEffect(() => {
     const fetchRoom = async () => {
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/rooms/${id}`);
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/rooms/${id}`
+        );
         if (!response.ok) {
-          throw new Error('Network response was not ok');
+          throw new Error("Network response was not ok");
         }
         const data = await response.json();
 
         localStorage.setItem("roomPrice", data.price);
-        localStorage.setItem('roomDescription', data.description);
-        localStorage.setItem('roomServices', JSON.stringify(data.services));
-        localStorage.setItem('roomImages', JSON.stringify(data.images));
-        localStorage.setItem('roomType', JSON.stringify(data.type));
+        localStorage.setItem("roomDescription", data.description);
+        localStorage.setItem("roomServices", JSON.stringify(data.services));
+        localStorage.setItem("roomImages", JSON.stringify(data.images));
+        localStorage.setItem("roomType", JSON.stringify(data.type));
 
         setRoom(data);
       } catch (error) {
-        console.error('Fetching room failed:', error);
+        console.error("Fetching room failed:", error);
       }
     };
 
@@ -137,18 +157,37 @@ const Page = ({ params }: { params: { id: string } }) => {
   };
 
   return (
-    <div className="container mx-auto p-4 bg-neutral-100 mt-14">
+    <div className="container mx-auto p-4 mt-14">
       <div className="space-y-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <Image src={room.images[0]} alt="Main view" width={800} height={600} className="rounded-lg w-full h-full" />
+            <Image
+              src={room.images[0]}
+              alt="Main view"
+              width={800}
+              height={600}
+              className="rounded-lg w-full h-full"
+            />
           </div>
           <div className="grid grid-cols-2 gap-2">
             {room.images.slice(1, 4).map((image, index) => (
-              <Image key={index} src={image} alt={"view"} width={400} height={300} className="rounded-lg w-full h-full" />
+              <Image
+                key={index}
+                src={image}
+                alt={"view"}
+                width={400}
+                height={300}
+                className="rounded-lg w-full h-full"
+              />
             ))}
             <div className="relative">
-              <Image src={room.images[4]} alt="View 5" width={400} height={300} className="rounded-lg w-full h-full" />
+              <Image
+                src={room.images[4]}
+                alt="View 5"
+                width={400}
+                height={300}
+                className="rounded-lg w-full h-full"
+              />
               <button
                 className="absolute inset-0 bg-black bg-opacity-50 text-white flex justify-center items-center rounded-lg"
                 onClick={openModal}
@@ -161,19 +200,31 @@ const Page = ({ params }: { params: { id: string } }) => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
           <div className="md:col-start-2 space-y-4">
             <div className="p-6 rounded-lg shadow-md bg-white">
-              <p className="text-2xl font-bold mb-2 text-primary">{room.description}</p>
+              <p className="text-2xl font-bold mb-2 text-primary">
+                {room.description}
+              </p>
               <div className="space-y-2">
                 <div className="flex items-center">
-                  <span className="text-lg font-semibold text-gray-600">Precio</span>
+                  <span className="text-lg font-semibold text-gray-600">
+                    Precio
+                  </span>
                   <span className="ml-2 text-gray-500">${room.price}</span>
                 </div>
                 <div className="flex items-center">
-                  <span className="text-lg font-semibold text-gray-600">Número de habitación</span>
+                  <span className="text-lg font-semibold text-gray-600">
+                    Número de habitación
+                  </span>
                   <span className="ml-2 text-gray-500">{room.roomNumber}</span>
                 </div>
                 <div className="flex">
-                  <span className="text-lg font-semibold text-gray-600">Servicios</span>
-                  <span className="ml-2 text-gray-500">{room.services.map((servicio) => (renderTextEspanol(servicio))).join(', ')}</span>
+                  <span className="text-lg font-semibold text-gray-600">
+                    Servicios
+                  </span>
+                  <span className="ml-2 text-gray-500">
+                    {room.services
+                      .map((servicio) => renderTextEspanol(servicio))
+                      .join(", ")}
+                  </span>
                 </div>
                 <div className="flex items-center">
                   <div className="flex space-x-2 text-2xl text-[#17858A] my-3">
@@ -196,12 +247,13 @@ const Page = ({ params }: { params: { id: string } }) => {
               withArrow
             >
               <Popover.Target>
-                <button
-                  className="w-full bg-teal-600 text-white py-2 px-4 rounded-lg hover:bg-teal-500"
+                <Button
+                  className="w-full py-2 px-4 rounded-lg"
                   onClick={() => setPopoverOpened((o) => !o)}
+                  disabled
                 >
                   Calendario
-                </button>
+                </Button>
               </Popover.Target>
               <Popover.Dropdown>
                 <DatePicker
@@ -213,9 +265,13 @@ const Page = ({ params }: { params: { id: string } }) => {
                 />
               </Popover.Dropdown>
             </Popover>
-            <button className="w-full bg-teal-600 text-white py-2 px-4 rounded-lg hover:bg-teal-500" onClick={handleReserveClick}>
+            <Button
+              className="w-full py-2 px-4 rounded-lg"
+              variant="contained"
+              onClick={handleReserveClick}
+            >
               Reservar
-            </button>
+            </Button>
           </div>
         </div>
       </div>
@@ -228,23 +284,28 @@ const Page = ({ params }: { params: { id: string } }) => {
       >
         <div className="image-scroll-container">
           {room.images.length >= 6 ? (
-            room.images.slice(5).map((image) => (
-              <Image
-                key={image}
-                src={image}
-                alt="View 6"
-                width={400}
-                height={300}
-                className="rounded-lg w-full h-auto"
-              />
-            ))
+            room.images
+              .slice(5)
+              .map((image) => (
+                <Image
+                  key={image}
+                  src={image}
+                  alt="View 6"
+                  width={400}
+                  height={300}
+                  className="rounded-lg w-full h-auto"
+                />
+              ))
           ) : (
             <div className="flex justify-center items-center h-full">
               <p className="text-gray-600 text-xl">No hay más fotos</p>
             </div>
           )}
         </div>
-        <button onClick={closeModal} className="mt-4 bg-teal-600 text-white py-2 px-4 rounded-lg hover:bg-teal-500">
+        <button
+          onClick={closeModal}
+          className="mt-4 bg-teal-600 text-white py-2 px-4 rounded-lg hover:bg-teal-500"
+        >
           Cerrar
         </button>
       </Modal>
