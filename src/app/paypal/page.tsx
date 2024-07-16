@@ -26,7 +26,7 @@ const PaymentPage = () => {
   };
 
   return (
-    <div className="min-h-screen mt-20 flex flex-col md:flex-row justify-center items-center bg-neutral-100">
+    <div className="min-h-screen mt-20 flex flex-col md:flex-row justify-center items-center">
       <div className="flex flex-col mx-5 items-center md:items-start space-y-4 md:space-y-8 md:w-1/4">
         {/* Envolver cada imagen en un contenedor con la clase image-container */}
         <div className="image-container">
