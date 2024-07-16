@@ -1,45 +1,35 @@
-"use client";
-
-import React, { useState, useEffect } from "react";
-import Image from "next/image";
-import Modal from "react-modal";
-import { useRouter } from "next/navigation";
-import { Habitacion } from "@/interfaces/HabitacionInterface";
-import {
-  FaWifi,
-  FaTv,
-  FaWater,
-  FaSnowflake,
-  FaFire,
-  FaLock,
-  FaParking,
-  FaCoffee,
-  FaIceCream,
-  FaHotTub,
-} from "react-icons/fa";
-import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Button,
-} from "@mui/material";
+'use client'
+import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
+import Modal from 'react-modal';
+import { useRouter } from 'next/navigation';
+import { Habitacion } from '@/interfaces/HabitacionInterface';
+import { FaWifi, FaTv, FaWater, FaSnowflake, FaFire, FaLock, FaParking, FaCoffee, FaIceCream, FaHotTub } from "react-icons/fa";
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/material';
 import { useFilters } from "@/contextos/FilterContext";
 import { Popover } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
-import dayjs from "dayjs";
+import dayjs from 'dayjs';
+import { addDays } from 'date-fns'; //para el calendario
+import RoomComments from '@/componentes/comment/comment'; //para los comentarios
 
 const Page = ({ params }: { params: { id: string } }) => {
   const { id } = params;
+  const router = useRouter();
   const [room, setRoom] = useState<Habitacion | null>(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const { arriveDate, setArriveDate, departureDate, setDepartureDate } =
     useFilters();
   const [popoverOpened, setPopoverOpened] = useState(false);
-  const router = useRouter();
+  const [occupiedDates, setOccupiedDates] = useState<Date[]>([]);//calendario
+  const [commentsModalIsOpen, setCommentsModalIsOpen] = useState(false);
 
-  localStorage.setItem("rommUUID", id);
+  
+
+  useEffect(() => {
+    localStorage.setItem("rommUUID", id);
+  }, [id]);
 
   const openModal = () => {
     setModalIsOpen(true);
@@ -48,6 +38,9 @@ const Page = ({ params }: { params: { id: string } }) => {
   const closeModal = () => {
     setModalIsOpen(false);
   };
+
+  const openCommentsModal = () => setCommentsModalIsOpen(true);
+  const closeCommentsModal = () => setCommentsModalIsOpen(false);
 
   const handleReserveClick = () => {
     const token = localStorage.getItem("token");
@@ -128,19 +121,32 @@ const Page = ({ params }: { params: { id: string } }) => {
           `${process.env.NEXT_PUBLIC_API_URL}/rooms/${id}`
         );
         if (!response.ok) {
-          throw new Error("Network response was not ok");
+          throw new Error('la petición no es correcta');
         }
         const data = await response.json();
 
         localStorage.setItem("roomPrice", data.price);
-        localStorage.setItem("roomDescription", data.description);
-        localStorage.setItem("roomServices", JSON.stringify(data.services));
-        localStorage.setItem("roomImages", JSON.stringify(data.images));
-        localStorage.setItem("roomType", JSON.stringify(data.type));
-
+        localStorage.setItem('roomDescription', data.description);
+        localStorage.setItem('roomServices', JSON.stringify(data.services));
+        localStorage.setItem('roomImages', JSON.stringify(data.images));
+        localStorage.setItem('roomType', JSON.stringify(data.type));
+        
         setRoom(data);
+
+        // fechas para el calendario
+        const bookings = data.bookings;
+        const occupied = bookings.flatMap((booking: any) => {
+          const checkInDate = addDays( new Date(booking.check_in_date),1);
+          const checkOutDate = addDays( new Date(booking.check_out_date),1);
+          const dates = [];
+          for (let d = checkInDate; d <= checkOutDate; d.setDate(d.getDate() +1)) {
+            dates.push(new Date(d));
+          }
+          return dates;
+        });
+        setOccupiedDates(occupied);
       } catch (error) {
-        console.error("Fetching room failed:", error);
+        console.error('Fallo en la petición', error);
       }
     };
 
@@ -171,14 +177,7 @@ const Page = ({ params }: { params: { id: string } }) => {
           </div>
           <div className="grid grid-cols-2 gap-2">
             {room.images.slice(1, 4).map((image, index) => (
-              <Image
-                key={index}
-                src={image}
-                alt={"view"}
-                width={400}
-                height={300}
-                className="rounded-lg w-full h-full"
-              />
+              <Image key={index} src={image} alt="View" width={400} height={300} className="rounded-lg w-full h-full" />
             ))}
             <div className="relative">
               <Image
@@ -217,14 +216,8 @@ const Page = ({ params }: { params: { id: string } }) => {
                   <span className="ml-2 text-gray-500">{room.roomNumber}</span>
                 </div>
                 <div className="flex">
-                  <span className="text-lg font-semibold text-gray-600">
-                    Servicios
-                  </span>
-                  <span className="ml-2 text-gray-500">
-                    {room.services
-                      .map((servicio) => renderTextEspanol(servicio))
-                      .join(", ")}
-                  </span>
+                  <span className="text-lg font-semibold text-gray-600">Servicios</span>
+                  <span className="ml-2 text-gray-500">{room.services.map((servicio) => renderTextEspanol(servicio)).join(', ')}</span>
                 </div>
                 <div className="flex items-center">
                   <div className="flex space-x-2 text-2xl text-[#17858A] my-3">
@@ -247,13 +240,13 @@ const Page = ({ params }: { params: { id: string } }) => {
               withArrow
             >
               <Popover.Target>
-                <Button
+                <button
                   className="w-full py-2 px-4 rounded-lg"
                   onClick={() => setPopoverOpened((o) => !o)}
                   disabled
                 >
-                  Calendario
-                </Button>
+                  Calendario 📅
+                </button>
               </Popover.Target>
               <Popover.Dropdown>
                 <DatePicker
@@ -261,17 +254,24 @@ const Page = ({ params }: { params: { id: string } }) => {
                   value={[arriveDate, departureDate]}
                   onChange={handleDateRangeChange}
                   minDate={new Date()}
+                  excludeDate={(date) =>
+                    occupiedDates.some(
+                      (occupiedDate) =>
+                        occupiedDate.getFullYear() === date.getFullYear() &&
+                        occupiedDate.getMonth() === date.getMonth() &&
+                        occupiedDate.getDate() === date.getDate()
+                    )
+                  }
                   classNames={{ day: "rounded-full" }}
                 />
               </Popover.Dropdown>
             </Popover>
-            <Button
-              className="w-full py-2 px-4 rounded-lg"
-              variant="contained"
-              onClick={handleReserveClick}
-            >
-              Reservar
-            </Button>
+            <button className="w-full bg-teal-600 text-white py-2 px-4 rounded-lg hover:bg-teal-500" onClick={openCommentsModal}>
+              Ver comentarios 🌟
+            </button>
+            <button className="w-full bg-teal-600 text-white py-2 px-4 rounded-lg hover:bg-teal-500" onClick={handleReserveClick}>
+              RESERVAR 🏨 
+            </button>
           </div>
         </div>
       </div>
@@ -306,6 +306,21 @@ const Page = ({ params }: { params: { id: string } }) => {
           onClick={closeModal}
           className="mt-4 bg-teal-600 text-white py-2 px-4 rounded-lg hover:bg-teal-500"
         >
+          Cerrar
+        </button>
+      </Modal>
+
+      <Modal
+        isOpen={commentsModalIsOpen}
+        onRequestClose={closeCommentsModal}
+        contentLabel="Ver comentarios"
+        className="modal"
+        overlayClassName="overlay"
+      >
+        <div className="comments-scroll-container">
+          <RoomComments roomId={id} />
+        </div>
+        <button onClick={closeCommentsModal} className="mt-4 bg-teal-600 text-white py-2 px-4 rounded-lg hover:bg-teal-500">
           Cerrar
         </button>
       </Modal>
