@@ -17,7 +17,7 @@ const Hotels: React.FC = () => {
 
     const fetchComentarios = async () => {
         try {
-            const response = await fetch('http://localhost:3001/comment');
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/comment`);
             if (!response.ok) {
                 throw new Error('No se pudo obtener los comentarios');
             }

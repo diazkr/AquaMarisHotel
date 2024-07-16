@@ -24,7 +24,7 @@ const VerificationForm = () => {
         event.preventDefault();
 
         try {
-            const response = await fetch('http://localhost:3001/mail/register/code', {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/mail/register/code`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

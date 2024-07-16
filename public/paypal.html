@@ -32,7 +32,7 @@
           throw new Error('User ID not found in localStorage');
         }
 
-        const response = await fetch(`http://localhost:3001/payment/subscription?userId=${id}`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/payment/subscription?userId=${id}`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

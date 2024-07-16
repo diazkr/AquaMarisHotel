@@ -154,3 +154,24 @@ body {
   pointer-events: none;
   z-index: 10;
 }
+
+
+
+/* Animación de gradiente */
+@keyframes gradient-animation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animate-gradient {
+  background: linear-gradient(270deg, #9ea9eb, #4fd1c5, #17858a, #845ec2);
+  background-size: 400% 400%;
+  animation: gradient-animation 8s ease infinite;
+}
