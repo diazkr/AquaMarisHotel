@@ -196,12 +196,13 @@ const Page = ({ params }: { params: { id: string } }) => {
               withArrow
             >
               <Popover.Target>
-                <button
-                  className="w-full bg-teal-600 text-white py-2 px-4 rounded-lg hover:bg-teal-500"
+                <Button
+                  className="w-full py-2 px-4 rounded-lg"
                   onClick={() => setPopoverOpened((o) => !o)}
+                  disabled
                 >
                   Calendario
-                </button>
+                </Button>
               </Popover.Target>
               <Popover.Dropdown>
                 <DatePicker
@@ -213,9 +214,9 @@ const Page = ({ params }: { params: { id: string } }) => {
                 />
               </Popover.Dropdown>
             </Popover>
-            <button className="w-full bg-teal-600 text-white py-2 px-4 rounded-lg hover:bg-teal-500" onClick={handleReserveClick}>
+            <Button className="w-full py-2 px-4 rounded-lg" onClick={handleReserveClick}>
               Reservar
-            </button>
+            </Button>
           </div>
         </div>
       </div>
