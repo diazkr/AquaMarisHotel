@@ -23,8 +23,11 @@
 
   <script>
     let link = '';
+    let planFetched = false; 
 
     document.getElementById('fetch-plan').addEventListener('click', async () => {
+      if (planFetched) return; // Evita que se haga la petición más de una vez
+
       try {
         const userData = JSON.parse(localStorage.getItem('userData'));
         const id = userData.id;
@@ -32,7 +35,7 @@
           throw new Error('User ID not found in localStorage');
         }
 
-        const response = await fetch(`http://localhost:3001/payment/subscription?userId=${id}`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/payment/subscription?userId=${id}`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -40,7 +43,7 @@
         });
 
         if (!response.ok) {
-          throw new Error("Error al obtener el plan. Por favor, inténtelo nuevamente más tarde.");
+          throw new Error("Ocurrio un error en el proceso.");
         }
 
         const data = await response.json();
@@ -50,6 +53,9 @@
 
         // Mostrar el botón de PayPal una vez obtenido el enlace
         document.getElementById('paypal-button').classList.remove('visually-hidden');
+        planFetched = true; //  obtenido el plan
+        document.getElementById('fetch-plan').disabled = true; // Deshabilitar el botón
+        document.getElementById('fetch-plan').innerText = "Ya puedes pagar la membresia y ¡Disfrutar!"; // Cambiar el texto del botón
       } catch (error) {
         console.error(error.message);
         alert(error.message);
@@ -66,3 +72,4 @@
   </script>
 </body>
 </html>
+

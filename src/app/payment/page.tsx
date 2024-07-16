@@ -36,7 +36,6 @@ const PaymentView: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [promotionCode, setpromotionCode] = useState("")
 
-
   // Estados para los datos del usuario
   const [userName, setUserName] = useState("");
   const [userEmail, setUserEmail] = useState("");
@@ -65,6 +64,7 @@ const PaymentView: React.FC = () => {
     const storedUserData = JSON.parse(localStorage.getItem("userData") || "{}");
 
     setUserId(storedUserData.id || "");
+    // setUserId(storedUserId);
     setRoomId(storedRoomId);
     setCheckInDate(storedCheckInDate);
     setCheckOutDate(storedCheckOutDate);
@@ -131,7 +131,7 @@ const PaymentView: React.FC = () => {
 
       if (!response.ok) {
         throw new Error(
-          "Error al enviar la reserva. Por favor, inténtelo nuevamente más tarde."
+          "Error al enviar la reserva."
         );
       }
 
@@ -143,7 +143,7 @@ const PaymentView: React.FC = () => {
       setBookingSuccessful(true);
     } catch (error) {
       setError(
-        "Error al enviar la reserva. Por favor, inténtelo nuevamente más tarde."
+        "Error al enviar la reserva."
       );
       console.error("Error en la solicitud de reserva:", error);
     }
@@ -267,60 +267,59 @@ const PaymentView: React.FC = () => {
       Información de los Acompañantes
     </Typography>
   </Box>
-  <Box>
-    {companions.map((companion, index) => (
-      <Box key={index} display="flex" alignItems="center" mb={2}>
-        <TextField
-          label="Nombre del Acompañante"
-          value={companion.name}
-          onChange={(e) =>
-            handleCompanionChange(index, "name", e.target.value)
-          }
-          fullWidth
-          margin="normal"
-          style={{ marginRight: 8 }}
-        />
-        <TextField
-          label="Num. identificación"
-          value={companion.identityCard}
-          onChange={(e) =>
-            handleCompanionChange(index, "identityCard", e.target.value)
-          }
-          fullWidth
-          margin="normal"
-          type="number"
-          style={{ marginRight: 8 }}
-        />
+    <Box>
+      {companions.map((companion, index) => (
+        <Box key={index} display="flex" alignItems="center" mb={2}>
+          <TextField
+            label="Nombre del Acompañante"
+            value={companion.name}
+            onChange={(e) =>
+              handleCompanionChange(index, "name", e.target.value)
+            }
+            fullWidth
+            margin="normal"
+            style={{ marginRight: 8 }}
+          />
+          <TextField
+            label="Num. identificación"
+            value={companion.identityCard}
+            onChange={(e) =>
+              handleCompanionChange(index, "identityCard", e.target.value)
+            }
+            fullWidth
+            margin="normal"
+            type="number"
+            style={{ marginRight: 8 }}
+          />
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={() => handleRemoveCompanion(index)}
+          >
+            Eliminar
+          </Button>
+        </Box>
+      ))}
+      {canAddMoreCompanions && (
         <Button
           variant="contained"
-          color="secondary"
-          onClick={() => handleRemoveCompanion(index)}
+          color="primary"
+          onClick={handleAddCompanion}
         >
-          Eliminar
+          Agregar Acompañante
         </Button>
-      </Box>
-    ))}
-    {canAddMoreCompanions && (
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={handleAddCompanion}
-      >
-        Agregar Acompañante
-      </Button>
-    )}
-    {!canAddMoreCompanions && (
-      <Typography color="error" variant="body1">
-        No se pueden agregar más acompañantes. Capacidad máxima de {roomCapacity} personas.
-      </Typography>
-    )}
+      )}
+      {!canAddMoreCompanions && (
+        <Typography color="error" variant="body1">
+          No se pueden agregar más acompañantes. Capacidad máxima de {roomCapacity} personas.
+        </Typography>
+      )}
+    </Box>
   </Box>
-</Box>
-            </div>
-          </div>
-        </form>
+    </div>
+    </div>
+    </form>
       </Paper>
-
       <div className="flex w-[100%] gap-10">
         <div className="w-1/2">
           <Box mb={4}>
@@ -338,11 +337,11 @@ const PaymentView: React.FC = () => {
               <TextField
                 fullWidth
                 label="Código de Descuento"
-                value={discountCode}
-                onChange={(e) => setDiscountCode(e.target.value)}
+                value={promotionCode}
+                onChange={(e) => setpromotionCode(e.target.value)}
                 margin="dense"
               />
-
+              {/* boton de descuento
               <Button
                 variant="contained"
                 className="my-2 mx-1 px-6 "
@@ -351,7 +350,7 @@ const PaymentView: React.FC = () => {
                 disabled
               >
                 Enviar
-              </Button>
+              </Button> */}
             </div>
           </Box>
         </div>
@@ -427,3 +426,12 @@ const PaymentView: React.FC = () => {
 };
 
 export default PaymentView;
+
+
+
+
+
+
+
+
+

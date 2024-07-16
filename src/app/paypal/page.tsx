@@ -43,7 +43,7 @@ const PaymentPage = () => {
         </div>
       </div>
 
-      <div className="max-w-3xl mx-auto p-8 relative rounded-lg overflow-hidden">
+      <div className="max-w-3xl mx-12 p-8 relative rounded-lg overflow-hidden">
         <video autoPlay loop muted className="absolute inset-0 w-full h-full object-cover rounded-lg">
           <source src="/hotel.mp4" type="video/mp4" />
           Tu navegador no soporta la etiqueta de video.
