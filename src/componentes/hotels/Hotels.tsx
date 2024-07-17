@@ -5,6 +5,7 @@ import RoomServiceIcon from '@mui/icons-material/RoomService';
 import StarIcon from '@mui/icons-material/Star';
 import { Comentario } from "@/interfaces/UserInterface";
 import { Rating } from '@mantine/core';
+import Link from "next/link";
 
 const Hotels: React.FC = () => {
     const [comentarios, setComentarios] = useState<Comentario[]>([]);
@@ -49,7 +50,10 @@ const Hotels: React.FC = () => {
                 <h3 className="text-2xl font-bold text-teal-800 mb-2">
                     <LocationOnIcon className="mr-2" />Ubicación
                 </h3>
-                <p>Inserta aquí la ubicación del hotel.</p>
+                <p>Estamos ubicados en colombia, Cartagena.</p>
+                <Link href='/experiencias'>
+                    Dale click aqui para conocer mas detalles.
+                </Link>
             </div>
             <div className="mb-8">
                 <h3 className="text-2xl font-bold text-teal-800 mb-2">
@@ -67,7 +71,22 @@ const Hotels: React.FC = () => {
                 <h3 className="text-2xl font-bold text-teal-800 mb-2">
                     <StarIcon className="mr-2" />Lo que nos hace especiales
                 </h3>
-                <p>Describe aquí las características únicas y los beneficios destacados del hotel AquaMaris.</p>
+                <p className="text-lg mb-4">El hotel AquaMaris destaca por ofrecer una experiencia única que combina lujo, confort y una ubicación 
+                    privilegiada frente al mar. Sus características distintivas incluyen habitaciones elegantemente decoradas 
+                    con vistas espectaculares al océano, diseñadas para proporcionar un ambiente de relajación y tranquilidad. 
+                    Cada detalle está cuidadosamente pensado para ofrecer una estancia inolvidable, desde el mobiliario de alta 
+                    calidad hasta las comodidades modernas.</p>
+                <p className="text-lg mb-4">Aqua maris tiene muchos beneficios destacados. Los huéspedes pueden disfrutar de acceso directo a la 
+                    playa, donde pueden relajarse en camas balinesas o participar en actividades acuáticas emocionantes. 
+                    El spa de clase mundial ofrece tratamientos rejuvenecedores y masajes relajantes, ideales para quienes 
+                    buscan un descanso completo. La gastronomía es otro punto fuerte, con restaurantes que sirven desde 
+                    platos locales e internacionales hasta opciones gourmet, complementadas por una extensa carta de vinos 
+                    y cócteles.</p>
+                <p className="text-lg mb-4">Además, el hotel AquaMaris se distingue por su servicio excepcional. El personal capacitado está siempre 
+                    disponible para satisfacer las necesidades de los huéspedes, asegurando una atención personalizada y una 
+                    experiencia sin complicaciones. Ya sea que se trate de planificar excursiones locales, reservar una cena 
+                    romántica en la playa o simplemente brindar recomendaciones sobre actividades, el equipo está comprometido 
+                    a hacer que cada estadía sea inolvidable y verdaderamente especial.</p>
             </div>
             <div className="mb-8">
                 <h3 className="text-2xl font-bold text-teal-800 mb-2">Comentarios de los usuarios</h3>

@@ -13,12 +13,14 @@ import {
   import { IoIosArrowForward } from "react-icons/io";
   import Image from "next/image";
   import { useRouter } from "next/navigation";
+  import { Alert, Snackbar} from '@mui/material';
 
 const VerificationForm = () => {
     const router = useRouter();
     const [code, setCode] = useState('');
     const [email, setEmail] = useState('');
     const [error, setError] = useState('');
+    const [open, setOpen] = useState(false);
 
     const handleSubmit = async (event: any) => {
         event.preventDefault();
@@ -38,7 +40,8 @@ const VerificationForm = () => {
             const data = await response.json();
             console.log(data)
             if (response.ok) {
-                alert('¡Verificación exitosa! Usuario logeado.');
+                //alert('¡Verificación exitosa! Usuario logeado.');
+                setOpen(true);
                 router.push("/register")
             } else {
                 setError('Código de verificación incorrecto.');
@@ -48,6 +51,10 @@ const VerificationForm = () => {
             setError('Error al verificar el código de verificación.');
         }
     };
+
+    const handleClose = () => {
+        setOpen(false);
+      };
 
     return (
         <Box
@@ -104,6 +111,17 @@ const VerificationForm = () => {
                 <span>Continuar</span>
                 <IoIosArrowForward className="icon-right text-lg" />
             </Button>
+
+            <Snackbar 
+                open={open} 
+                autoHideDuration={6000} 
+                onClose={handleClose}
+                anchorOrigin={{ vertical: 'top', horizontal: 'right' }} // Ajusta la posición aquí
+            >
+                <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+                Inicio de sesión exitoso
+                </Alert>
+      </Snackbar>
 
         </Box>
     );
