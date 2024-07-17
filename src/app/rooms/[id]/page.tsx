@@ -22,7 +22,7 @@ const Page = ({ params }: { params: { id: string } }) => {
   const { arriveDate, setArriveDate, departureDate, setDepartureDate } =
     useFilters();
   const [popoverOpened, setPopoverOpened] = useState(false);
-  const [occupiedDates, setOccupiedDates] = useState<Date[]>([]);//calendario
+  const [occupiedDates, setOccupiedDates] = useState<Date[]>([]);
   const [commentsModalIsOpen, setCommentsModalIsOpen] = useState(false);
 
   
@@ -241,9 +241,9 @@ const Page = ({ params }: { params: { id: string } }) => {
             >
               <Popover.Target>
                 <button
-                  className="w-full py-2 px-4 rounded-lg"
+                  className="w-full bg-teal-600 text-white py-2 px-4 rounded-lg hover:bg-teal-500"
                   onClick={() => setPopoverOpened((o) => !o)}
-                  disabled
+                 
                 >
                   Calendario 📅
                 </button>
