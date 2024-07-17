@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState, useEffect } from "react";
@@ -8,6 +9,7 @@ import {TextField,Button,Typography,Box,Container,Paper,Divider,Snackbar,Alert,C
 import { FaCalendarAlt, FaUser, FaUsers, FaTag, FaBed } from "react-icons/fa";
 import CardPaymentRoom from "@/componentes/vistas/vistaPayment/CardPaymentRoom";
 import { IoSend } from "react-icons/io5";
+import { WidthFull } from "@mui/icons-material";
 
 interface Companion {
   name: string;
@@ -26,6 +28,12 @@ const PaymentView: React.FC = () => {
   const [bookingSuccessful, setBookingSuccessful] = useState(false);
   const [preferenceId, setPreferenceId] = useState("");
   const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [discount, setDiscount] = useState<number>(0);
+  const [discountMessage, setDiscountMessage] = useState<string | null>(null);
+  const [openDiscountSnackbar, setOpenDiscountSnackbar] = useState(false);
+  const [alertSeverity, setAlertSeverity] = useState<"success" | "info" | "warning" | "error">("info");
+
+
 
   // Nuevas variables de estado para los datos adicionales de la habitación
   const [roomPrice, setRoomPrice] = useState("");
@@ -35,7 +43,6 @@ const PaymentView: React.FC = () => {
   const [roomType, setRoomType] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [promotionCode, setpromotionCode] = useState("")
-
 
   // Estados para los datos del usuario
   const [userName, setUserName] = useState("");
@@ -65,6 +72,7 @@ const PaymentView: React.FC = () => {
     const storedUserData = JSON.parse(localStorage.getItem("userData") || "{}");
 
     setUserId(storedUserData.id || "");
+    // setUserId(storedUserId);
     setRoomId(storedRoomId);
     setCheckInDate(storedCheckInDate);
     setCheckOutDate(storedCheckOutDate);
@@ -106,6 +114,7 @@ const PaymentView: React.FC = () => {
     newCompanions.splice(index, 1);
     setCompanions(newCompanions);
   };
+
   
   const handleSubmit = async () => {
     const bookingData = {
@@ -135,7 +144,7 @@ const PaymentView: React.FC = () => {
 
       if (!response.ok) {
         throw new Error(
-          "Error al enviar la reserva. Por favor, inténtelo nuevamente más tarde."
+          "Error al enviar la reserva."
         );
       }
 
@@ -147,9 +156,28 @@ const PaymentView: React.FC = () => {
       setBookingSuccessful(true);
     } catch (error) {
       setError(
-        "Error al enviar la reserva. Por favor, inténtelo nuevamente más tarde."
+        "Error al enviar la reserva."
       );
       console.error("Error en la solicitud de reserva:", error);
+    }
+  };
+
+
+  const handleApplyDiscount = async () => {
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/promotion/${promotionCode}`);
+      const data = await response.json();
+
+      if (data.state === 'AVAILABLE' && data.available_uses > 0) {
+        const discountAmount = (parseFloat(roomPrice) * data.percentage) / 100;
+        setDiscount(discountAmount);
+      } else {
+        setDiscountMessage('El código de descuento no es válido o ya ha sido usado.');
+        setAlertSeverity("error");
+        setOpenDiscountSnackbar(true);
+      }
+    } catch (error) {
+      console.error('Error al aplicar el código de descuento:', error);
     }
   };
 
@@ -162,9 +190,13 @@ const PaymentView: React.FC = () => {
     return numberPrice.toLocaleString("es-ES");
   };
 
-  const handleCloseSnackbar = () => {
-    setOpenSnackbar(false);
+  const handleCloseSnackbar = (event?: React.SyntheticEvent | Event, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpenDiscountSnackbar(false);
   };
+  
 
   const getRoomCapacity = (tipoHabitacion: string): number => {
     switch (tipoHabitacion) {
@@ -271,163 +303,157 @@ const PaymentView: React.FC = () => {
       Información de los Acompañantes
     </Typography>
   </Box>
-  <Box>
-    {companions.map((companion, index) => (
-      <Box key={index} display="flex" alignItems="center" mb={2}>
-        <TextField
-          label="Nombre del Acompañante"
-          value={companion.name}
-          onChange={(e) =>
-            handleCompanionChange(index, "name", e.target.value)
-          }
-          fullWidth
-          margin="normal"
-          style={{ marginRight: 8 }}
-        />
-        <TextField
-          label="Num. identificación"
-          value={companion.identityCard}
-          onChange={(e) =>
-            handleCompanionChange(index, "identityCard", e.target.value)
-          }
-          fullWidth
-          margin="normal"
-          type="number"
-          style={{ marginRight: 8 }}
-        />
+    <Box>
+      {companions.map((companion, index) => (
+        <Box key={index} display="flex" alignItems="center" mb={2}>
+          <TextField
+            label="Nombre del Acompañante"
+            value={companion.name}
+            onChange={(e) =>
+              handleCompanionChange(index, "name", e.target.value)
+            }
+            fullWidth
+            margin="normal"
+            style={{ marginRight: 8 }}
+          />
+          <TextField
+            label="Num. identificación"
+            value={companion.identityCard}
+            onChange={(e) =>
+              handleCompanionChange(index, "identityCard", e.target.value)
+            }
+            fullWidth
+            margin="normal"
+            type="number"
+            style={{ marginRight: 8 }}
+          />
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={() => handleRemoveCompanion(index)}
+          >
+            Eliminar
+          </Button>
+        </Box>
+      ))}
+      {canAddMoreCompanions && (
         <Button
           variant="contained"
-          color="secondary"
-          onClick={() => handleRemoveCompanion(index)}
+          color="primary"
+          onClick={handleAddCompanion}
         >
-          Eliminar
+          Agregar Acompañante
         </Button>
-      </Box>
-    ))}
-    {canAddMoreCompanions && (
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={handleAddCompanion}
-      >
-        Agregar Acompañante
-      </Button>
-    )}
-    {!canAddMoreCompanions && (
-      <Typography color="error" variant="body1">
-        No se pueden agregar más acompañantes. Capacidad máxima de {roomCapacity} personas.
-      </Typography>
-    )}
+      )}
+      {!canAddMoreCompanions && (
+        <Typography color="error" variant="body1">
+          No se pueden agregar más acompañantes. Capacidad máxima de {roomCapacity} personas.
+        </Typography>
+      )}
+    </Box>
   </Box>
-</Box>
-            </div>
-          </div>
-        </form>
+    </div>
+    </div>
+    </form>
       </Paper>
-
       <div className="flex w-[100%] gap-10">
-        <div className="w-1/2">
-          <Box mb={4}>
-            <Box display="flex" alignItems="center" mb={2}>
-              <FaTag
-                size={24}
-                style={{ marginRight: 8 }}
-                className="text-teal-700"
-              />
-              <Typography variant="h6">
-                Tienes un código de Descuento? Usaló!
-              </Typography>
-            </Box>
-            <div className="flex">
-              <TextField
-                fullWidth
-                label="Código de Descuento"
-                value={discountCode}
-                onChange={(e) => setDiscountCode(e.target.value)}
-                margin="dense"
-              />
-
-              <Button
-                variant="contained"
-                className="my-2 mx-1 px-6 "
-                size="large"
-                endIcon={<IoSend />}
-                disabled
-              >
-                Enviar
-              </Button>
-            </div>
-          </Box>
+        <div className="w-3/4">
+                  <Box mb={4}>
+                    <Box display="flex" alignItems="center" mb={2}>
+                      <FaTag size={24} style={{ marginRight: 8 }} className="text-cyan-800" />
+                      <Typography variant="h6" className="text-gray-700">
+                         Si cuentas con un <strong>código de descuento</strong> colocalo antes de pagar.
+                      </Typography>
+                    </Box>
+                    <Box display="flex" alignItems="center" mb={2}>
+                      <TextField
+                        label="Código de Descuento"
+                        value={promotionCode}
+                        className="w-1/2"
+                        onChange={(e) => setpromotionCode(e.target.value)}
+                        sx={{ mr: 2 }}
+                      />
+                      <Button variant="contained" color="primary" onClick={handleApplyDiscount}>
+                        Aplicar
+                      </Button>
+                    </Box>
+                  </Box>
         </div>
 
-        <div className="w-1/2">
-          <p className="w-[100%] bg-gray-200 text-gray-700 text-center text-lg font-normal">
-            Resumen de Pago
-          </p>
-          <Box display="flex" justifyContent="space-between" my={2}>
-            <Typography variant="body1">Subtotal</Typography>
-            <Typography variant="body1">{formatPrice(roomPrice)}</Typography>
-          </Box>
-          <Box display="flex" justifyContent="space-between" my={2}>
-            <Typography variant="body1">Descuento</Typography>
-            <Typography variant="body1">- {0.0}</Typography>
-          </Box>
-          <Divider className="w-[100%] text-center" />
-          <Box display="flex" justifyContent="space-between" my={2}>
-            <Typography variant="h6">Total</Typography>
-            <Typography variant="h6" className="text-green-800">
-              {formatPrice(roomPrice)}
-            </Typography>
-          </Box>
-          <div className="w-[100%]">
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={handleSubmit}
-              className="w-full"
-            >
-              Ir a pagar
-            </Button>
+        </div>
 
-            {error && (
-              <Typography color="error" mt={2} className="text-center">
-                {error}
-              </Typography>
-            )}
-
-            {bookingSuccessful && preferenceId && (
-              <Box id="wallet_container" mt={4}>
-                <Wallet
-                  initialization={{ preferenceId }}
-                  customization={{ texts: { valueProp: "smart_option" } }}
-                  onError={() =>
-                    setError("Error al cargar el componente de pago.")
-                  }
-                />
+        <Box my={4} className="bg-gray-200 p-4 rounded-lg shadow-md">
+                <div className="flex flex-col items-center gap-4">
+                  <Typography className="text-lg font-medium text-cyan-900">
+                    Precio total de la habitación:
+                  </Typography>
+                  <Typography className="text-2xl font-bold text-cyan-900">
+                     {formatPrice(parseFloat(roomPrice) - discount)}
+                  </Typography>
+                </div>
               </Box>
-            )}
-          </div>
-        </div>
-      </div>
+              <Box display="flex" justifyContent="center" mt={4}>
+                {bookingSuccessful && preferenceId ? (
+                  <div className="w-full flex flex-col items-center gap-4">
+                    <Typography variant="h6" className="text-green-500">
+                      ¡Reserva realizada con éxito!
+                    </Typography>
+                    <div className="flex flex-col items-center gap-4">
+                      <Typography className="text-gray-700">
+                        Proceda con el pago a continuación:
+                      </Typography>
+                      <Wallet initialization={{ preferenceId }} />
+                    </div>
+                  </div>
+                ) : (
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handleSubmit}
+                    startIcon={<IoSend />}
+                  >
+                   PAGAR
+                  </Button>
+                )}
+              </Box>
+              {error && (
+                <Typography color="error" align="center" mt={2}>
+                  {error}
+                </Typography>
+              )}
+              <Snackbar
+                open={openSnackbar}
+                autoHideDuration={6000}
+                onClose={handleCloseSnackbar}
+              >
+                <Alert onClose={handleCloseSnackbar} severity="success" sx={{ width: '100%' }}>
+                  ¡Reserva realizada con éxito!
+                </Alert>
+              </Snackbar>
+              <Snackbar
+                open={openDiscountSnackbar}
+                autoHideDuration={6000}
+                onClose={handleCloseSnackbar}
+                anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+              >
+                <Alert onClose={handleCloseSnackbar} severity={alertSeverity} sx={{ width: '100%' }}>
+                  {discountMessage}
+                </Alert>
+              </Snackbar>
 
-      <Snackbar
-        open={openSnackbar}
-        autoHideDuration={6000}
-        onClose={handleCloseSnackbar}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-
-      >
-        <Alert
-          onClose={handleCloseSnackbar}
-          severity="success"
-          sx={{ width: "100%" }}
-        >
-          Se ha creado tu reservación. Continúa con el pago.
-        </Alert>
-      </Snackbar>
+      
       </>)}
     </Container>
   );
 };
 
 export default PaymentView;
+
+
+
+
+
+
+
+
+
