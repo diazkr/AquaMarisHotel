@@ -15,7 +15,7 @@ const CodigoVerifcacion = () => {
       <div className="absolute inset-0 flex flex-col items-center justify-center">
         <div className="svg-container">
           <Image
-            src="/logos/logoBlanco.svg" // Asegúrate de que esta sea la ruta correcta a tu logo
+            src="/logos/logoBlanco.svg" 
             alt="Logo"
             width={300}
             height={100}
