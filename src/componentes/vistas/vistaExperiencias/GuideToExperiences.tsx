@@ -4,8 +4,11 @@ import { Breadcrumbs, Button, Link, Typography } from '@mui/material';
 import { FaHome } from 'react-icons/fa';
 import { useRouter } from 'next/navigation';
 
-function GuideToExperiences() {
-  const router = useRouter();
+interface GuideToExperiencesProps {
+  text: string;
+}
+
+const GuideToExperiences: React.FC<GuideToExperiencesProps> = ({ text }) => {  const router = useRouter();
 
   return (
     <div className="bg-gray-100 py-4 w-full">
@@ -19,7 +22,7 @@ function GuideToExperiences() {
           >
             Inicio
           </Button>
-          <Typography color="primary" >Experiencias</Typography>
+          <Typography color="primary" >{text}</Typography>
         </Breadcrumbs>
       </div>
     </div>

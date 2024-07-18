@@ -91,9 +91,9 @@ const Premium: React.FC<PremiumProps> = ({ userId }) => {
   ];
 
   return (
-    <Card className="mx-auto ">
+    <Card className="mx-auto shadow-none border-none">
       {loading ? (
-        <div className="flex justify-center items-center h-full">
+        <div className="flex justify-center items-center ">
           <CircularProgress sx={{ color: "gray" }} />
         </div>
       ) : (

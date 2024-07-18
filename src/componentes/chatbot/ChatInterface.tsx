@@ -81,7 +81,7 @@ Comienza ahora.
     };
     const welcomeMessage: ChatCompletionMessage = {
       role: "assistant",
-      content: "Hola! ¿Cómo puedo ayudarte hoy?",
+      content: "Hola! Soy tu asistente Aqua Maris, ¿Cómo puedo ayudarte hoy?",
     };
     setMessages([systemMessage, welcomeMessage]);
     setVisibleMessages([welcomeMessage]);
