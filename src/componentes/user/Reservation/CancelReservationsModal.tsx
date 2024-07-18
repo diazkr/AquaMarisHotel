@@ -13,7 +13,9 @@ const CancelReservationModal: React.FC<CancelReservationModalProps> = ({ open, h
       <DialogTitle>Cancelar Reserva</DialogTitle>
       <DialogContent>
         <DialogContentText>
-          ¿Estás seguro de que deseas cancelar esta reserva? Esta acción no se puede deshacer.
+          ¿Estás seguro de que deseas cancelar esta reserva? Esta acción no se puede deshacer. 
+
+          <p>En caso de ser cancelada la reservación, esta se verá reflejada en unos minutos</p>
         </DialogContentText>
       </DialogContent>
       <DialogActions>

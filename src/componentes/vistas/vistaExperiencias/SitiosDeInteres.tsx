@@ -48,6 +48,7 @@ function a11yProps(index: number) {
 
 const TabsComponent: React.FC = () => {
   const [value, setValue] = useState(0);
+  const [expanded, setExpanded] = useState<string | false>('panel0'); // Estado para controlar el acordeón
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -117,6 +118,13 @@ const TabsComponent: React.FC = () => {
       whatsapp: "+123456789",
     }
   ];
+  const handleAccordionChange = (panel: string) => (
+    event: React.SyntheticEvent,
+    isExpanded: boolean
+  ) => {
+    setExpanded(isExpanded ? panel : false);
+  };
+
 
   return (
     <Box sx={{ width: "100%" }}>
@@ -157,7 +165,7 @@ const TabsComponent: React.FC = () => {
       <TabPanel value={value} index={0}>
         <Box sx={{ p: 2 }}>
           <Typography variant="h5" sx={{ mb: 2 }} color="primary">
-            EL MEJOR HOTEL DE LA ISLA!
+            Hotel Aqua Maris
           </Typography>
           <Typography variant="body1" sx={{ mb: 4 }}>
             El mejor hotel de la zona, con Lorem, ipsum dolor sit amet
@@ -228,6 +236,8 @@ const TabsComponent: React.FC = () => {
           {restaurants.map((restaurant, index) => (
             <Accordion
               key={index}
+              expanded={expanded === `panel${index}`}
+              onChange={handleAccordionChange(`panel${index}`)}
               sx={{
                 boxShadow: "none",
                 borderBottom: "1px solid #e0e0e0",
@@ -292,6 +302,9 @@ const TabsComponent: React.FC = () => {
           {activities.map((a, index) => (
             <Accordion
               key={index}
+
+              expanded={expanded === `panel${index}`}
+              onChange={handleAccordionChange(`panel${index}`)}
               sx={{
                 boxShadow: "none",
                 borderBottom: "1px solid #e0e0e0",

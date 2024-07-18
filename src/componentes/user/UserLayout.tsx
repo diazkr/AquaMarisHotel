@@ -1,11 +1,9 @@
-"use client";
 import React, { useState, useEffect } from "react";
 import {
   Box,
   CircularProgress,
   List,
   ListItem,
-  ListItemIcon,
   ListItemText,
 } from "@mui/material";
 import {
@@ -14,13 +12,10 @@ import {
   FaInfoCircle,
   FaQuestionCircle,
   FaStar,
-  FaUserCog,
 } from "react-icons/fa";
 import UserDetail from "./UserDetail";
 import Premium from "./Premium";
 import FAQContent from "./FAQContent";
-import { getUserData } from "@/DataBase/getUserData";
-import Image from "next/image";
 import ReservationsList from "./ReservationList";
 import CommentList from "./CommentList";
 
@@ -33,35 +28,62 @@ const UserLayout: React.FC<UserLayoutProps> = ({ id }) => {
   const [loading, setLoading] = useState(true);
   const [selectedContent, setSelectedContent] = useState<React.ReactNode>(null);
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [updatingReservations, setUpdatingReservations] = useState(false);
+
+  const fetchData = async () => {
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/user/${id}`
+      );
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const userData = await response.json();
+      setUser(userData);
+      setSelectedContent(
+        <UserDetail
+          id={userData.id}
+          name={userData.name}
+          email={userData.email}
+          phone={userData.phone}
+          country={userData.country}
+          photo={userData.user_photo}
+        />
+      );
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/${id}`);
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        const userData = await response.json();
-        setUser(userData);
-        setSelectedContent(
-          <UserDetail
-            id={userData.id}
-            name={userData.name}
-            email={userData.email}
-            phone={userData.phone}
-            country={userData.country}
-            photo={userData.user_photo}
-          />
-        );
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchData();
   }, [id]);
+
+  const handleUpdateReservations = async () => {
+    setUpdatingReservations(true);
+    await fetchData();
+    setSelectedContent(
+      <ReservationsList
+        reservations={user?.booking ?? []}
+        onUpdate={handleUpdateReservations}
+        onUpdateReservationStatus={updateReservationStatus}
+      />
+    );
+    setUpdatingReservations(false);
+  };
+
+  const updateReservationStatus = (reservationId: string, status: string) => {
+    setUser((prevUser: any) => {
+      const updatedBookings = prevUser.booking.map((reservation: any) =>
+        reservation.id === reservationId
+          ? { ...reservation, paymentStatus: status }
+          : reservation
+      );
+      return { ...prevUser, booking: updatedBookings };
+    });
+  };
 
   const menuItems = [
     {
@@ -81,17 +103,29 @@ const UserLayout: React.FC<UserLayoutProps> = ({ id }) => {
     {
       text: "Reservaciones",
       icon: <FaClipboardList />,
-      content: user ? <ReservationsList reservations={user.booking} /> : null,
+      content: user ? (
+        updatingReservations ? (
+          <div className="flex justify-center items-center h-full">
+            <CircularProgress sx={{ color: "gray" }} />
+          </div>
+        ) : (
+          <ReservationsList
+            reservations={user.booking}
+            onUpdate={handleUpdateReservations}
+            onUpdateReservationStatus={updateReservationStatus}
+          />
+        )
+      ) : null,
     },
     {
       text: "Mis comentarios",
       icon: <FaCommentDots />,
-      content: user ? <CommentList comments={user.comments} /> : null,
+      content: user ? <CommentList id={id} /> : null,
     },
     {
       text: "Mi suscripción",
       content: user ? (
-        <Premium membershipStatus={user.membership_status} userId={user.id} />
+        <Premium userId={user.id} />
       ) : null,
       icon: <FaStar />,
     },

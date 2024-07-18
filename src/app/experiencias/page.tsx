@@ -16,7 +16,7 @@ const HotelPage = () => {
     <div>
       <div className="flex flex-col justify-center items-center">
         <ImageExp />
-        <GuideToExperiences />
+        <GuideToExperiences text="Experiecias"/>
         <DescriptionExperiences />
       </div>
 

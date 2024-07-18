@@ -31,15 +31,18 @@
       try {
         const userData = JSON.parse(localStorage.getItem('userData'));
         const id = userData.id;
+        console.log("id en el lo de paypal", id)
         if (!id) {
           throw new Error('User ID not found in localStorage');
         }
 
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/payment/subscription?userId=${id}`, {
+        const response = await fetch(`https://aquamaris-v1-0.onrender.com/payment/subscription`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-          }
+          },
+          body: JSON.stringify({id})
+
         });
 
         if (!response.ok) {
