@@ -17,6 +17,9 @@ interface FilterContextType {
   setSort: (sort: string) => void;
   page: number;
   setPage: (page: number) => void;
+
+  totalPage: number;
+  setTotalPage: (page: number) => void;
 }
 
 const FilterContext = createContext<FilterContextType | undefined>(undefined);
@@ -59,6 +62,8 @@ export const FilterProvider = ({ children }: { children: ReactNode }) => {
   const [people, setPeople] = useState<number>(1);
   const [sort, setSort] = useState<string>("");
   const [page, setPage] = useState<number>(1);
+  const [totalPage, setTotalPage] = useState<number>(5);
+
 
   const resetFilters = () => {
     setFilters(initialFilters);
@@ -82,6 +87,8 @@ export const FilterProvider = ({ children }: { children: ReactNode }) => {
         setSort,
         page,
         setPage,
+        totalPage,
+        setTotalPage
       }}
     >
       {children}

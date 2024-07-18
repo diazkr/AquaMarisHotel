@@ -28,6 +28,8 @@ const FilterSidebar = () => {
     arriveDate,
     departureDate,
     people,
+    setTotalPage,
+    totalPage
   } = useFilters();
   const { setRooms } = useRooms();
   const [expanded, setExpanded] = useState<string | false>(false);
@@ -98,6 +100,8 @@ const FilterSidebar = () => {
       const result = await response.json();
       console.log(result)
       setRooms(result.allRooms);
+      setTotalPage(result.totalPages)
+      console.log("total de las paginas", totalPage)
     } catch (error) {
       console.error("Filtering failed:", error);
     }
@@ -134,6 +138,9 @@ const FilterSidebar = () => {
       const result = await response.json();
       console.log(result)
       setRooms(result.allRooms);
+
+      setTotalPage(result.totalPages)
+      console.log("total de las paginas", totalPage)
     } catch (error) {
       console.error("Booking failed:", error);
     }
