@@ -132,7 +132,7 @@ const CardHabitacionReserva: React.FC<CardHabitacionProps> = ({
   };
 
   const handleNavigation = () => {
-    router.push(`rooms/${id}`);
+    router.push(`/rooms/${id}`);
   };
 
   const formatPrice = (price: string | number): string => {

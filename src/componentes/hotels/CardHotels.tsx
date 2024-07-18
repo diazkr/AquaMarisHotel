@@ -17,7 +17,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
   description,
 }) => {
   return (
-    <div className="flex h-[30vh] w-full" style={{ backgroundColor: overlayColor }}>      <div className="w-1/2">
+    <div className="flex h-[40vh] w-full" style={{ backgroundColor: overlayColor }}>      <div className="w-1/2">
         <div className="relative w-full h-full mb-4">
           <Image
             src={foregroundUrl}
@@ -29,9 +29,9 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
         </div>
       </div>
 
-      <div className="w-1/2 flex justify-center items-center flex-col px-10">
-        <h2 className="text-3xl text-[#17858A] font-semibold mb-4">{serviceName}</h2>
-        <p className="text-lg mb-4">{description}</p>
+      <div className="w-1/2 flex justify-center items-center flex-col p-10 px-5">
+        <h2 className="text-2xl text-[#17858A] font-semibold mb-4">{serviceName}</h2>
+        <p className="text-md mb-4">{description}</p>
       </div>
     </div>
   );

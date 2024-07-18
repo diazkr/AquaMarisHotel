@@ -25,7 +25,9 @@ function OrderButton() {
     departureDate,
     people,
     sort,
-    setSort
+    setSort, 
+    totalPage,
+    setTotalPage
   } = useFilters();
   const { setRooms } = useRooms();
 
@@ -77,6 +79,9 @@ function OrderButton() {
       const result = await response.json();
       console.log(result)
       setRooms(result.allRooms);
+
+      setTotalPage(result.totalPages)
+      console.log("total de las paginas", totalPage)
 
     } catch (error) {
       console.error("Filtering failed:", error);

@@ -9,7 +9,7 @@ import { useRooms } from '@/contextos/RoomContext';
 import dayjs from 'dayjs';
 
 export default function PaginationControlled() {
-  const { filters, hotel, arriveDate, departureDate, people, sort, page, setPage } = useFilters();
+  const { filters, hotel, arriveDate, departureDate, people, sort, page, setPage, totalPage, setTotalPage } = useFilters();
   const { setRooms } = useRooms();
 
   const fetchRooms = async (newPage: number) => {
@@ -53,6 +53,9 @@ export default function PaginationControlled() {
       console.log('API Result:', result);
 
       setRooms(result.allRooms);
+
+      setTotalPage(result.totalPages)
+      console.log("total de las paginas", totalPage)
       
     } catch (error) {
       console.error("Fetching rooms failed:", error);
@@ -71,7 +74,7 @@ export default function PaginationControlled() {
 
   return (
     <Stack spacing={2} className='mt-24'>
-      <Pagination color='primary' count={5} page={page} onChange={handleChange} />
+      <Pagination color='primary' count={totalPage} page={page} onChange={handleChange} />
     </Stack>
   );
 }

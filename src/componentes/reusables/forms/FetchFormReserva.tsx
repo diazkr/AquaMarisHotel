@@ -1,16 +1,24 @@
 // src/components/FetchBookingForm.tsx
-import React, { useEffect } from 'react';
-import { Container } from '@mui/material';
-import { getMockRooms } from '@/DataBase/MockDataRooms';
-import { useRooms } from '@/contextos/RoomContext';
-import { useFilters } from '@/contextos/FilterContext';
-import dayjs from 'dayjs';
-import FormReservaHotel from './FormReservaHome';
-import { useRouter } from 'next/navigation';
-import { removeEmptyFields } from '@/helpers/removeEmptyFiles';
+import React, { useEffect } from "react";
+import { Container } from "@mui/material";
+import { getMockRooms } from "@/DataBase/MockDataRooms";
+import { useRooms } from "@/contextos/RoomContext";
+import { useFilters } from "@/contextos/FilterContext";
+import dayjs from "dayjs";
+import FormReservaHotel from "./FormReservaHome";
+import { useRouter } from "next/navigation";
+import { removeEmptyFields } from "@/helpers/removeEmptyFiles";
 
 const FetchBookingForm: React.FC = () => {
-  const { hotel, arriveDate, departureDate, people, setFilters } = useFilters();
+  const {
+    hotel,
+    arriveDate,
+    departureDate,
+    people,
+    setFilters,
+    totalPage,
+    setTotalPage,
+  } = useFilters();
   const router = useRouter();
   const { setRooms } = useRooms();
 
@@ -23,41 +31,41 @@ const FetchBookingForm: React.FC = () => {
     }));
   }, [arriveDate, departureDate, people, setFilters]);
 
-  
-
   const handleBooking = async () => {
     try {
       const bookingData = {
         hotel,
-        arrive_date: dayjs(arriveDate).format('YYYY-MM-DD'),
-        departure_date: dayjs(departureDate).format('YYYY-MM-DD'),
+        arrive_date: dayjs(arriveDate).format("YYYY-MM-DD"),
+        departure_date: dayjs(departureDate).format("YYYY-MM-DD"),
         people,
       };
 
       const bookingDataReady = removeEmptyFields(bookingData);
 
       const params = new URLSearchParams(bookingDataReady).toString();
-      console.log(params)
+      console.log(params);
       const url = `${process.env.NEXT_PUBLIC_API_URL}/rooms/filter?${params}`;
 
       const response = await fetch(url, {
-        method: 'GET',
+        method: "GET",
         headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json",
         },
       });
 
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        throw new Error("Network response was not ok");
       }
 
       const result = await response.json();
-      console.log(result)
+      console.log(result);
       setRooms(result.allRooms);
-      router.push('/lista');
 
+      setTotalPage(result.totalPages);
+      console.log("total de las paginas", totalPage);
+      router.push("/lista");
     } catch (error) {
-      console.error('Booking failed:', error);
+      console.error("Booking failed:", error);
     }
   };
 
