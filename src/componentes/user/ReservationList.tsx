@@ -9,10 +9,12 @@ import { TbCalendarSad } from "react-icons/tb";
 
 interface ReservationsListProps {
   reservations: ReservationInterface[];
+  onUpdate: () => void;
+  onUpdateReservationStatus: (reservationId: string, status: string) => void;
 }
 
 const ReservationsList: React.FC<ReservationsListProps> = ({
-  reservations,
+  reservations, onUpdate, onUpdateReservationStatus
 }) => {
   const [comentarios, setComentarios] = useState<Comentario[]>([]);
   const router = useRouter()
@@ -44,6 +46,8 @@ const ReservationsList: React.FC<ReservationsListProps> = ({
             key={reservation.id}
             {...reservation}
             setComentarios={setComentarios}
+            onUpdate={onUpdate}
+            onUpdateReservationStatus={onUpdateReservationStatus}
           />
         </div>
       ))}

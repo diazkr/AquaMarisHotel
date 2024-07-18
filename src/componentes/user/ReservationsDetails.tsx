@@ -1,25 +1,23 @@
-"use client";
-import React, { Dispatch, SetStateAction, useEffect } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { ReservationInterface, Comentario } from "@/interfaces/UserInterface";
-import { useState } from "react";
-import { Button, Rating } from "@mui/material";
-import Link from "next/link";
+import { Button, Rating, CircularProgress } from "@mui/material";
 import {
   FaCalendarAlt,
   FaCheckCircle,
   FaRegClock,
-  FaRegComments,
-  FaTimesCircle,
-  FaUser,
+  FaRegComments
 } from "react-icons/fa";
 import CardHabitacionReserva from "./cardHabitacionReserva";
 import CreateComment from "../reusables/botones/CreateComment";
 import CopyToClipboard from "../reusables/texts/CopyComponent";
 import { differenceInDays } from "date-fns";
 import CancelReservationModal from "./Reservation/CancelReservationsModal";
+import { Block } from "@mui/icons-material";
 
 interface ReservationsDetailsProps extends ReservationInterface {
   setComentarios: Dispatch<SetStateAction<Comentario[]>>;
+  onUpdate: () => void;
+  onUpdateReservationStatus: (reservationId: string, status: string) => void;
 }
 
 const ReservationsDetails: React.FC<ReservationsDetailsProps> = ({
@@ -31,6 +29,8 @@ const ReservationsDetails: React.FC<ReservationsDetailsProps> = ({
   paymentStatus,
   companions,
   setComentarios,
+  onUpdate,
+  onUpdateReservationStatus,
 }) => {
   const departureDate = new Date(check_out_date);
   const currentDate = new Date();
@@ -38,17 +38,20 @@ const ReservationsDetails: React.FC<ReservationsDetailsProps> = ({
   const [showCommentForm, setShowCommentForm] = useState(false);
   const [comment, setComment] = useState("");
   const [rating, setRating] = useState<number | null>(5);
-
   const [isCancelButtonDisabled, setIsCancelButtonDisabled] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [loadingCancel, setLoadingCancel] = useState(false);
 
   useEffect(() => {
     const daysUntilCheckIn = differenceInDays(
       new Date(check_in_date),
       new Date()
     );
-    setIsCancelButtonDisabled(daysUntilCheckIn <= 3);
-  }, [check_in_date]);
+    const isWithinThreeDays = daysUntilCheckIn <= 3;
+    const isCancelled = paymentStatus === "CANCELLED";
+    
+    setIsCancelButtonDisabled(isWithinThreeDays || isCancelled);
+  }, [check_in_date,paymentStatus]);
 
   const handleCommentSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -61,9 +64,36 @@ const ReservationsDetails: React.FC<ReservationsDetailsProps> = ({
     setRating(null);
   };
 
-  const handleCancelReservation = () => {
-    console.log(`La reserva con ID ${id} ha sido cancelada.`);
-    setIsModalOpen(false);
+  const handleCancelReservation = async () => {
+    setLoadingCancel(true);
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/booking/cancel`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId: user.id,
+          bookingId: id
+        }),
+      });
+  
+      if (response.ok) {
+        console.log('Reserva cancelada exitosamente');
+        setIsCancelButtonDisabled(true);
+        onUpdateReservationStatus(id, 'CANCELLED');
+        await onUpdate();
+      } else {
+        console.error('Error al cancelar la reserva');
+        throw new Error('Error al cancelar la reserva');
+      }
+    } catch (error) {
+      console.error('Error al cancelar la reserva:', error);
+      throw error;
+    } finally {
+      setLoadingCancel(false);
+      setIsModalOpen(false);
+    }
   };
 
   const handleOpenModal = () => setIsModalOpen(true);
@@ -71,6 +101,11 @@ const ReservationsDetails: React.FC<ReservationsDetailsProps> = ({
 
   const getPaymentStatusInfo = (status: string) => {
     switch (status) {
+      case "CANCELLED":
+        return {
+          text: "Cancelada",
+          icon: <Block className="text-red-800 mr-1 text-xl" />,
+        };
       case "IN_PROGRESS":
         return {
           text: "En proceso",
@@ -113,9 +148,9 @@ const ReservationsDetails: React.FC<ReservationsDetailsProps> = ({
               variant="contained"
               color="error"
               onClick={handleOpenModal}
-              disabled={isCancelButtonDisabled}
+              disabled={isCancelButtonDisabled || loadingCancel}
             >
-              Cancelar Reserva
+              {loadingCancel ? <CircularProgress size={24} /> : "Cancelar Reserva"}
             </Button>
           </div>
         </div>
@@ -217,10 +252,10 @@ const ReservationsDetails: React.FC<ReservationsDetailsProps> = ({
         )}
       </div>
       <CancelReservationModal
-                open={isModalOpen}
-                handleClose={handleCloseModal}
-                handleConfirm={handleCancelReservation}
-              />
+        open={isModalOpen}
+        handleClose={handleCloseModal}
+        handleConfirm={handleCancelReservation}
+      />
     </div>
   );
 };
