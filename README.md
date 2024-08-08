@@ -1,4 +1,3 @@
-
 Este proyecto es una aplicación web de gestión de hoteles desarrollada en **Next.js**. Permite a los usuarios realizar reservas de habitaciones y actividades, y ofrece una experiencia completa con funcionalidades avanzadas como un chatbot con IA y pagos integrados con Mercado Pago.
 
 ## Características
