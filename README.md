@@ -1,36 +1,43 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-## Getting Started
+Este proyecto es una aplicación web de gestión de hoteles desarrollada en **Next.js**. Permite a los usuarios realizar reservas de habitaciones y actividades, y ofrece una experiencia completa con funcionalidades avanzadas como un chatbot con IA y pagos integrados con Mercado Pago.
 
-First, run the development server:
+## Características
+
+- **Reservas de habitaciones y actividades**: Los usuarios pueden reservar habitaciones y actividades fácilmente desde la aplicación.
+- **Chatbot con IA**: Un asistente virtual inteligente ayuda a los usuarios a navegar y resolver dudas en tiempo real.
+- **Pagos integrados**: Implementación de pasarelas de pago con Mercado Pago para un proceso de pago seguro y rápido.
+- **Desarrollo con Next.js**: Toda la aplicación está construida sobre Next.js, lo que garantiza un rendimiento óptimo y una experiencia de usuario fluida.
+
+## Requisitos
+
+- Node.js (versión 18.0.0 o superior)
+- npm (versión 9.0.0 o superior)
+
+## Instalación
+
+1. Clona este repositorio:
+
+    ```bash
+    git clone https://github.com/tu-usuario/tu-repositorio.git
+    ```
+
+2. Navega al directorio del proyecto:
+
+    ```bash
+    cd tu-repositorio
+    ```
+
+3. Instala las dependencias:
+
+    ```bash
+    npm install
+    ```
+
+4. Crea un archivo `.env` en la raíz del proyecto y configura las variables de entorno necesarias (como claves de API, configuraciones de Mercado Pago, etc.).
+
+## Uso
+
+Para iniciar la aplicación en modo desarrollo:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
